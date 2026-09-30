@@ -37,13 +37,15 @@
 # tree rather than by the serving loop, so a pass slowed by a loaded host
 # cannot age it. Readiness therefore proves that the serving process is alive,
 # not that its current pass has returned. The serving process alone publishes
-# readiness; the heartbeat only refreshes it while the serving process is
-# alive, so a refresh still in flight when the serving process dies cannot
-# recreate readiness once its supervisor has released ownership, and the
-# serving process stops the heartbeat before releasing ownership itself. A
-# supervisor that loses the ownership race never removes the owner's
-# readiness, pid, identity, or lock: only the recorded owner, or the
-# supervisor of that owner once it is dead, releases them.
+# readiness; the heartbeat only refreshes the readiness object that process
+# published, and only while it is alive, so a refresh still in flight when the
+# serving process dies can neither recreate readiness once its supervisor has
+# released ownership nor, where a Linux fd path binds it, refresh a
+# replacement's. The serving process stops the heartbeat before releasing
+# ownership itself. A supervisor that loses the ownership race never removes
+# the owner's readiness, pid, identity, or lock: only the recorded owner, or
+# the supervisor of that owner once it is dead, releases them, and a new owner
+# clears any a previous owner left behind before it publishes its own.
 #
 # The worker is abandoned when its configured FM_ROOT stops being a genuine
 # Firstmate checkout - the state a pruned no-mistakes gate worktree, a returned
@@ -120,12 +122,18 @@ worker_write_heartbeat() {
 
 # The heartbeat runs in its own process so a serving pass slowed by a loaded
 # host cannot age it past the probe's bound. It refreshes only while the
-# serving process is alive, and only the readiness that process published:
-# it never creates readiness, so a refresh still in flight when the serving
-# process dies cannot recreate it after the supervisor releases ownership.
+# serving process is alive, and only the readiness object that process
+# published, which it holds open on fd 3: it never creates readiness, and
+# where a Linux fd path can name that object a refresh still in flight when
+# the serving process dies reaches neither a removed readiness nor a
+# replacement's.
 worker_heartbeat_loop() { # <serving-pid>
   local owner=$1 ready sleeper=
-  ready=$(fm_remote_job_worker_ready_path)
+  if [ -e /proc/self/fd/3 ]; then
+    ready=/proc/self/fd/3
+  else
+    ready=$(fm_remote_job_worker_ready_path)
+  fi
   trap '[ -z "$sleeper" ] || kill "$sleeper" 2>/dev/null; exit 0' HUP INT TERM
   while kill -0 "$owner" 2>/dev/null; do
     touch -c -- "$ready" || exit 1
@@ -138,24 +146,31 @@ worker_heartbeat_loop() { # <serving-pid>
 
 worker_start_heartbeat() {
   local owner=${BASHPID:-$$}
-  worker_heartbeat_loop "$owner" &
+  worker_heartbeat_loop "$owner" 3< "$(fm_remote_job_worker_ready_path)" &
   WORKER_HEARTBEAT_PID=$!
 }
 
-# The serving process publishes readiness whenever it is missing, since the
-# heartbeat only refreshes it. A heartbeat stopped by a signal is restarted;
-# one that could not refresh reports failure, exactly as a failed heartbeat
-# write always has.
+# The heartbeat only refreshes the readiness object it was started on, so the
+# serving process publishes readiness and starts a heartbeat on it whenever the
+# published readiness is missing or, where a Linux fd path shows it, is no
+# longer that object. A heartbeat stopped by a signal is restarted; one that
+# could not refresh reports failure, exactly as a failed heartbeat write always
+# has.
 worker_heartbeat_running() {
   local status ready
   ready=$(fm_remote_job_worker_ready_path)
-  [ -f "$ready" ] && [ ! -L "$ready" ] || worker_write_heartbeat || return 1
-  [ -n "$WORKER_HEARTBEAT_PID" ] || return 1
-  kill -0 "$WORKER_HEARTBEAT_PID" 2>/dev/null && return 0
-  wait "$WORKER_HEARTBEAT_PID" 2>/dev/null
-  status=$?
-  WORKER_HEARTBEAT_PID=
-  [ "$status" -eq 0 ] || return 1
+  if [ -n "$WORKER_HEARTBEAT_PID" ] && ! kill -0 "$WORKER_HEARTBEAT_PID" 2>/dev/null; then
+    wait "$WORKER_HEARTBEAT_PID" 2>/dev/null
+    status=$?
+    WORKER_HEARTBEAT_PID=
+    [ "$status" -eq 0 ] || return 1
+  fi
+  if [ -n "$WORKER_HEARTBEAT_PID" ] && [ -f "$ready" ] && [ ! -L "$ready" ] &&
+    { [ ! -d /proc/self/fd ] || [ "$ready" -ef "/proc/$WORKER_HEARTBEAT_PID/fd/3" ]; }; then
+    return 0
+  fi
+  worker_stop_heartbeat
+  worker_write_heartbeat || return 1
   worker_start_heartbeat
 }
 
@@ -235,11 +250,20 @@ worker_recover_quarantine() { # <account-home>
   rm -f -- "$WORKER_LOCK/quarantine"
 }
 
+# A new ownership term starts without the records a previous owner published,
+# so a record that owner left behind after an unclean stop is never read as
+# this owner's before this owner can be verified.
+worker_clear_previous_records() {
+  rm -f -- "$(fm_remote_job_worker_pid_path)" "$(fm_remote_job_worker_identity_path)" \
+    "$(fm_remote_job_worker_ready_path)"
+}
+
 worker_acquire_lock() {
   local account_home=$1 attempt=0
   while [ "$attempt" -lt 150 ]; do
     if (umask 077; mkdir "$WORKER_LOCK") 2>/dev/null; then
       WORKER_LOCK_HELD=1
+      worker_clear_previous_records || return 1
       worker_publish_lock_owner || return 1
       return 0
     fi
@@ -1214,7 +1238,6 @@ main() {
   trap worker_shutdown HUP INT TERM
   worker_publish_identity "$account_home" || { worker_error "cannot publish worker code identity"; exit 1; }
   worker_publish_pid || { worker_error "cannot publish worker pid"; exit 1; }
-  worker_start_heartbeat
   sweep_interval=$WORKER_SWEEP_SECONDS
   [ "$FM_REMOTE_JOB_STAGE_REAP_SECONDS" -ge "$sweep_interval" ] || sweep_interval=$FM_REMOTE_JOB_STAGE_REAP_SECONDS
   [ "$FM_REMOTE_JOB_REAP_SECONDS" -ge "$sweep_interval" ] || sweep_interval=$FM_REMOTE_JOB_REAP_SECONDS
@@ -1223,7 +1246,7 @@ main() {
   WORKER_ACTIVITY=1
   while :; do
     worker_heartbeat_running || { worker_error "cannot update worker heartbeat"; exit 1; }
-    # The heartbeat process keeps writing through the grace window, so it
+    # The heartbeat process keeps refreshing through the grace window, so it
     # cannot make a still-healthy worker read as unready to a concurrent probe.
     if worker_code_root_abandoned; then
       worker_error "configured FM_ROOT $FM_ROOT no longer exists; stopping the abandoned worker"
