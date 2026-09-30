@@ -28,11 +28,19 @@
 # one second between passes. Work arriving after the four-pass burst may wait
 # for that quiet scan. Newly staged or cancelled work, a lane that died, an
 # orphaned claim, or an expired queue deadline can wait that interval plus
-# scan work and scheduling time. It refreshes the readiness heartbeat about once
-# per second, far inside the probe's 10-second freshness bound. The stale
-# sweep, whose state preparation also re-applies the queue directories' 0700
-# modes, runs at startup and then at most every 60 seconds, never more rarely
-# than the shortest record reap age.
+# scan work and scheduling time. The stale sweep, whose state preparation also
+# re-applies the queue directories' 0700 modes, runs at startup and then at
+# most every 60 seconds, never more rarely than the shortest record reap age.
+#
+# The readiness heartbeat is refreshed about once per second, far inside the
+# probe's 10-second freshness bound, by a heartbeat process inside the serving
+# tree rather than by the serving loop, so a pass slowed by a loaded host
+# cannot age it. Readiness therefore proves that the serving process is alive,
+# not that its current pass has returned. The heartbeat writes only while the
+# serving process is alive, and the serving process stops it before releasing
+# ownership. A supervisor that loses the ownership race never removes the
+# owner's readiness, pid, identity, or lock: only the recorded owner, or the
+# supervisor of that owner once it is dead, releases them.
 #
 # The worker is abandoned when its configured FM_ROOT stops being a genuine
 # Firstmate checkout - the state a pruned no-mistakes gate worktree, a returned
@@ -77,6 +85,7 @@ WORKER_LOCK_HELD=0
 WORKER_LOCK_BOUND=
 WORKER_RELEASE_OWNERSHIP=1
 WORKER_SUPERVISED_PID=
+WORKER_HEARTBEAT_PID=
 WORKER_PREEMPTIBLE=0
 WORKER_PREEMPTED=0
 WORKER_LANE_HOME=
@@ -97,13 +106,57 @@ worker_account_home() {
   CDPATH='' cd ~ 2>/dev/null && pwd -P
 }
 
-worker_write_heartbeat() {
+worker_write_heartbeat() { # <serving-pid>
   local ready tmp
   ready=$(fm_remote_job_worker_ready_path)
   tmp=$(umask 077; mktemp "$FM_REMOTE_JOB_STATE/.ready.XXXXXX") || return 1
-  printf '%s\n' "${BASHPID:-$$}" > "$tmp" || { rm -f -- "$tmp"; return 1; }
+  printf '%s\n' "$1" > "$tmp" || { rm -f -- "$tmp"; return 1; }
   chmod 600 "$tmp" || { rm -f -- "$tmp"; return 1; }
   mv -f -- "$tmp" "$ready"
+}
+
+# The heartbeat runs in its own process so a serving pass slowed by a loaded
+# host cannot age it past the probe's bound. It writes only while the serving
+# process is alive, and a stop signal takes effect only between writes, so once
+# the serving process has waited for it no late write can recreate readiness
+# after ownership is released.
+worker_heartbeat_loop() { # <serving-pid>
+  local owner=$1 sleeper=
+  trap '[ -z "$sleeper" ] || kill "$sleeper" 2>/dev/null; exit 0' HUP INT TERM
+  while kill -0 "$owner" 2>/dev/null; do
+    worker_write_heartbeat "$owner" || exit 1
+    sleep 1 &
+    sleeper=$!
+    wait "$sleeper" 2>/dev/null || true
+    sleeper=
+  done
+}
+
+worker_start_heartbeat() {
+  local owner=${BASHPID:-$$}
+  worker_heartbeat_loop "$owner" &
+  WORKER_HEARTBEAT_PID=$!
+}
+
+# A heartbeat stopped by a signal is restarted; one that could not write
+# reports failure, exactly as a failed heartbeat write always has.
+worker_heartbeat_running() {
+  local status
+  [ -n "$WORKER_HEARTBEAT_PID" ] || return 1
+  kill -0 "$WORKER_HEARTBEAT_PID" 2>/dev/null && return 0
+  wait "$WORKER_HEARTBEAT_PID" 2>/dev/null
+  status=$?
+  WORKER_HEARTBEAT_PID=
+  [ "$status" -eq 0 ] || return 1
+  worker_start_heartbeat
+}
+
+worker_stop_heartbeat() {
+  local pid=$WORKER_HEARTBEAT_PID
+  [ -n "$pid" ] || return 0
+  kill -TERM "$pid" 2>/dev/null || true
+  wait "$pid" 2>/dev/null || true
+  WORKER_HEARTBEAT_PID=
 }
 
 worker_publish_pid() {
@@ -533,6 +586,7 @@ worker_shutdown() {
 }
 
 worker_exit_cleanup() {
+  worker_stop_heartbeat
   if [ "$WORKER_RELEASE_OWNERSHIP" -eq 1 ] && ! worker_stop_active_execution; then
     worker_error "could not stop the active command tree during exit"
     worker_publish_quarantine || worker_error "could not quarantine failed exit ownership"
@@ -1134,7 +1188,7 @@ worker_wait_for_work() {
 }
 
 main() {
-  local account_home lock_status next_heartbeat=-1 next_sweep=0 sweep_interval
+  local account_home lock_status next_sweep=0 sweep_interval
   account_home=$(worker_account_home) || { worker_error "cannot resolve account home"; exit 1; }
   FM_ROOT=$(fm_remote_job_canonical_existing_dir "$FM_ROOT") || { worker_error "configured FM_ROOT is unsafe"; exit 1; }
   [ -f "$FM_ROOT/AGENTS.md" ] && [ ! -L "$FM_ROOT/AGENTS.md" ] || { worker_error "FM_ROOT is not a Firstmate checkout"; exit 1; }
@@ -1152,6 +1206,7 @@ main() {
   trap worker_shutdown HUP INT TERM
   worker_publish_identity "$account_home" || { worker_error "cannot publish worker code identity"; exit 1; }
   worker_publish_pid || { worker_error "cannot publish worker pid"; exit 1; }
+  worker_start_heartbeat
   sweep_interval=$WORKER_SWEEP_SECONDS
   [ "$FM_REMOTE_JOB_STAGE_REAP_SECONDS" -ge "$sweep_interval" ] || sweep_interval=$FM_REMOTE_JOB_STAGE_REAP_SECONDS
   [ "$FM_REMOTE_JOB_REAP_SECONDS" -ge "$sweep_interval" ] || sweep_interval=$FM_REMOTE_JOB_REAP_SECONDS
@@ -1159,13 +1214,9 @@ main() {
   WORKER_FAST_REMAINING=0
   WORKER_ACTIVITY=1
   while :; do
-    if [ "$SECONDS" -ne "$next_heartbeat" ]; then
-      worker_write_heartbeat || { worker_error "cannot update worker heartbeat"; exit 1; }
-      next_heartbeat=$SECONDS
-    fi
-    # Checked right after a heartbeat no older than a second, so the grace
-    # window cannot make a still-healthy worker read as unready to a
-    # concurrent probe.
+    worker_heartbeat_running || { worker_error "cannot update worker heartbeat"; exit 1; }
+    # The heartbeat process keeps writing through the grace window, so it
+    # cannot make a still-healthy worker read as unready to a concurrent probe.
     if worker_code_root_abandoned; then
       worker_error "configured FM_ROOT $FM_ROOT no longer exists; stopping the abandoned worker"
       exit 0

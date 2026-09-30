@@ -26,6 +26,8 @@ STALL_WORKER_PID=
 STALL_REPLACEMENT_PID=
 STALL_JOB_GROUP=
 QUIET_WORKER_PID=
+DUP_OWNER=
+DUP_GROUP=
 mkdir -p "$REMOTE_ROOT/bin" "$REMOTE_HOME" "$ACCOUNT_HOME" "$RUNTIME_BIN"
 # worker.pid records the serving child, not its restart supervisor, so stopping
 # that pid alone leaves the supervisor to respawn - the leak
@@ -45,6 +47,8 @@ cleanup_remote_job_fixture() {
     wait "$stall_pid" 2>/dev/null || true
   done
   [ -z "$STALL_JOB_GROUP" ] || kill -KILL -- "-$STALL_JOB_GROUP" 2>/dev/null || true
+  [ -z "$DUP_GROUP" ] || kill -CONT -- "-$DUP_GROUP" 2>/dev/null || true
+  [ -z "$DUP_OWNER" ] || fm_remote_job_stop_worker_tree "$DUP_OWNER" || true
   if [ -f "$STATE_ROOT/worker.pid" ]; then
     fm_remote_job_stop_worker_tree "$(cat "$STATE_ROOT/worker.pid")" || true
   fi
@@ -1134,8 +1138,8 @@ STALL_JOB_GROUP=
 pass "an ousted worker in shutdown leaves the replacement quarantine untouched"
 
 # An idle worker must not busy-poll its queue: between passes it sleeps one
-# second, so its only steady cost is that sleep and the once-a-second heartbeat
-# plus the periodic sweep, which the 2-second stage reap age pulls in to every
+# second, so its only steady cost is that sleep, the heartbeat process's own
+# once-a-second write and sleep, and the periodic sweep, which the 2-second stage reap age pulls in to every
 # 2 seconds. Every external command the worker runs by name goes through a
 # counting shim, which makes the exec rate observable without privileges.
 QUIET_HOME="$TMP_ROOT/quiet-account"
@@ -1226,8 +1230,8 @@ quiet_stop() { # <pid>
   wait "$1" 2>/dev/null || true
 }
 quiet_wait_ready "$QUIET_STATE" idle-rate
-quiet_settle 3
-quiet_measure "an idle worker" 6
+quiet_settle 5
+quiet_measure "an idle worker" 10
 pass "an idle worker sleeps out a second between passes instead of busy-polling"
 
 quiet_heartbeat_stays_fresh "$QUIET_STATE" "$QUIET_HOME" idle
@@ -1254,6 +1258,120 @@ done
 quiet_stop "$QUIET_WORKER_PID"
 QUIET_WORKER_PID=
 pass "an idle worker still repairs queue permissions and stops promptly on TERM"
+
+# A live lock owner is never duplicated. On a loaded host the owner's heartbeat
+# can age past the probe's bound while the owner still holds the lock and
+# serves, and the start path used to read that as a dead worker and launch
+# another restart supervisor beside it. Stopping the owner's whole group freezes
+# every writer the way a starved host does without ending the lock owner. The
+# fixture runs from its own root so its processes are distinguishable from the
+# other workers this file started.
+DUP_ROOT="$TMP_ROOT/dup-root"
+DUP_HOME="$TMP_ROOT/dup-account"
+DUP_STATE="$TMP_ROOT/dup-state"
+cp -R "$REMOTE_ROOT" "$DUP_ROOT"
+mkdir -p "$DUP_HOME"
+dup_lib() { # <command> [args...]; runs a library call against the fixture state
+  (
+    FM_REMOTE_JOB_STATE_ROOT="$DUP_STATE"
+    "$@"
+  )
+}
+dup_wait_fresh() { # <label>
+  for _ in $(seq 1 100); do
+    dup_lib fm_remote_job_probe "$DUP_HOME" && return 0
+    sleep 0.05
+  done
+  fail "$1"
+}
+dup_worker_groups() {
+  ps -eo pgid=,command= 2>/dev/null \
+    | awk -v worker="$DUP_ROOT/bin/fm-remote-job-worker.sh" '$3 == worker { print $1 }' | sort -u
+}
+dup_lib fm_remote_job_start_linux_worker "$DUP_ROOT" "$DUP_HOME" \
+  || fail "the duplicate-owner fixture worker did not start"
+for _ in $(seq 1 200); do
+  [ -f "$DUP_STATE/worker.ready" ] && [ -f "$DUP_STATE/worker.pid" ] && break
+  sleep 0.05
+done
+assert_present "$DUP_STATE/worker.ready" "the duplicate-owner fixture worker did not become ready"
+DUP_OWNER=$(cat "$DUP_STATE/worker.pid")
+DUP_GROUP=$(fm_remote_job_process_pgid "$DUP_OWNER") \
+  || fail "the duplicate-owner fixture could not resolve its worker group"
+[ "$(cat "$DUP_STATE/worker.lock/pid")" = "$DUP_OWNER" ] \
+  || fail "the duplicate-owner fixture worker does not hold the ownership lock"
+kill -STOP -- "-$DUP_GROUP"
+sleep 0.2
+touch -t 200001010000 "$DUP_STATE/worker.ready"
+! dup_lib fm_remote_job_probe "$DUP_HOME" \
+  || fail "the frozen owner's aged heartbeat still read as ready"
+DUP_REPAIRED=$(
+  FM_REMOTE_JOB_STATE_ROOT="$DUP_STATE"
+  FM_REMOTE_JOB_REPAIRED=0
+  fm_remote_job_start_linux_worker "$DUP_ROOT" "$DUP_HOME" > /dev/null 2>&1 || exit 1
+  printf '%s\n' "$FM_REMOTE_JOB_REPAIRED"
+) || fail "the start path refused a live lock owner with an aged heartbeat"
+DUP_GROUPS=$(dup_worker_groups)
+kill -CONT -- "-$DUP_GROUP"
+[ "$DUP_REPAIRED" = 0 ] \
+  || fail "the start path launched a second supervisor beside a live lock owner with an aged heartbeat"
+[ "$DUP_GROUPS" = "$DUP_GROUP" ] \
+  || fail "a second worker group runs beside the live lock owner: $(printf '%s' "$DUP_GROUPS" | tr '\n' ' ')"
+dup_wait_fresh "the resumed owner did not refresh its heartbeat"
+[ "$(cat "$DUP_STATE/worker.lock/pid")" = "$DUP_OWNER" ] \
+  || fail "the live lock owner lost ownership after an aged heartbeat"
+pass "a live lock owner with an aged heartbeat is never duplicated"
+
+# The heartbeat must not wait on the serving loop: a pass slowed by a loaded host
+# would otherwise age it past the probe's bound. Stopping only the serving
+# process stands in for a pass that does not return.
+kill -STOP "$DUP_OWNER"
+sleep 0.2
+touch -t 200001010000 "$DUP_STATE/worker.ready"
+DUP_FRESH=0
+for _ in $(seq 1 60); do
+  if dup_lib fm_remote_job_probe "$DUP_HOME"; then
+    DUP_FRESH=1
+    break
+  fi
+  sleep 0.05
+done
+kill -CONT "$DUP_OWNER"
+[ "$DUP_FRESH" -eq 1 ] || fail "the readiness heartbeat waited on a stalled serving loop"
+pass "the readiness heartbeat stays fresh while a serving pass stalls"
+
+# A supervisor that loses the ownership race exits beside the owner and never
+# touches the owner's readiness, pid, identity, or lock, whether its child defers
+# to the verified owner or fails because the owner cannot be verified.
+dup_loser() { # <max-restarts>
+  HOME="$DUP_HOME" FM_ROOT_OVERRIDE="$DUP_ROOT" FM_REMOTE_JOB_STATE_ROOT="$DUP_STATE" \
+    FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux FM_REMOTE_JOB_SUPERVISOR_MAX_RESTARTS="$1" \
+    FM_REMOTE_JOB_SUPERVISOR_MAX_BACKOFF_SECONDS=0 \
+    "$DUP_ROOT/bin/fm-remote-job-worker.sh" > "$TMP_ROOT/dup-loser.out" 2> "$TMP_ROOT/dup-loser.err"
+}
+dup_owner_intact() { # <label>
+  assert_present "$DUP_STATE/worker.ready" "the $1 removed the owner's readiness heartbeat"
+  assert_present "$DUP_STATE/worker.identity" "the $1 removed the owner's code identity"
+  [ "$(cat "$DUP_STATE/worker.pid")" = "$DUP_OWNER" ] || fail "the $1 replaced the owner's pid"
+  [ "$(cat "$DUP_STATE/worker.lock/pid")" = "$DUP_OWNER" ] || fail "the $1 took the owner's lock"
+  kill -0 "$DUP_OWNER" 2>/dev/null || fail "the $1 stopped the owner"
+  dup_wait_fresh "the owner was not ready after the $1 exited"
+}
+dup_loser 1 || fail "a supervisor that deferred to a verified live owner reported failure"
+dup_owner_intact "deferring supervisor"
+DUP_START=$(cat "$DUP_STATE/worker.lock/start")
+printf 'unverifiable owner start\n' > "$DUP_STATE/worker.lock/start"
+if dup_loser 1; then
+  printf '%s\n' "$DUP_START" > "$DUP_STATE/worker.lock/start"
+  fail "a supervisor that could not verify the owner reported success"
+fi
+printf '%s\n' "$DUP_START" > "$DUP_STATE/worker.lock/start"
+assert_grep "cannot acquire or safely reclaim worker ownership" "$TMP_ROOT/dup-loser.err" \
+  "the unverifiable-owner fixture did not exercise a failed ownership race"
+dup_owner_intact "failed losing supervisor"
+fm_remote_job_stop_worker_tree "$DUP_OWNER" || fail "the duplicate-owner fixture worker did not stop"
+DUP_OWNER=
+pass "a supervisor that loses the ownership race leaves the owner's readiness in place"
 
 # A child that stays up for FM_REMOTE_JOB_SUPERVISOR_HEALTHY_SECONDS clears the
 # consecutive-failure backoff, so a child that dies just past that threshold
