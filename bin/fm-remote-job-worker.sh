@@ -120,6 +120,22 @@ worker_write_heartbeat() {
   mv -f -- "$tmp" "$ready"
 }
 
+# A serving process that has terminated but is not reaped yet still answers
+# kill -0 while serving nothing, but its children are reparented as it exits,
+# so where Linux shows the heartbeat its own parent, the serving process that
+# forked it counts as alive only while it is still that parent.
+worker_heartbeat_owner_alive() { # <serving-pid>
+  local stat
+  if [ -r /proc/self/stat ]; then
+    IFS= read -r stat < /proc/self/stat || return 1
+    stat=${stat##*) }
+    stat=${stat#* }
+    [ "${stat%% *}" = "$1" ]
+    return
+  fi
+  kill -0 "$1" 2>/dev/null
+}
+
 # The heartbeat runs in its own process so a serving pass slowed by a loaded
 # host cannot age it past the probe's bound. It refreshes only while the
 # serving process is alive, and only the readiness object that process
@@ -135,7 +151,7 @@ worker_heartbeat_loop() { # <serving-pid>
     ready=$(fm_remote_job_worker_ready_path)
   fi
   trap '[ -z "$sleeper" ] || kill "$sleeper" 2>/dev/null; exit 0' HUP INT TERM
-  while kill -0 "$owner" 2>/dev/null; do
+  while worker_heartbeat_owner_alive "$owner"; do
     touch -c -- "$ready" || exit 1
     sleep 1 &
     sleeper=$!

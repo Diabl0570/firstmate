@@ -1595,6 +1595,37 @@ else
   pass "a heartbeat refresh in flight across a crash never refreshes a replacement's readiness (skipped without /proc/self/fd)"
 fi
 
+# A serving process that crashed but that its delayed supervisor has not reaped
+# yet still answers kill -0, yet it serves nothing, so its heartbeat must stop
+# refreshing and let its readiness age. Stopping the supervisor holds the
+# crashed child unreaped. Only Linux shows the heartbeat that its owner is gone.
+if [ -r /proc/self/stat ]; then
+  REFRESH_STATE="$TMP_ROOT/refresh-unreaped-state"
+  refresh_supervise "$REFRESH_STATE" "$TMP_ROOT/refresh-unreaped-gate" 1
+  refresh_wait_owner "$REFRESH_STATE" ""
+  kill -STOP "$REFRESH_SUPERVISOR"
+  kill -KILL "$REFRESH_OWNER"
+  for _ in $(seq 1 100); do
+    [ "$(ps -o state= -p "$REFRESH_OWNER" 2>/dev/null | cut -c1)" = Z ] && break
+    sleep 0.05
+  done
+  [ "$(ps -o state= -p "$REFRESH_OWNER" 2>/dev/null | cut -c1)" = Z ] \
+    || fail "the crashed fixture worker was not held unreaped"
+  sleep 1.5
+  touch -t 200001010000 "$REFRESH_STATE/worker.ready"
+  sleep 1.5
+  REFRESH_UNREAPED_FRESH=0
+  ! refresh_probe "$REFRESH_STATE" || REFRESH_UNREAPED_FRESH=1
+  kill -CONT "$REFRESH_SUPERVISOR"
+  wait "$REFRESH_SUPERVISOR" 2>/dev/null || true
+  REFRESH_SUPERVISOR=
+  REFRESH_OWNER=
+  [ "$REFRESH_UNREAPED_FRESH" -eq 0 ] || fail "the heartbeat kept a crashed, unreaped worker's readiness fresh"
+  pass "the heartbeat stops refreshing once its serving process has crashed, before it is reaped"
+else
+  pass "the heartbeat stops refreshing once its serving process has crashed, before it is reaped (skipped without /proc/self/stat)"
+fi
+
 # A child that stays up for FM_REMOTE_JOB_SUPERVISOR_HEALTHY_SECONDS clears the
 # consecutive-failure backoff, so a child that dies just past that threshold
 # used to reset the only guard the supervisor had and restart forever. The
