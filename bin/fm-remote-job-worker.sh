@@ -36,10 +36,13 @@
 # probe's 10-second freshness bound, by a heartbeat process inside the serving
 # tree rather than by the serving loop, so a pass slowed by a loaded host
 # cannot age it. Readiness therefore proves that the serving process is alive,
-# not that its current pass has returned. The heartbeat writes only while the
-# serving process is alive, and the serving process stops it before releasing
-# ownership. A supervisor that loses the ownership race never removes the
-# owner's readiness, pid, identity, or lock: only the recorded owner, or the
+# not that its current pass has returned. The serving process alone publishes
+# readiness; the heartbeat only refreshes it while the serving process is
+# alive, so a refresh still in flight when the serving process dies cannot
+# recreate readiness once its supervisor has released ownership, and the
+# serving process stops the heartbeat before releasing ownership itself. A
+# supervisor that loses the ownership race never removes the owner's
+# readiness, pid, identity, or lock: only the recorded owner, or the
 # supervisor of that owner once it is dead, releases them.
 #
 # The worker is abandoned when its configured FM_ROOT stops being a genuine
@@ -106,25 +109,26 @@ worker_account_home() {
   CDPATH='' cd ~ 2>/dev/null && pwd -P
 }
 
-worker_write_heartbeat() { # <serving-pid>
+worker_write_heartbeat() {
   local ready tmp
   ready=$(fm_remote_job_worker_ready_path)
   tmp=$(umask 077; mktemp "$FM_REMOTE_JOB_STATE/.ready.XXXXXX") || return 1
-  printf '%s\n' "$1" > "$tmp" || { rm -f -- "$tmp"; return 1; }
+  printf '%s\n' "${BASHPID:-$$}" > "$tmp" || { rm -f -- "$tmp"; return 1; }
   chmod 600 "$tmp" || { rm -f -- "$tmp"; return 1; }
   mv -f -- "$tmp" "$ready"
 }
 
 # The heartbeat runs in its own process so a serving pass slowed by a loaded
-# host cannot age it past the probe's bound. It writes only while the serving
-# process is alive, and a stop signal takes effect only between writes, so once
-# the serving process has waited for it no late write can recreate readiness
-# after ownership is released.
+# host cannot age it past the probe's bound. It refreshes only while the
+# serving process is alive, and only the readiness that process published:
+# it never creates readiness, so a refresh still in flight when the serving
+# process dies cannot recreate it after the supervisor releases ownership.
 worker_heartbeat_loop() { # <serving-pid>
-  local owner=$1 sleeper=
+  local owner=$1 ready sleeper=
+  ready=$(fm_remote_job_worker_ready_path)
   trap '[ -z "$sleeper" ] || kill "$sleeper" 2>/dev/null; exit 0' HUP INT TERM
   while kill -0 "$owner" 2>/dev/null; do
-    worker_write_heartbeat "$owner" || exit 1
+    touch -c -- "$ready" || exit 1
     sleep 1 &
     sleeper=$!
     wait "$sleeper" 2>/dev/null || true
@@ -138,10 +142,14 @@ worker_start_heartbeat() {
   WORKER_HEARTBEAT_PID=$!
 }
 
-# A heartbeat stopped by a signal is restarted; one that could not write
-# reports failure, exactly as a failed heartbeat write always has.
+# The serving process publishes readiness whenever it is missing, since the
+# heartbeat only refreshes it. A heartbeat stopped by a signal is restarted;
+# one that could not refresh reports failure, exactly as a failed heartbeat
+# write always has.
 worker_heartbeat_running() {
-  local status
+  local status ready
+  ready=$(fm_remote_job_worker_ready_path)
+  [ -f "$ready" ] && [ ! -L "$ready" ] || worker_write_heartbeat || return 1
   [ -n "$WORKER_HEARTBEAT_PID" ] || return 1
   kill -0 "$WORKER_HEARTBEAT_PID" 2>/dev/null && return 0
   wait "$WORKER_HEARTBEAT_PID" 2>/dev/null
