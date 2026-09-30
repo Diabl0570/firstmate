@@ -1,0 +1,44 @@
+=== S5 [base code] concurrent fm-on calls during a new owner's initialization (after an unclean stop + code update) ===
+--- unclean stop: kill -KILL -3843527 (supervisor, serving process, heartbeat all die without cleanup)
+PID      PPID     PGID     STAT  AGE    ROLE
+worker.lock/pid=3843590 worker.pid=3843590 identity=55950dbe2b2654d595f1
+worker.ready age=1s (probe bound 10s)
+leftover lock dir: command pid start 
+--- code update in the remote checkout
+4ff1f1f lab code update
+--- account git wrapper (~/.local/bin/git) holds only the worker's identity hash while /tmp/fm-rjob-lab.vGnHF7/s5-base.gate exists (keeps the new owner inside its initialization window)
+--- call A arrives (launches the new owner)
+new owner is held inside its initialization window
+--- during initialization
+PID      PPID     PGID     STAT  AGE    ROLE
+4050880  4050683  4050880  S     0s     supervisor
+4050950  4050880  4050880  S     0s     serving-owner (--serve)
+4051122  4050950  4050880  S     0s     other --serve process
+4051143  4051122  4050880  S     0s     other --serve process
+worker.lock/pid=4050950 worker.pid=3843590 identity=55950dbe2b2654d595f1
+worker.ready age=12s (probe bound 10s)
+--- call B arrives while the owner initializes
+--- 4s into call B (owner still initializing)
+PID      PPID     PGID     STAT  AGE    ROLE
+4050880  4050683  4050880  S     4s     supervisor
+4050950  4050880  4050880  S     4s     serving-owner (--serve)
+4051122  4050950  4050880  S     4s     other --serve process
+4051143  4051122  4050880  S     4s     other --serve process
+worker supervisors now: 1
+--- release the identity hash
+--- call transcripts
+job ok: served by worker pid 4056256 at 12:03:16; args=call-A
+call A exit=0 after 5s
+job ok: served by worker pid 4057100 at 12:03:16; args=call-B
+call B exit=0 after 5s
+--- every supervisor process seen (sampled every 50ms) from call A until 2s after both returned:
+  4050880
+  4051643
+supervisors seen: 2  (1 = only the owner call A launched)
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+4050880  1423     4050880  S     7s     supervisor
+4050950  4050880  4050880  S     7s     serving-owner (--serve)
+worker.lock/pid=4050950 worker.pid=4050950 identity=55950dbe2b2654d595f1
+worker.ready age=1s (probe bound 10s)
+initializing owner kept (worker.pid == lock owner seen during init): yes

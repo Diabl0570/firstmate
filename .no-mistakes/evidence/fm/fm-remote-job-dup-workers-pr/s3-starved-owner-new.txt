@@ -1,0 +1,37 @@
+=== S3 [new code] loaded host: owner frozen until its heartbeat ages past the probe bound, then an fm-on call arrives ===
+--- steady state
+PID      PPID     PGID     STAT  AGE    ROLE
+3793952  1423     3793952  S     276s   supervisor
+3794014  3793952  3793952  S     276s   serving-owner (--serve)
+3794129  3794014  3793952  S     275s   heartbeat of owner (--serve subshell)
+worker.lock/pid=3794014 worker.pid=3794014 identity=260df0069c3d78b91459
+worker.ready age=1s (probe bound 10s)
+--- kill -STOP -3793952  (freeze the whole owner tree, as a starved host would)
+--- after 12s frozen
+worker.lock/pid=3794014 worker.pid=3794014 identity=260df0069c3d78b91459
+worker.ready age=13s (probe bound 10s)
+probe: STALE (owner still holds the verified lock: pid/start/command match)
+--- fm-on call arrives while the owner is starved
+--- 4s into the call (owner still frozen)
+PID      PPID     PGID     STAT  AGE    ROLE
+3793952  1423     3793952  T     292s   supervisor
+3794014  3793952  3793952  T     292s   serving-owner (--serve)
+3794129  3794014  3793952  T     292s   heartbeat of owner (--serve subshell)
+worker supervisors now: 1
+--- kill -CONT -3793952  (load subsides)
+--- call transcript
+job ok: served by worker pid 3971191 at 12:00:41; args=during-starvation
+call exit=0 after 5s
+--- every supervisor process seen (sampled every 50ms) from the call until 3s after it returned:
+  3793952 (the owner's own supervisor)
+supervisors seen: 1
+--- after the call
+PID      PPID     PGID     STAT  AGE    ROLE
+3793952  1423     3793952  S     296s   supervisor
+3794014  3793952  3793952  S     296s   serving-owner (--serve)
+3794129  3794014  3793952  S     296s   heartbeat of owner (--serve subshell)
+worker.lock/pid=3794014 worker.pid=3794014 identity=260df0069c3d78b91459
+worker.ready age=0s (probe bound 10s)
+worker supervisors: 1
+owner unchanged: yes
+--- worker log

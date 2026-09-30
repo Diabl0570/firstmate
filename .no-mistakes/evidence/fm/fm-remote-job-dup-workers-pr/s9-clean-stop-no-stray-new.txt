@@ -1,0 +1,25 @@
+=== S9 [new code] stopping the worker never leaves a stray heartbeat ===
+--- (a) SIGTERM to the supervisor (normal service stop)
+PID      PPID     PGID     STAT  AGE    ROLE
+4105524  1423     4105524  S     19s    supervisor
+4105594  4105524  4105524  S     19s    serving-owner (--serve)
+4105808  4105594  4105524  S     19s    heartbeat of owner (--serve subshell)
+still-alive processes of the stopped tree: 0
+worker.lock/pid=- worker.pid=- identity=-
+worker.ready absent
+lock released: yes
+--- restart with an fm-on call
+job ok: served by worker pid 4118890 at 12:05:08; args=restart
+call exit=0
+--- (b) the configured checkout is pruned (AGENTS.md removed): the worker abandons itself
+PID      PPID     PGID     STAT  AGE    ROLE
+4118456  1423     4118456  S     1s     supervisor
+4118513  4118456  4118456  S     1s     serving-owner (--serve)
+4118611  4118513  4118456  S     1s     heartbeat of owner (--serve subshell)
+still-alive processes of the stopped tree: 0
+worker.lock/pid=- worker.pid=- identity=-
+worker.ready absent
+lock released: yes
+worker log:
+Terminated                 sleep "$WORKER_IDLE_WAIT_SECONDS"
+remote-job-worker: configured FM_ROOT /tmp/fm-rjob-lab.vGnHF7/root-new no longer exists; stopping the abandoned worker

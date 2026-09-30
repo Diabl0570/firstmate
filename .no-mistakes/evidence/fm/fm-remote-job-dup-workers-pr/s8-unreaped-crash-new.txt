@@ -1,0 +1,38 @@
+=== S8 [new code] crash with a delayed supervisor: heartbeat must stop so readiness ages; fm-on still gets served ===
+--- before
+PID      PPID     PGID     STAT  AGE    ROLE
+4072424  1423     4072424  S     50s    supervisor
+4082387  4072424  4072424  S     29s    serving-owner (--serve)
+4082479  4082387  4072424  S     29s    heartbeat of owner (--serve subshell)
+worker.lock/pid=4082387 worker.pid=4082387 identity=260df0069c3d78b91459
+worker.ready age=0s (probe bound 10s)
+--- kill -STOP 4072424 (supervisor delayed), kill -KILL 4082387 (serving process crashes, stays unreaped)
+serving process state: Z  (Z = zombie, still answers kill -0: yes)
+t= 2s  worker.ready age=3s (probe bound 10s) | heartbeat 4082479 alive: no
+t= 4s  worker.ready age=5s (probe bound 10s) | heartbeat 4082479 alive: no
+t= 6s  worker.ready age=7s (probe bound 10s) | heartbeat 4082479 alive: no
+t= 8s  worker.ready age=9s (probe bound 10s) | heartbeat 4082479 alive: no
+t=10s  worker.ready age=11s (probe bound 10s) | heartbeat 4082479 alive: no
+t=12s  worker.ready age=13s (probe bound 10s) | heartbeat 4082479 alive: no
+probe: stale (the dead worker does not read as ready)
+--- fm-on call while the crashed child is still unreaped
+job ok: served by worker pid 4106119 at 12:04:46; args=during-delayed-recovery
+call exit=0 after 1s
+PID      PPID     PGID     STAT  AGE    ROLE
+4072424  1423     4072424  T     64s    supervisor
+4105524  1423     4105524  S     0s     supervisor
+4105594  4105524  4105524  S     0s     serving-owner (--serve)
+4105808  4105594  4105524  S     0s     heartbeat of owner (--serve subshell)
+worker.lock/pid=4105594 worker.pid=4105594 identity=260df0069c3d78b91459
+worker.ready age=1s (probe bound 10s)
+--- kill -CONT 4072424 (delayed supervisor resumes)
+PID      PPID     PGID     STAT  AGE    ROLE
+4105524  1423     4105524  S     4s     supervisor
+4105594  4105524  4105524  S     4s     serving-owner (--serve)
+4105808  4105594  4105524  S     4s     heartbeat of owner (--serve subshell)
+worker.lock/pid=4105594 worker.pid=4105594 identity=260df0069c3d78b91459
+worker.ready age=1s (probe bound 10s)
+worker supervisors: 1; delayed supervisor 4072424 alive: no
+--- fm-on call after
+job ok: served by worker pid 4108515 at 12:04:51; args=after
+call exit=0

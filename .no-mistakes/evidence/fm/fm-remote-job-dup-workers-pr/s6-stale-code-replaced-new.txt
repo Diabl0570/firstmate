@@ -1,0 +1,22 @@
+=== S6 [new code] a live owner running outdated code is still replaced (safety guarantee kept) ===
+--- before
+PID      PPID     PGID     STAT  AGE    ROLE
+4037044  1423     4037044  S     55s    supervisor
+4037118  4037044  4037044  S     55s    serving-owner (--serve)
+4040526  4037118  4037044  S     50s    heartbeat of owner (--serve subshell)
+published identity: 260df0069c3d78b91459e26139925dcb5a9ec18d:0b1e4d720c7c1f4c939be8bcbfc8ad9bcad360aa:8e86d1c3d7c212796aa855894e81b5d2c812c21d
+--- code update in the remote checkout (worker script changes)
+779ebf8 lab code update
+current code worker hash: e27ccef2997796a15a857d89b843b94e92b50d3a
+--- fm-on call
+job ok: served by worker pid 4072950 at 12:03:42; args=after-update
+call exit=0 after 1s
+--- supervisors seen during the call: 4037044 4072424 
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+4072424  1423     4072424  S     2s     supervisor
+4072508  4072424  4072424  S     2s     serving-owner (--serve)
+4072623  4072508  4072424  S     2s     heartbeat of owner (--serve subshell)
+published identity: 260df0069c3d78b91459e26139925dcb5a9ec18d:0b1e4d720c7c1f4c939be8bcbfc8ad9bcad360aa:e27ccef2997796a15a857d89b843b94e92b50d3a
+old owner 4037118 alive: no; old supervisor 4037044 alive: no
+worker supervisors: 1

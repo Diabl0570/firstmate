@@ -1,0 +1,21 @@
+=== S10 [new code] a losing supervisor leaves the owner's readiness, pid, identity and lock in place ===
+--- start an owner with an fm-on call
+job ok: served by worker pid 19743 at 12:08:19; args=warmup
+--- owner records before
+  worker.ready     inode=2651851 19370
+  worker.pid       inode=2651850 19370
+  worker.identity  inode=2651839 260df0069c3d78b91459e26139925dcb5a9ec18d
+  worker.lock/pid  inode=2651769 19370
+--- launch a second supervisor exactly as the start path does (nohup env ... fm-remote-job-worker.sh), in the lab account namespace
+losing supervisor exit=0 after 0s; output: 
+--- owner records after
+  worker.ready     inode=2651851 19370
+  worker.pid       inode=2651850 19370
+  worker.identity  inode=2651839 260df0069c3d78b91459e26139925dcb5a9ec18d
+  worker.lock/pid  inode=2651769 19370
+worker.lock/pid=19370 worker.pid=19370 identity=260df0069c3d78b91459
+worker.ready age=0s (probe bound 10s)
+owner still serving: yes; worker supervisors: 1
+--- fm-on call
+job ok: served by worker pid 21485 at 12:08:21; args=after-loser
+call exit=0

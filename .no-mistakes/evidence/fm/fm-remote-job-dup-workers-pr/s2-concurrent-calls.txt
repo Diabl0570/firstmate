@@ -1,0 +1,28 @@
+=== S2 many concurrent fm-on calls against a live owner (new code) ===
+--- before
+worker.lock/pid=3794014 worker.pid=3794014 identity=260df0069c3d78b91459
+worker.ready age=0s (probe bound 10s)
+--- 12 entrypoint calls in parallel
+     12 exit=0
+      1 job ok: served by worker pid 3807747 at <t>; args=call-2
+      1 job ok: served by worker pid 3809788 at <t>; args=call-11
+      1 job ok: served by worker pid 3811599 at <t>; args=call-4
+      1 job ok: served by worker pid 3813160 at <t>; args=call-10
+      1 job ok: served by worker pid 3815017 at <t>; args=call-3
+      1 job ok: served by worker pid 3816370 at <t>; args=call-5
+      1 job ok: served by worker pid 3817858 at <t>; args=call-6
+      1 job ok: served by worker pid 3819075 at <t>; args=call-1
+      1 job ok: served by worker pid 3820098 at <t>; args=call-12
+      1 job ok: served by worker pid 3820903 at <t>; args=call-8
+      1 job ok: served by worker pid 3821692 at <t>; args=call-7
+      1 job ok: served by worker pid 3822256 at <t>; args=call-9
+successful calls: 12/12
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+3793952  1423     3793952  S     17s    supervisor
+3794014  3793952  3793952  S     17s    serving-owner
+3794129  3794014  3793952  S     17s    heartbeat-or-lane-of-owner
+worker.lock/pid=3794014 worker.pid=3794014 identity=260df0069c3d78b91459
+worker.ready age=0s (probe bound 10s)
+distinct worker groups: 1 (before: 3793952, after: 3793952 )
+owner unchanged: yes

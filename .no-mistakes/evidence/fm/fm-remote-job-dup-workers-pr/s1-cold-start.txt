@@ -1,0 +1,14 @@
+=== S1 cold start through the real remote entrypoint (new code, fresh throwaway account) ===
+$ fm-remote-entrypoint.sh 1 <root> <home> <fm-lab-echo.sh first-call>   (bwrap: lab home mounted as the account home)
+job ok: served by worker pid 3794407 at 11:55:48; args=first-call
+exit=0 (0s)
+--- worker processes
+PID      PPID     PGID     STAT  AGE    ROLE
+3793952  1423     3793952  S     1s     supervisor
+3794014  3793952  3793952  S     1s     serving-owner
+3794129  3794014  3793952  S     1s     heartbeat-or-lane-of-owner
+--- distinct worker process groups: 1
+--- owner state
+worker.lock/pid=3794014 worker.pid=3794014 identity=260df0069c3d78b91459
+worker.ready age=0s (probe bound 10s)
+--- worker log

@@ -1,0 +1,43 @@
+# bwrap --dev-bind / / --bind <nix-tools-symlink-dir> /usr/bin -- bash tests/fm-remote-job.test.sh  (FHS /usr/bin overlay; NixOS host has no coreutils in /usr/bin)
+ok - default queue and execution bounds independently cover long polls
+ok - operator PATH excludes a symlinked local bin
+ok - operator PATH honors nvm defaults with a deterministic fallback
+ok - operator PATH resolves the authorized Nix profile bin link
+ok - operator PATH orders discovered tool installs deterministically
+ok - the worker preserves bounded argv and stdin in an empty environment
+ok - active jobs keep the worker ready for concurrent requests
+ok - ensure replaces a live worker after its code changes
+ok - worker identity binds the canonical configured code root
+ok - stale ownership is reclaimed without signaling a reused pid
+ok - the worker enforces the job timeout and publishes its result
+ok - the worker expires queued jobs before they can mutate
+ok - queued jobs receive a fresh bounded execution window
+ok - a queued short command preempts a running long poll instead of waiting its window
+ok - a poll re-armed after preemption reads the same cursor with nothing lost
+ok - sibling polls never preempt each other into a re-arm churn loop
+ok - worker shutdown terminates the active command tree before replacement
+ok - Linux supervision recovers crashes and stops orphaned commands
+ok - pre-execution validation obeys the job timeout
+ok - the worker drains bounded output without changing command results
+ok - the worker refuses symlinked job fields before command execution
+ok - failed shutdown quarantines ownership against replacement workers
+ok - quarantine recovery refuses unverifiable supervisors and ignores reused pids
+ok - a repeatedly signalled shutdown still releases ownership for the next worker
+ok - TERM after ownership loss stops the serving worker
+ok - TERM after ownership loss still stops the active command tree
+ok - a lost owner terminates without stopping the replacement owner's work
+ok - an ousted worker in shutdown leaves the replacement quarantine untouched
+ok - an idle worker sleeps out a second between passes instead of busy-polling
+ok - an idle worker keeps its readiness heartbeat fresh between passes
+ok - an idle worker claims and publishes a staged job within a few seconds
+ok - an idle worker still repairs queue permissions and stops promptly on TERM
+ok - a live lock owner with an aged heartbeat is never duplicated
+ok - the readiness heartbeat stays fresh while a serving pass stalls
+ok - a supervisor that loses the ownership race leaves the owner's readiness in place
+ok - a concurrent start during the owner's initialization never duplicates it
+ok - a heartbeat refresh in flight across a crash cannot recreate released readiness
+ok - a heartbeat refresh in flight across a crash never refreshes a replacement's readiness
+ok - the heartbeat stops refreshing once its serving process has crashed, before it is reaped
+ok - barely healthy worker failures remain bounded by the restart guard
+ALL TESTS PASSED
+exit=0 elapsed=118s

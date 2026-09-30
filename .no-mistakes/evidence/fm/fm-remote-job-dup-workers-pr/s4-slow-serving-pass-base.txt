@@ -1,0 +1,36 @@
+=== S4 [base code] slow serving pass: only the serving process stalls for ~18s while fm-on calls arrive ===
+--- steady state
+PID      PPID     PGID     STAT  AGE    ROLE
+3843527  1423     3843527  S     281s   supervisor
+3843590  3843527  3843527  S     281s   serving-owner (--serve)
+worker.lock/pid=3843590 worker.pid=3843590 identity=55950dbe2b2654d595f1
+worker.ready age=1s (probe bound 10s)
+--- kill -STOP 3843590  (serving process only; supervisor and any heartbeat process keep running)
+t= 2s  worker.ready age=3s (probe bound 10s)
+t= 4s  worker.ready age=5s (probe bound 10s)
+t= 6s  worker.ready age=7s (probe bound 10s)
+t= 8s  worker.ready age=9s (probe bound 10s)
+t=10s  worker.ready age=11s (probe bound 10s)
+t=12s  worker.ready age=13s (probe bound 10s)
+t=14s  worker.ready age=15s (probe bound 10s)
+probe at t=14s: STALE
+--- fm-on call arrives during the stalled pass
+--- 4s into the call (pass still stalled)
+PID      PPID     PGID     STAT  AGE    ROLE
+3843527  1423     3843527  S     299s   supervisor
+3843590  3843527  3843527  T     299s   serving-owner (--serve)
+--- kill -CONT 3843590  (the pass returns)
+--- call transcript
+job ok: served by worker pid 4008403 at 12:01:47; args=during-slow-pass
+call exit=0 after 5s
+--- every supervisor process seen (sampled every 50ms) from the call until 3s after it returned:
+  3843527 (the owner's own supervisor)
+  4005583 EXTRA supervisor launched beside the live owner
+supervisors seen: 2
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+3843527  1423     3843527  S     304s   supervisor
+3843590  3843527  3843527  S     304s   serving-owner (--serve)
+worker.lock/pid=3843590 worker.pid=3843590 identity=55950dbe2b2654d595f1
+worker.ready age=0s (probe bound 10s)
+owner unchanged: yes
