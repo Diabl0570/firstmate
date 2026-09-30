@@ -1174,11 +1174,11 @@ fm_remote_job_start_linux_worker() { # <remote-root> <account-home>
   }
   fm_remote_job_prepare_state "$account_home" || return 1
   if fm_remote_job_worker_owned_alive "$root" "$account_home"; then
-    if fm_remote_job_worker_identity_matches "$root" "$account_home"; then return 0; fi
     # An owner that has not published its code identity yet is still starting;
     # the readiness wait decides whether it comes up with the current code.
     identity=$(fm_remote_job_worker_identity_path)
     [ -e "$identity" ] || [ -L "$identity" ] || return 0
+    if fm_remote_job_worker_identity_matches "$root" "$account_home"; then return 0; fi
     # The owner pid is the serving child; its restart supervisor sits above it
     # and would immediately replace a lone process kill, so stop the whole
     # worker tree through its isolated group.
