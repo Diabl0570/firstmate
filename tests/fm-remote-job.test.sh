@@ -1503,6 +1503,7 @@ exit "\$status"
 SH
 chmod +x "$REFRESH_SHIM/touch"
 refresh_supervise() { # <state> <gate> <max-restarts>
+  # shellcheck disable=SC2031 # Cadence fixture PATH changes stayed in their subshells.
   HOME="$REFRESH_HOME" PATH="$REFRESH_SHIM:$PATH" FM_TEST_REFRESH_GATE="$2" FM_ROOT_OVERRIDE="$DUP_ROOT" \
     FM_REMOTE_JOB_STATE_ROOT="$1" FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux \
     FM_REMOTE_JOB_SUPERVISOR_MAX_RESTARTS="$3" FM_REMOTE_JOB_SUPERVISOR_MAX_BACKOFF_SECONDS=0 \
