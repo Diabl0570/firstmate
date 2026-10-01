@@ -124,16 +124,22 @@ git -C "$REMOTE_ROOT" config user.name Test
 git -C "$REMOTE_ROOT" add AGENTS.md bin
 git -C "$REMOTE_ROOT" commit -qm 'remote job fixture'
 
+# Print the recorded sleep durations, only those the named parent process ran
+# when one is given.
+poll_sleeps() { # [parent-pid]
+  awk -v all="$#" -v parent="${1:-}" 'all == 0 || $1 == parent { print $2 }' "$FM_POLL_SLEEP_LOG"
+}
+
 # Observe the actual sleep executable boundary for the result consumer, a
 # top-level command lane, and the dispatcher. Re-source the public library as
 # callers may do; its own dispatcher default must not become a legacy override.
 poll_cadence_case() (
-  local label=$1 legacy=$2 active=$3 expected=$4 dispatch=$5 poll_dir pid='' i
+  local label=$1 legacy=$2 active=$3 expected=$4 dispatch=$5 poll_dir pid='' serving='' i
   poll_dir="$TMP_ROOT/poll-$label"
   mkdir -p "$poll_dir/bin"
   cat > "$poll_dir/bin/sleep" <<'SH'
 #!/bin/bash
-printf '%s\n' "$1" >> "$FM_POLL_SLEEP_LOG"
+printf '%s %s\n' "$PPID" "$1" >> "$FM_POLL_SLEEP_LOG"
 exec /bin/sleep "$@"
 SH
   chmod +x "$poll_dir/bin/sleep"
@@ -168,8 +174,8 @@ SH
   wait "$pid" || fail "$label result producer failed"
   pid=''
   [ "$FM_REMOTE_JOB_EXIT" -eq 0 ] || fail "$label result consumer lost the exit status"
-  grep -qx "$expected" "$FM_POLL_SLEEP_LOG" || fail "$label consumer never sampled at $expected seconds"
-  [ "$(sort -u "$FM_POLL_SLEEP_LOG")" = "$expected" ] || fail "$label consumer used another cadence"
+  poll_sleeps | grep -qx "$expected" || fail "$label consumer never sampled at $expected seconds"
+  [ "$(poll_sleeps | sort -u)" = "$expected" ] || fail "$label consumer used another cadence"
 
   : > "$FM_POLL_SLEEP_LOG"
   fm_remote_job_stage "$ACCOUNT_HOME" "$REMOTE_ROOT" "$REMOTE_HOME" \
@@ -180,20 +186,23 @@ SH
   pid=''
   [ -e "$poll_dir/ran" ] || fail "$label lane did not execute its command"
   [ "$(fm_remote_job_read_state "$FM_REMOTE_JOB_JOBS/$FM_REMOTE_JOB_ID")" = 'done' ] || fail "$label lane did not publish completion"
-  grep -qx "$expected" "$FM_POLL_SLEEP_LOG" || fail "$label lane never sampled at $expected seconds"
+  poll_sleeps | grep -qx "$expected" || fail "$label lane never sampled at $expected seconds"
   if [ "$expected" != 0.05 ]; then
-    ! grep -qx 0.05 "$FM_POLL_SLEEP_LOG" || fail "$label lane still sampled at the dispatcher default"
+    ! poll_sleeps | grep -qx 0.05 || fail "$label lane still sampled at the dispatcher default"
   fi
 
   : > "$FM_POLL_SLEEP_LOG"
   HOME="$ACCOUNT_HOME" "$BASH" "$REMOTE_ROOT/bin/fm-remote-job-worker.sh" > "$poll_dir/worker.log" 2>&1 &
   pid=$!
+  # The readiness heartbeat sleeps in a process of its own, so count only the
+  # waits the published serving process took itself.
   for ((i = 0; i < 200; i++)); do
-    grep -qx 1 "$FM_POLL_SLEEP_LOG" && break
+    serving=$(cat "$(fm_remote_job_worker_pid_path)" 2>/dev/null) &&
+      poll_sleeps "$serving" | grep -qx 1 && break
     /bin/sleep 0.05
   done
-  grep -qx 1 "$FM_POLL_SLEEP_LOG" || fail "$label dispatcher never reached its one-second quiet wait"
-  [ "$(grep -cx "$dispatch" "$FM_POLL_SLEEP_LOG")" -eq 4 ] || fail "$label dispatcher did not limit its fast burst to four $dispatch-second waits"
+  poll_sleeps "$serving" | grep -qx 1 || fail "$label dispatcher never reached its one-second quiet wait"
+  [ "$(poll_sleeps "$serving" | grep -cx "$dispatch")" -eq 4 ] || fail "$label dispatcher did not limit its fast burst to four $dispatch-second waits"
   kill -TERM "$pid" || fail "$label dispatcher stopped unexpectedly"
   wait "$pid" 2>/dev/null || true
   pid=''
