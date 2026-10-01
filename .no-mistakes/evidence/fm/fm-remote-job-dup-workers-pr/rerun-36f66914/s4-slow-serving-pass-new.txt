@@ -1,0 +1,39 @@
+=== S4 [new code] slow serving pass: only the serving process stalls for ~18s while fm-on calls arrive ===
+--- steady state
+PID      PPID     PGID     STAT  AGE    ROLE
+2881995  1423     2881995  S     32s    supervisor
+2882051  2881995  2881995  S     32s    serving-owner (--serve)
+2882134  2882051  2881995  S     32s    heartbeat of owner (--serve subshell)
+worker.lock/pid=2882051 worker.pid=2882051 identity=4d7ff6fd5f2b0459142a
+worker.ready age=1s (probe bound 10s)
+--- kill -STOP 2882051  (serving process only; supervisor and any heartbeat process keep running)
+t= 2s  worker.ready age=1s (probe bound 10s)
+t= 4s  worker.ready age=1s (probe bound 10s)
+t= 6s  worker.ready age=1s (probe bound 10s)
+t= 8s  worker.ready age=1s (probe bound 10s)
+t=10s  worker.ready age=1s (probe bound 10s)
+t=12s  worker.ready age=1s (probe bound 10s)
+t=14s  worker.ready age=1s (probe bound 10s)
+probe at t=14s: fresh
+--- fm-on call arrives during the stalled pass
+--- 4s into the call (pass still stalled)
+PID      PPID     PGID     STAT  AGE    ROLE
+2881995  1423     2881995  S     51s    supervisor
+2882051  2881995  2881995  T     50s    serving-owner (--serve)
+2882134  2882051  2881995  S     50s    heartbeat of owner (--serve subshell)
+--- kill -CONT 2882051  (the pass returns)
+--- call transcript
+served "during-slow-pass" by serving owner 2882051 (job pid 2916113)
+lab job stderr for "during-slow-pass"
+call exit=7 after 5s
+--- every supervisor process seen (sampled every 50ms) from the call until 3s after it returned:
+  2881995 (the owner's own supervisor)
+supervisors seen: 1
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+2881995  1423     2881995  S     55s    supervisor
+2882051  2881995  2881995  S     55s    serving-owner (--serve)
+2882134  2882051  2881995  S     55s    heartbeat of owner (--serve subshell)
+worker.lock/pid=2882051 worker.pid=2882051 identity=4d7ff6fd5f2b0459142a
+worker.ready age=1s (probe bound 10s)
+owner unchanged: yes

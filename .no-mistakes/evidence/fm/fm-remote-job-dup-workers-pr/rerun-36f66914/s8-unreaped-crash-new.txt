@@ -1,0 +1,40 @@
+=== S8 [new code] crash with a delayed supervisor: heartbeat must stop so readiness ages; fm-on still gets served ===
+--- before
+PID      PPID     PGID     STAT  AGE    ROLE
+2953842  1423     2953842  S     21s    supervisor
+2958366  2953842  2953842  S     11s    serving-owner (--serve)
+2958454  2958366  2953842  S     11s    heartbeat of owner (--serve subshell)
+worker.lock/pid=2958366 worker.pid=2958366 identity=4d7ff6fd5f2b0459142a
+worker.ready age=1s (probe bound 10s)
+--- kill -STOP 2953842 (supervisor delayed), kill -KILL 2958366 (serving process crashes, stays unreaped)
+serving process state: Z  (Z = zombie, still answers kill -0: yes)
+t= 2s  worker.ready age=3s (probe bound 10s) | heartbeat 2958454 alive: no
+t= 4s  worker.ready age=5s (probe bound 10s) | heartbeat 2958454 alive: no
+t= 6s  worker.ready age=7s (probe bound 10s) | heartbeat 2958454 alive: no
+t= 8s  worker.ready age=9s (probe bound 10s) | heartbeat 2958454 alive: no
+t=10s  worker.ready age=11s (probe bound 10s) | heartbeat 2958454 alive: no
+t=12s  worker.ready age=13s (probe bound 10s) | heartbeat 2958454 alive: no
+probe: stale (the dead worker does not read as ready)
+--- fm-on call while the crashed child is still unreaped
+served "during-delayed-recovery" by serving owner 2970117 (job pid 2970756)
+lab job stderr for "during-delayed-recovery"
+call exit=7 after 2s
+PID      PPID     PGID     STAT  AGE    ROLE
+2953842  1423     2953842  T     35s    supervisor
+2970052  1423     2970052  S     1s     supervisor
+2970117  2970052  2970052  S     1s     serving-owner (--serve)
+2970297  2970117  2970052  S     1s     heartbeat of owner (--serve subshell)
+worker.lock/pid=2970117 worker.pid=2970117 identity=4d7ff6fd5f2b0459142a
+worker.ready age=0s (probe bound 10s)
+--- kill -CONT 2953842 (delayed supervisor resumes)
+PID      PPID     PGID     STAT  AGE    ROLE
+2970052  1423     2970052  S     5s     supervisor
+2970117  2970052  2970052  S     5s     serving-owner (--serve)
+2970297  2970117  2970052  S     5s     heartbeat of owner (--serve subshell)
+worker.lock/pid=2970117 worker.pid=2970117 identity=4d7ff6fd5f2b0459142a
+worker.ready age=0s (probe bound 10s)
+worker supervisors: 1; delayed supervisor 2953842 alive: no
+--- fm-on call after
+served "after" by serving owner 2970117 (job pid 2971814)
+lab job stderr for "after"
+call exit=7

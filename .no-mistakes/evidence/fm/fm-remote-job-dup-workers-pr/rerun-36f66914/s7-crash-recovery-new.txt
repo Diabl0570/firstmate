@@ -1,0 +1,27 @@
+=== S7 [new code] serving process crashes (SIGKILL); supervisor recovers; no stray heartbeat ===
+--- before
+PID      PPID     PGID     STAT  AGE    ROLE
+2953842  1423     2953842  S     8s     supervisor
+2953902  2953842  2953842  S     8s     serving-owner (--serve)
+2953991  2953902  2953842  S     8s     heartbeat of owner (--serve subshell)
+worker.lock/pid=2953902 worker.pid=2953902 identity=4d7ff6fd5f2b0459142a
+worker.ready age=0s (probe bound 10s)
+heartbeat of the serving process: 2953991
+--- kill -KILL 2953902 (serving process crashes)
+t=1s  worker.lock/pid=- worker.pid=- identity=- worker.ready absent | crashed heartbeat 2953991 alive: no
+t=2s  worker.lock/pid=2958366 worker.pid=2958366 identity=4d7ff6fd5f2b0459142a worker.ready age=1s (probe bound 10s) | crashed heartbeat 2953991 alive: no
+t=3s  worker.lock/pid=2958366 worker.pid=2958366 identity=4d7ff6fd5f2b0459142a worker.ready age=1s (probe bound 10s) | crashed heartbeat 2953991 alive: no
+t=4s  worker.lock/pid=2958366 worker.pid=2958366 identity=4d7ff6fd5f2b0459142a worker.ready age=1s (probe bound 10s) | crashed heartbeat 2953991 alive: no
+t=5s  worker.lock/pid=2958366 worker.pid=2958366 identity=4d7ff6fd5f2b0459142a worker.ready age=1s (probe bound 10s) | crashed heartbeat 2953991 alive: no
+t=6s  worker.lock/pid=2958366 worker.pid=2958366 identity=4d7ff6fd5f2b0459142a worker.ready age=1s (probe bound 10s) | crashed heartbeat 2953991 alive: no
+--- after recovery
+PID      PPID     PGID     STAT  AGE    ROLE
+2953842  1423     2953842  S     14s    supervisor
+2958366  2953842  2953842  S     5s     serving-owner (--serve)
+2958454  2958366  2953842  S     5s     heartbeat of owner (--serve subshell)
+--- fm-on call after recovery
+served "after-crash" by serving owner 2958366 (job pid 2960523)
+lab job stderr for "after-crash"
+call exit=7 after 2s
+worker supervisors: 1 (same supervisor 2953842: yes)
+processes of the crashed serving process still alive: 0

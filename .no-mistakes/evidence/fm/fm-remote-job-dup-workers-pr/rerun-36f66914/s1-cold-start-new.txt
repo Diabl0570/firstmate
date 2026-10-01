@@ -1,0 +1,23 @@
+=== S1 [new code] cold start: an fm-on call through fm-remote-entrypoint.sh starts one worker and is served ===
+--- state before: (empty account home)
+call 1 exit=7 after 1s (the job exits 7 on purpose)
+  stdout: served "first call" by serving owner 2882051 (job pid 2882560)
+  stderr: lab job stderr for "first call"
+--- workers after call 1
+PID      PPID     PGID     STAT  AGE    ROLE
+2881995  1423     2881995  S     2s     supervisor
+2882051  2881995  2881995  S     2s     serving-owner (--serve)
+2882134  2882051  2881995  S     2s     heartbeat of owner (--serve subshell)
+worker.lock/pid=2882051 worker.pid=2882051 identity=4d7ff6fd5f2b0459142a
+worker.ready age=0s (probe bound 10s)
+call 2 exit=7 after 2s
+  stdout: served "second call" by serving owner 2882051 (job pid 2883434)
+  stderr: lab job stderr for "second call"
+--- workers after call 2
+PID      PPID     PGID     STAT  AGE    ROLE
+2881995  1423     2881995  S     4s     supervisor
+2882051  2881995  2881995  S     4s     serving-owner (--serve)
+2882134  2882051  2881995  S     4s     heartbeat of owner (--serve subshell)
+worker.lock/pid=2882051 worker.pid=2882051 identity=4d7ff6fd5f2b0459142a
+worker.ready age=0s (probe bound 10s)
+worker supervisors: 1; owner reused: yes

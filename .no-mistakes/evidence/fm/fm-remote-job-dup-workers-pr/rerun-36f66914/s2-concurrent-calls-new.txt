@@ -1,0 +1,21 @@
+=== S2 [new code] 12 concurrent fm-on calls against a live owner ===
+all calls returned after 17s
+  call-1 exit=7 served "call-1" by serving owner 2882051 (job pid 2906620)
+  call-2 exit=7 served "call-2" by serving owner 2882051 (job pid 2891852)
+  call-3 exit=7 served "call-3" by serving owner 2882051 (job pid 2908384)
+  call-4 exit=7 served "call-4" by serving owner 2882051 (job pid 2893965)
+  call-5 exit=7 served "call-5" by serving owner 2882051 (job pid 2898906)
+  call-6 exit=7 served "call-6" by serving owner 2882051 (job pid 2903887)
+  call-7 exit=7 served "call-7" by serving owner 2882051 (job pid 2907591)
+  call-8 exit=7 served "call-8" by serving owner 2882051 (job pid 2905354)
+  call-9 exit=7 served "call-9" by serving owner 2882051 (job pid 2902111)
+  call-10 exit=7 served "call-10" by serving owner 2882051 (job pid 2900732)
+  call-11 exit=7 served "call-11" by serving owner 2882051 (job pid 2908883)
+  call-12 exit=7 served "call-12" by serving owner 2882051 (job pid 2896262)
+served by the existing owner: 12/12
+supervisors seen during the burst (50ms sampling): 2881995 (owner's supervisor: 2881995)
+owner unchanged: yes
+PID      PPID     PGID     STAT  AGE    ROLE
+2881995  1423     2881995  S     27s    supervisor
+2882051  2881995  2881995  S     27s    serving-owner (--serve)
+2882134  2882051  2881995  S     27s    heartbeat of owner (--serve subshell)

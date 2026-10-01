@@ -1,0 +1,46 @@
+=== S5 [new code] concurrent fm-on calls during a new owner's initialization (after an unclean stop + code update) ===
+--- unclean stop: kill -KILL -2881995 (supervisor, serving process, heartbeat all die without cleanup)
+PID      PPID     PGID     STAT  AGE    ROLE
+worker.lock/pid=2882051 worker.pid=2882051 identity=4d7ff6fd5f2b0459142a
+worker.ready age=0s (probe bound 10s)
+leftover lock dir: command pid start 
+--- code update in the remote checkout
+72e1423 lab code update
+--- account git wrapper (~/.local/bin/git) holds only the worker's identity hash while /tmp/fm-rjw-lab.W8uOAd/s5-new.gate exists (keeps the new owner inside its initialization window)
+--- call A arrives (launches the new owner)
+new owner is held inside its initialization window
+--- during initialization
+PID      PPID     PGID     STAT  AGE    ROLE
+2946954  2946746  2946954  S     0s     supervisor
+2947025  2946954  2946954  S     0s     serving-owner (--serve)
+2947173  2947025  2946954  S     0s     other --serve process
+2947189  2947173  2946954  S     0s     other --serve process
+worker.lock/pid=2947025 worker.pid=- identity=-
+worker.ready absent
+--- call B arrives while the owner initializes
+--- 4s into call B (owner still initializing)
+PID      PPID     PGID     STAT  AGE    ROLE
+2946954  2946746  2946954  S     4s     supervisor
+2947025  2946954  2946954  S     4s     serving-owner (--serve)
+2947173  2947025  2946954  S     4s     other --serve process
+2947189  2947173  2946954  S     4s     other --serve process
+worker supervisors now: 1
+--- release the identity hash
+--- call transcripts
+served "call-A" by serving owner 2947025 (job pid 2950674)
+lab job stderr for "call-A"
+call A exit=7 after 8s
+served "call-B" by serving owner 2947025 (job pid 2950175)
+lab job stderr for "call-B"
+call B exit=7 after 5s
+--- every supervisor process seen (sampled every 50ms) from call A until 2s after both returned:
+  2946954
+supervisors seen: 1  (1 = only the owner call A launched)
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+2946954  1423     2946954  S     9s     supervisor
+2947025  2946954  2946954  S     8s     serving-owner (--serve)
+2949382  2947025  2946954  S     4s     heartbeat of owner (--serve subshell)
+worker.lock/pid=2947025 worker.pid=2947025 identity=4d7ff6fd5f2b0459142a
+worker.ready age=1s (probe bound 10s)
+initializing owner kept (worker.pid == lock owner seen during init): yes

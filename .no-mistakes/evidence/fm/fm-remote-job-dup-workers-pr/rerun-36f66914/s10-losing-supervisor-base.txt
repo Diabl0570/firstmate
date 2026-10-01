@@ -1,0 +1,31 @@
+=== S10 [base code] a losing supervisor leaves the owner's readiness, pid, identity and lock in place ===
+--- owner records before
+  worker.ready     inode=2627145 2977881
+  worker.pid       inode=2627144 2977881
+  worker.identity  inode=2627143 c4968e22ec8005d60844674c611a620ae81f2cf1
+  worker.lock/pid  inode=2627123 2977881
+--- (a) second supervisor beside the verified live owner (its child defers)
+losing supervisor exit=0 after 1s; output: 
+--- owner records after (a)
+  worker.ready     inode=2627145 2977881
+  worker.pid       inode=2627144 2977881
+  worker.identity  inode=2627143 c4968e22ec8005d60844674c611a620ae81f2cf1
+  worker.lock/pid  inode=2627123 2977881
+worker.lock/pid=2977881 worker.pid=2977881 identity=c4968e22ec8005d60844
+worker.ready age=1s (probe bound 10s)
+owner still serving: yes; worker supervisors: 1
+--- (b) second supervisor while the owner's recorded start cannot be verified (its child fails to acquire ownership)
+losing supervisor exit=1 after 23s; output: remote-job-worker: cannot acquire or safely reclaim worker ownership remote-job-worker: remote job worker exited 1 times; stopping the supervisor 
+--- owner records after (b)
+  worker.ready     inode=2627147 2977881
+  worker.pid       inode=2627144 2977881
+  worker.identity  inode=2627143 c4968e22ec8005d60844674c611a620ae81f2cf1
+  worker.lock/pid  inode=2627123 2977881
+worker.lock/pid=2977881 worker.pid=2977881 identity=c4968e22ec8005d60844
+worker.ready age=1s (probe bound 10s)
+owner still serving: yes; worker supervisors: 1
+--- fm-on call
+served "after-loser" by serving owner 2977881 (job pid 3013161)
+lab job stderr for "after-loser"
+call exit=7 after 1s
+owner unchanged: yes

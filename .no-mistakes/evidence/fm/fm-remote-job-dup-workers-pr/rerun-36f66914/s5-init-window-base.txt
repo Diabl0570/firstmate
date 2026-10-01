@@ -1,0 +1,46 @@
+=== S5 [base code] concurrent fm-on calls during a new owner's initialization (after an unclean stop + code update) ===
+--- unclean stop: kill -KILL -2977825 (supervisor, serving process, heartbeat all die without cleanup)
+PID      PPID     PGID     STAT  AGE    ROLE
+worker.lock/pid=2977881 worker.pid=2977881 identity=c4968e22ec8005d60844
+worker.ready age=1s (probe bound 10s)
+leftover lock dir: command pid start 
+--- code update in the remote checkout
+adaad6a lab code update
+--- account git wrapper (~/.local/bin/git) holds only the worker's identity hash while /tmp/fm-rjw-lab.W8uOAd/s5-base.gate exists (keeps the new owner inside its initialization window)
+--- call A arrives (launches the new owner)
+new owner is held inside its initialization window
+--- during initialization
+PID      PPID     PGID     STAT  AGE    ROLE
+3018069  3017892  3018069  S     0s     supervisor
+3018131  3018069  3018069  S     0s     serving-owner (--serve)
+3018273  3018131  3018069  S     0s     other --serve process
+3018293  3018273  3018069  S     0s     other --serve process
+worker.lock/pid=3018131 worker.pid=2977881 identity=c4968e22ec8005d60844
+worker.ready age=12s (probe bound 10s)
+--- call B arrives while the owner initializes
+--- 4s into call B (owner still initializing)
+PID      PPID     PGID     STAT  AGE    ROLE
+3018069  3017892  3018069  S     4s     supervisor
+3018131  3018069  3018069  S     4s     serving-owner (--serve)
+3018273  3018131  3018069  S     4s     other --serve process
+3018293  3018273  3018069  S     4s     other --serve process
+worker supervisors now: 1
+--- release the identity hash
+--- call transcripts
+served "call-A" by serving owner 3018131 (job pid 3021681)
+lab job stderr for "call-A"
+call A exit=7 after 5s
+served "call-B" by serving owner 3018131 (job pid 3022183)
+lab job stderr for "call-B"
+call B exit=7 after 7s
+--- every supervisor process seen (sampled every 50ms) from call A until 2s after both returned:
+  3018069
+  3018658
+supervisors seen: 2  (1 = only the owner call A launched)
+--- after
+PID      PPID     PGID     STAT  AGE    ROLE
+3018069  1423     3018069  S     9s     supervisor
+3018131  3018069  3018069  S     8s     serving-owner (--serve)
+worker.lock/pid=3018131 worker.pid=3018131 identity=c4968e22ec8005d60844
+worker.ready age=1s (probe bound 10s)
+initializing owner kept (worker.pid == lock owner seen during init): yes
