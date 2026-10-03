@@ -1,0 +1,83 @@
+--- tests/fm-remote-job.test.sh
++++ disposable portable test runner
+@@ -142,7 +142,7 @@
+   cat > "$poll_dir/bin/sleep" <<'SH'
+ #!/bin/bash
+ printf '%s %s\n' "$PPID" "$1" >> "$FM_POLL_SLEEP_LOG"
+-exec /bin/sleep "$@"
++exec /run/current-system/sw/bin/sleep "$@"
+ SH
+   chmod +x "$poll_dir/bin/sleep"
+   trap '[ -z "$pid" ] || { kill -TERM "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true; }' EXIT
+@@ -165,7 +165,7 @@
+   # Publish a real bounded result after the caller has entered its wait, without
+   # a lane's own samples contaminating this consumer-only executable log.
+   (
+-    /bin/sleep 0.8
++    /run/current-system/sw/bin/sleep 0.8
+     : > "$FM_REMOTE_JOB_JOBS/$FM_REMOTE_JOB_ID/stdout"
+     : > "$FM_REMOTE_JOB_JOBS/$FM_REMOTE_JOB_ID/stderr"
+     printf '0\n' > "$FM_REMOTE_JOB_JOBS/$FM_REMOTE_JOB_ID/exit"
+@@ -201,7 +201,7 @@
+   for ((i = 0; i < 200; i++)); do
+     serving=$(cat "$(fm_remote_job_worker_pid_path)" 2>/dev/null) &&
+       poll_sleeps "$serving" | grep -qx 1 && break
+-    /bin/sleep 0.05
++    /run/current-system/sw/bin/sleep 0.05
+   done
+   poll_sleeps "$serving" | grep -qx 1 || fail "$label dispatcher never reached its one-second quiet wait"
+   [ "$(poll_sleeps "$serving" | grep -cx "$dispatch")" -eq 4 ] || fail "$label dispatcher did not limit its fast burst to four $dispatch-second waits"
+@@ -309,7 +309,7 @@
+ rm -rf -- "$ACCOUNT_HOME/.local/share/mise"
+ pass "operator PATH orders discovered tool installs deterministically"
+ 
+-HOME="$ACCOUNT_HOME" PATH="$RUNTIME_BIN:/usr/bin:/bin:/usr/sbin:/sbin" FM_FAKE_PERL_LOG="$FAKE_PERL_LOG" \
++HOME="$ACCOUNT_HOME" PATH="$RUNTIME_BIN:/run/current-system/sw/bin:/usr/bin:/bin:/usr/sbin:/sbin" FM_FAKE_PERL_LOG="$FAKE_PERL_LOG" \
+   FM_ROOT_OVERRIDE="$REMOTE_ROOT" FM_REMOTE_JOB_STATE_ROOT="$STATE_ROOT" \
+   FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux FM_REMOTE_JOB_TIMEOUT=5 \
+   "$REMOTE_ROOT/bin/fm-remote-job-worker.sh" > "$TMP_ROOT/worker.out" 2> "$TMP_ROOT/worker.err" &
+@@ -1176,7 +1176,7 @@
+ QUIET_TOUCHED="$TMP_ROOT/quiet-touched"
+ mkdir -p "$QUIET_HOME" "$QUIET_SHIM"
+ for QUIET_TOOL in sleep chmod mktemp mv rm date stat uname dirname basename wc tr tail head ps sort cat mkdir rmdir; do
+-  QUIET_REAL=$(PATH=/usr/bin:/bin command -v "$QUIET_TOOL") || continue
++  QUIET_REAL=$(PATH=/run/current-system/sw/bin:/usr/bin:/bin command -v "$QUIET_TOOL") || continue
+   cat > "$QUIET_SHIM/$QUIET_TOOL" <<SH
+ #!/bin/sh
+ printf '%s\n' $QUIET_TOOL >> "\$FM_TEST_EXEC_LOG"
+@@ -1184,7 +1184,7 @@
+ SH
+   chmod +x "$QUIET_SHIM/$QUIET_TOOL"
+ done
+-HOME="$QUIET_HOME" PATH="$QUIET_SHIM:/usr/bin:/bin:/usr/sbin:/sbin" FM_TEST_EXEC_LOG="$QUIET_EXEC_LOG" \
++HOME="$QUIET_HOME" PATH="$QUIET_SHIM:/run/current-system/sw/bin:/usr/bin:/bin:/usr/sbin:/sbin" FM_TEST_EXEC_LOG="$QUIET_EXEC_LOG" \
+   FM_ROOT_OVERRIDE="$REMOTE_ROOT" FM_REMOTE_JOB_STATE_ROOT="$QUIET_STATE" \
+   FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux FM_REMOTE_JOB_STAGE_REAP_SECONDS=2 \
+   "$REMOTE_ROOT/bin/fm-remote-job-worker.sh" --serve > "$TMP_ROOT/quiet-worker.out" 2> "$TMP_ROOT/quiet-worker.err" &
+@@ -1736,7 +1736,7 @@
+ cat > "$SCAN_ACCOUNT/.local/bin/stat" <<SH
+ #!/bin/bash
+ printf 'child-stat\n' >> '$SCAN_CHILD_LOG'
+-exec /usr/bin/stat "\$@"
++exec /run/current-system/sw/bin/stat "\$@"
+ SH
+ chmod +x "$SCAN_ACCOUNT/.local/bin/stat"
+ scan_stage() { # <home> <command> [args...]; echoes the staged job id
+@@ -1765,7 +1765,7 @@
+ : > "$SCAN_CHILD_LOG"
+ # Direct exec, not "$BASH": the production shebang is /bin/bash, so this lane
+ # runs on the stock macOS bash the same way the deployed worker does.
+-HOME="$SCAN_ACCOUNT" PATH="$QUIET_SHIM:/usr/bin:/bin:/usr/sbin:/sbin" \
++HOME="$SCAN_ACCOUNT" PATH="$QUIET_SHIM:/run/current-system/sw/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+   FM_TEST_EXEC_LOG="$SCAN_EXEC_LOG" FM_ROOT_OVERRIDE="$REMOTE_ROOT" \
+   FM_REMOTE_JOB_STATE_ROOT="$SCAN_STATE" FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux \
+   "$REMOTE_ROOT/bin/fm-remote-job-worker.sh" --lane "$SCAN_POLL_ID" \
+@@ -1822,7 +1822,7 @@
+   || fail "the byte-bound scan fixture did not stage"
+ perl -e 'print "fm-remote-delta-read.sh\0", "\xc3\xa9" x 2100, "\0"' \
+   > "$SCAN_STATE/jobs/$SCAN_BOUND_SIBLING_ID/argv"
+-HOME="$SCAN_ACCOUNT" PATH="$QUIET_SHIM:/usr/bin:/bin:/usr/sbin:/sbin" \
++HOME="$SCAN_ACCOUNT" PATH="$QUIET_SHIM:/run/current-system/sw/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+   FM_TEST_EXEC_LOG="$SCAN_EXEC_LOG" FM_ROOT_OVERRIDE="$REMOTE_ROOT" \
+   FM_REMOTE_JOB_STATE_ROOT="$SCAN_STATE" FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux \
+   FM_REMOTE_JOB_MAX_BYTES=4096 LC_ALL="$UTF8_LOCALE" \

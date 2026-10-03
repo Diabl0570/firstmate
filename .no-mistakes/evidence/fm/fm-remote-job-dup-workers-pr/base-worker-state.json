@@ -1,0 +1,58 @@
+[
+  {
+    "event": "base_cold_start",
+    "output": "ready owner=1735101 repaired=1\n"
+  },
+  {
+    "event": "base_serving_stalled_12_seconds",
+    "state": {
+      "worker.pid": "1735101",
+      "worker.identity": "d7ac4a5a75c2c601c95b8cfc74bdf19059f80d4e:ce6e4090737f75f69a03cd8f8a28484ca9e6deca:118d75c349381ae1afabdeda9fe6f7b66e564bd5",
+      "worker.ready": "1735101",
+      "worker.lock/pid": "1735101",
+      "worker.lock/start": "Sat Oct  3 23:48:18 2026",
+      "worker.lock/command": "/bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh --serve",
+      "ready_age_seconds": 12.102
+    },
+    "processes": [
+      "1735003    1899 1735003 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh",
+      "1735101 1735003 1735003 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh --serve"
+    ]
+  },
+  {
+    "event": "base_slow_pass_loses_readiness",
+    "probe_exit": 1
+  },
+  {
+    "event": "base_repeated_start_with_aged_readiness",
+    "state": {
+      "worker.pid": "1735101",
+      "worker.identity": "d7ac4a5a75c2c601c95b8cfc74bdf19059f80d4e:ce6e4090737f75f69a03cd8f8a28484ca9e6deca:118d75c349381ae1afabdeda9fe6f7b66e564bd5",
+      "worker.ready": "1735101",
+      "worker.lock/pid": "1735101",
+      "worker.lock/start": "Sat Oct  3 23:48:18 2026",
+      "worker.lock/command": "/bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh --serve",
+      "ready_age_seconds": 844379311.636
+    },
+    "processes": [
+      "1735003    1899 1735003 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh",
+      "1735101 1735003 1735003 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh --serve"
+    ]
+  },
+  {
+    "event": "base_start_launches_beside_verified_live_owner",
+    "output": "repaired=1 owner=new\n",
+    "worker_groups": [
+      1735003
+    ],
+    "original_group": 1735003
+  },
+  {
+    "event": "base_supervisor_launch_transcript",
+    "launches": "pid=1735003 launch=env HOME=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/account FM_ROOT_OVERRIDE=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root FM_REMOTE_JOB_STATE_ROOT=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/state FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh \npid=1745857 launch=env HOME=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/account FM_ROOT_OVERRIDE=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root FM_REMOTE_JOB_STATE_ROOT=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/state FM_REMOTE_JOB_PLATFORM_OVERRIDE=Linux /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/baseline/root/bin/fm-remote-job-worker.sh \n"
+  },
+  {
+    "event": "base_cleanup",
+    "remaining_lab_processes": []
+  }
+]

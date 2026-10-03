@@ -1,0 +1,6 @@
+{"event": "crash_cleanup_before_held_refresh_released", "owner": 1804105, "ready_exists": false, "lock_exists": false}
+{"event": "held_refresh_after_release", "replacement": false, "probe_exit": 1, "ready_exists": false, "ready_mtime": null, "processes": ["1804342    1899 1804007 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/inflight/root/bin/fm-remote-job-worker.sh --serve"]}
+{"event": "refresh_bound_across_replacement", "crashed_owner": 1806780, "replacement_owner": 1808247, "old_inode": 12097137, "new_inode": 12097186, "bound_inode": 12097137, "bound_path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/inflight/state/worker.ready (deleted)"}
+{"event": "held_refresh_after_release", "replacement": true, "probe_exit": 1, "ready_exists": true, "ready_mtime": 946684800.0, "processes": ["1806884    1899 1806728 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M41V7EYAFYWNGJKACA3TXXPB/.live-validation/inflight/root/bin/fm-remote-job-worker.sh --serve"]}
+{"event": "inflight_refresh_scenarios_passed"}
+{"event": "inflight_cleanup", "remaining_lab_processes": []}
