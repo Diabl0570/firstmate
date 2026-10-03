@@ -1134,7 +1134,7 @@ fm_remote_job_worker_alive() { # <account-home>
   kill -0 "$pid" 2>/dev/null
 }
 
-fm_remote_job_probe() { # <account-home>; a fresh worker heartbeat or active job proves readiness
+fm_remote_job_probe() { # <account-home>; heartbeat readiness follows the worker header contract
   local account_home=$1 ready lock mtime now
   [ "${FM_REMOTE_JOB_ACTIVE:-}" = 1 ] && return 0
   fm_remote_job_prepare_state "$account_home" || return 1

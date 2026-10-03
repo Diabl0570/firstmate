@@ -136,13 +136,9 @@ worker_heartbeat_owner_alive() { # <serving-pid>
   kill -0 "$1" 2>/dev/null
 }
 
-# The heartbeat runs in its own process so a serving pass slowed by a loaded
-# host cannot age it past the probe's bound. It refreshes only while the
-# serving process is alive, and only the readiness object that process
-# published, which it holds open on fd 3: it never creates readiness, and
-# where a Linux fd path can name that object a refresh still in flight when
-# the serving process dies reaches neither a removed readiness nor a
-# replacement's.
+# See the header for the heartbeat lifecycle contract. Holding readiness open
+# on fd 3 lets the Linux fd path bind refreshes to that inode across unlink or
+# replacement; the pathname fallback only prevents recreation with touch -c.
 worker_heartbeat_loop() { # <serving-pid>
   local owner=$1 ready sleeper=
   if [ -e /proc/self/fd/3 ]; then

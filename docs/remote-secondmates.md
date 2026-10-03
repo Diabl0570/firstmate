@@ -81,8 +81,8 @@ Each such command takes these steps:
 On macOS the worker is `dev.firstmate.remote-job`, an Aqua-scoped LaunchAgent at `~/Library/LaunchAgents/dev.firstmate.remote-job.plist` with logs under `~/Library/Logs/`.
 After that bootstrap, every non-doctor `fm-on.sh` target runs through that worker in the remote account's GUI session.
 It never runs in the SSH process or a Herdr pane.
-Linux uses the same queue and worker protocol without the Aqua-session requirement.
-The [`fm-remote-job-worker.sh` header](../bin/fm-remote-job-worker.sh) owns dispatch cadence and the quiet-scan latency for work arriving after its post-activity burst.
+Linux uses the same queue and worker protocol without the Aqua-session requirement; the [`fm-remote-job-lib.sh` header](../bin/fm-remote-job-lib.sh) owns verified-owner reuse and stale-code replacement during startup.
+The [`fm-remote-job-worker.sh` header](../bin/fm-remote-job-worker.sh) owns dispatch cadence, quiet-scan latency, and the readiness heartbeat lifecycle.
 Active-command and result waits use a separate sampling interval; the [`fm-remote-job-lib.sh` header](../bin/fm-remote-job-lib.sh) owns its defaults, overrides, and completion, cancellation, and timeout latency contract.
 
 ### Job lanes and preemption
