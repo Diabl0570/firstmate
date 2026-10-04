@@ -89,7 +89,11 @@
 # just killed. fm_remote_job_stop_worker_tree owns that stop and refuses to
 # signal a group whose leader is not itself a worker, so a worker inherited
 # from an older build or from launchd's own session is still stopped safely as
-# a single process. fm_remote_job_root_is_live is the shared predicate for
+# a single process. The start path never launches a supervisor beside a live
+# lock owner whose recorded pid, start time, and command still match: such an
+# owner counts as running whatever its heartbeat age, so a loaded host that
+# delays the heartbeat past the probe's bound cannot pile duplicate supervisors
+# up beside it. fm_remote_job_root_is_live is the shared predicate for
 # whether a worker's code root still exists; bin/fm-remote-job-worker.sh uses
 # it to stop itself once its root is pruned, and
 # bin/fm-remote-job-reap-orphans.sh uses it to reap workers that were already
@@ -1081,11 +1085,13 @@ fm_remote_job_worker_owned_alive() {
   case "$pid" in ''|*[!0-9]*) return 1 ;; esac
   identity_file=$(fm_remote_job_worker_identity_path)
   fm_remote_job_regular_bounded "$identity_file" 256 || return 1
-  fm_remote_job_probe "$account_home" || return 1
+  # A verified live lock owner counts as running whatever its heartbeat age:
+  # see the header on never duplicating a live owner.
   if fm_remote_job_lock_owner_matches_process "$account_home"; then
     [ "$pid" = "$FM_REMOTE_JOB_OWNER_PID" ] || return 1
     return 0
   fi
+  fm_remote_job_probe "$account_home" || return 1
   [ ! -e "$lock/pid" ] && [ ! -L "$lock/pid" ] &&
     [ ! -e "$lock/start" ] && [ ! -L "$lock/start" ] &&
     [ ! -e "$lock/command" ] && [ ! -L "$lock/command" ] || return 1
