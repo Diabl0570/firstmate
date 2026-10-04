@@ -1,0 +1,55 @@
+Worker ready: owner=1739004 group=1738922 inode=296266 mode=600
+
+SCENARIO: concurrent starts reuse a verified owner with stale readiness
+1738922 1738834 1738922 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target/code/bin/fm-remote-job-worker.sh
+1739004 1738922 1738922 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target/code/bin/fm-remote-job-worker.sh --serve
+1739101 1739004 1738922 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target/code/bin/fm-remote-job-worker.sh --serve
+Aged ready mtime=946681200; verified lock owner=1739004
+First concurrent start: repaired=0 lock-owner=1739004
+1738922 1738834 1738922 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target/code/bin/fm-remote-job-worker.sh
+1739004 1738922 1738922 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target/code/bin/fm-remote-job-worker.sh --serve
+1739101 1739004 1738922 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target/code/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0
+Concurrent start repaired=0
+Concurrent start repaired=0
+PASS: all starts retained owner=1739004 and one supervisor group=1738922
+
+SCENARIO: resumed original worker completes a real tracked command
+Job job-vyA8ef exit=0, output follows:
+schema=fm-remote-delta.v1
+status=delta
+path=state/live.log
+from_offset=0
+to_offset=17
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=e7201ba2d7dec267bc9a68110c5017e17be5ebb87b6226fbf58f0be6c486c677
+payload_sha256=e7201ba2d7dec267bc9a68110c5017e17be5ebb87b6226fbf58f0be6c486c677
+payload_bytes=17
+reason=
+
+live-ready-again
+live-ready-again
+PASS: command result was returned by the original owner=1739004
+Worker ready: owner=1743326 group=1743267 inode=296270 mode=600
+
+SCENARIO: delayed old refresh cannot mutate replacement readiness
+Refresh reached OS boundary: pid=1743917 path=/proc/self/fd/3 inode=296270
+Old object mtime=1791142093; replacement mtime=946681200; replacement contents=replacement-owner
+PASS: the delayed refresh reached only its original object
+Worker ready: owner=1744958 group=1744900 inode=296271 mode=600
+
+SCENARIO: missing readiness is recreated and refreshed with owner PID and mode 0600
+Recreated inode=296274 owner=1744958 mode=600 mtime=1791142096 -> 1791142099
+PASS: recreated readiness stays fresh on its bound object
+
+SCENARIO: racing publication cannot be overwritten by readiness recreation
+Recreate reached OS boundary: pid=1746861 destination=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-target-retry/state/worker.ready
+Racing object inode=296281 contents=racing-owner mtime=946681200
+PASS: no-clobber recreation preserved the racing readiness publication
+Worker ready: owner=1747642 group=1747571 inode=296271 mode=600
+
+SCENARIO: ownership loss stops readiness refresh
+Ownership-lost readiness mtime=1791142102 -> 1791142102, age=13s
+PASS: readiness expired after ownership loss
+
+ALL LIVE SCENARIOS PASSED

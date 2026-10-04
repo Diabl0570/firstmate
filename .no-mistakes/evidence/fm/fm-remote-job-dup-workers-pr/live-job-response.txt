@@ -1,0 +1,12 @@
+schema=fm-remote-delta.v1
+status=delta
+path=state/live.log
+from_offset=0
+to_offset=17
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=e7201ba2d7dec267bc9a68110c5017e17be5ebb87b6226fbf58f0be6c486c677
+payload_sha256=e7201ba2d7dec267bc9a68110c5017e17be5ebb87b6226fbf58f0be6c486c677
+payload_bytes=17
+reason=
+
+live-ready-again

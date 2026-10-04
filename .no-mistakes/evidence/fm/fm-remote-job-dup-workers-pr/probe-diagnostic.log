@@ -1,0 +1,11 @@
+ok - default: result and command samples use 0.25 seconds; dispatcher uses four 0.05-second waits then one second
+ok - legacy: result and command samples use 0.07 seconds; dispatcher uses four 0.07-second waits then one second
+ok - active: result and command samples use 0.12 seconds; dispatcher uses four 0.07-second waits then one second
+ok - default queue and execution bounds independently cover long polls
+ok - operator PATH excludes a symlinked local bin
+ok - operator PATH honors nvm defaults with a deterministic fallback
+ok - operator PATH resolves the authorized Nix profile bin link
+ok - operator PATH orders discovered tool installs deterministically
+probe exit=125
+/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/fm-remote-job.cB2NxT/remote-root/bin/fm-remote-job-worker.sh: line 941: mkfifo: command not found
+not ok - the completed probe did not preserve exit status

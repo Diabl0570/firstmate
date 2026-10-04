@@ -1,0 +1,13 @@
+Worker ready: owner=1708913 group=1708843 inode=296846 mode=600
+
+SCENARIO: concurrent starts reuse a verified owner with stale readiness
+1708843 1708746 1708843 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh
+1708913 1708843 1708843 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh --serve
+1709003 1708913 1708843 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh --serve
+Aged ready mtime=946681200; verified lock owner=1708913
+First concurrent start: repaired=1 lock-owner=1708913
+1708843 1708746 1708843 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh
+1708913 1708843 1708843 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh --serve
+1709003 1708913 1708843 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh --serve
+1709430 1708746 1709430 R /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M445JPN924PN51TW0NV00P5Y/.test-live-tmp/live-base/code/bin/fm-remote-job-worker.sh
+FAIL: a second supervisor was launched beside the live owner
