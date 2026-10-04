@@ -29,6 +29,7 @@ QUIET_WORKER_PID=
 SCAN_LANE_PID=
 DUP_OWNER=
 DUP_GROUP=
+DUP_INIT_BASE_PATH=$PATH
 mkdir -p "$REMOTE_ROOT/bin" "$REMOTE_HOME" "$ACCOUNT_HOME" "$RUNTIME_BIN"
 # worker.pid records the serving child, not its restart supervisor, so stopping
 # that pid alone leaves the supervisor to respawn - the leak
@@ -1547,6 +1548,80 @@ dup_worker_groups() {
   ps -eo pgid=,command= 2>/dev/null \
     | awk -v worker="$DUP_ROOT/bin/fm-remote-job-worker.sh" '$3 == worker { print $1 }' | sort -u
 }
+# Pause the real worker at its public PID rename, after it has published lock
+# ownership and code identity. A concurrent start must accept that owner even
+# when worker.pid is absent or still contains an unclean predecessor's PID.
+DUP_INIT_SHIM="$TMP_ROOT/dup-init-shim"
+DUP_INIT_GATE="$TMP_ROOT/dup-init-gate"
+DUP_INIT_REAL_MV=$(command -v mv)
+mkdir -p "$DUP_INIT_SHIM" "$DUP_INIT_GATE"
+cat > "$DUP_INIT_SHIM/mv" <<'SH'
+#!/bin/bash
+for destination; do :; done
+if [ "$destination" = "$FM_TEST_INIT_STATE/worker.pid" ]; then
+  : > "$FM_TEST_INIT_GATE/blocked"
+  deadline=$((SECONDS + ${FM_TEST_STUB_MAX_BLOCK_SECONDS:-120}))
+  while [ ! -f "$FM_TEST_INIT_GATE/release" ]; do
+    [ "$SECONDS" -lt "$deadline" ] || exit 1
+    /bin/sleep 0.05
+  done
+fi
+exec "$FM_TEST_INIT_REAL_MV" "$@"
+SH
+chmod +x "$DUP_INIT_SHIM/mv"
+dup_initialization_case() { # <public-pid-state>
+  local public_pid_state=$1 repaired groups
+  rm -f -- "$DUP_INIT_GATE/blocked" "$DUP_INIT_GATE/release"
+  dup_lib fm_remote_job_prepare_state "$DUP_HOME" || fail "cannot prepare initialization fixture"
+  if [ "$public_pid_state" = stale ]; then
+    printf '%s\n' "$$" > "$DUP_STATE/worker.pid"
+  fi
+  (
+    # shellcheck disable=SC2030 # This PATH override is confined to the initializing worker fixture.
+    export PATH="$DUP_INIT_SHIM:$DUP_INIT_BASE_PATH"
+    export FM_TEST_INIT_STATE="$DUP_STATE" FM_TEST_INIT_GATE="$DUP_INIT_GATE"
+    export FM_TEST_INIT_REAL_MV="$DUP_INIT_REAL_MV"
+    dup_lib fm_remote_job_start_linux_worker "$DUP_ROOT" "$DUP_HOME"
+  ) || fail "the initializing fixture worker did not start"
+  for _ in $(seq 1 200); do
+    [ -f "$DUP_INIT_GATE/blocked" ] && break
+    sleep 0.05
+  done
+  assert_present "$DUP_INIT_GATE/blocked" "the worker did not reach the PID publication barrier"
+  DUP_OWNER=$(cat "$DUP_STATE/worker.lock/pid")
+  DUP_GROUP=$(fm_remote_job_process_pgid "$DUP_OWNER") \
+    || fail "cannot resolve the initializing owner's group"
+  dup_lib fm_remote_job_lock_owner_matches_process "$DUP_HOME" \
+    || fail "the initializing fixture lacks verified live ownership"
+  dup_lib fm_remote_job_worker_identity_matches "$DUP_ROOT" "$DUP_HOME" \
+    || fail "the initializing fixture has not published its code identity"
+  assert_absent "$DUP_STATE/worker.ready" "the initializing fixture published readiness before its PID"
+  if [ "$public_pid_state" = stale ]; then
+    [ "$(cat "$DUP_STATE/worker.pid")" = "$$" ] || fail "the stale public PID was already replaced"
+  else
+    assert_absent "$DUP_STATE/worker.pid" "the initializing fixture already published its PID"
+  fi
+  repaired=$(
+    FM_REMOTE_JOB_STATE_ROOT="$DUP_STATE"
+    FM_REMOTE_JOB_REPAIRED=0
+    fm_remote_job_start_linux_worker "$DUP_ROOT" "$DUP_HOME" || exit 1
+    printf '%s\n' "$FM_REMOTE_JOB_REPAIRED"
+  ) || fail "the start path refused the initializing owner with $public_pid_state public PID"
+  groups=$(dup_worker_groups)
+  [ "$repaired" = 0 ] || fail "the start path launched a second supervisor during $public_pid_state PID publication"
+  [ "$groups" = "$DUP_GROUP" ] || fail "another worker group runs beside the initializing owner"
+  : > "$DUP_INIT_GATE/release"
+  dup_wait_fresh "the initializing owner did not become ready after PID publication"
+  [ "$(cat "$DUP_STATE/worker.pid")" = "$DUP_OWNER" ] \
+    || fail "the initializing owner was replaced instead of publishing its PID"
+  fm_remote_job_stop_worker_tree "$DUP_OWNER" || fail "the initializing fixture worker did not stop"
+  DUP_OWNER=
+  DUP_GROUP=
+  pass "a live lock owner is never duplicated before $public_pid_state public PID publication"
+}
+dup_initialization_case absent
+dup_initialization_case stale
+
 dup_lib fm_remote_job_start_linux_worker "$DUP_ROOT" "$DUP_HOME" \
   || fail "the duplicate-owner fixture worker did not start"
 for _ in $(seq 1 200); do

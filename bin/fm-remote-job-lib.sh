@@ -1080,17 +1080,15 @@ fm_remote_job_worker_owned_alive() {
   lock=$(fm_remote_job_worker_lock_path)
   [ -d "$lock" ] && [ ! -L "$lock" ] || return 1
   [ ! -e "$lock/quarantine" ] && [ ! -L "$lock/quarantine" ] || return 1
+  # A verified live lock owner counts as running before public PID publication
+  # and whatever its heartbeat age: see the header on never duplicating a live
+  # owner. Readiness and code identity are checked separately by the caller.
+  if fm_remote_job_lock_owner_matches_process "$account_home"; then return 0; fi
   pid_file=$(fm_remote_job_worker_pid_path)
   pid=$(fm_remote_job_read_single_line "$pid_file" 64) || return 1
   case "$pid" in ''|*[!0-9]*) return 1 ;; esac
   identity_file=$(fm_remote_job_worker_identity_path)
   fm_remote_job_regular_bounded "$identity_file" 256 || return 1
-  # A verified live lock owner counts as running whatever its heartbeat age:
-  # see the header on never duplicating a live owner.
-  if fm_remote_job_lock_owner_matches_process "$account_home"; then
-    [ "$pid" = "$FM_REMOTE_JOB_OWNER_PID" ] || return 1
-    return 0
-  fi
   fm_remote_job_probe "$account_home" || return 1
   [ ! -e "$lock/pid" ] && [ ! -L "$lock/pid" ] &&
     [ ! -e "$lock/start" ] && [ ! -L "$lock/start" ] &&
