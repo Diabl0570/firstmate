@@ -1,0 +1,139 @@
+Source=head commit=f7d2ab77594dbce136f305bfabd2b7d9c0458d2d; native platform=Linux; disposable root=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root
+
+SCENARIO initialization: public-pid=absent publication-barrier=worker.pid
+Verified lock pid/start/command; ready absent; worker.identity=published; worker.pid=absent
+Published owner=4058375 group=4058295; worker process inventory:
+4058295 4058051 4058295 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh
+4058375 4058295 4058295 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0; distinct worker groups=4058295 
+Command result: id=job-w9fZK7 state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=61
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=2a4987dca02bb003b48dcff485d4363e1018e8224e7696f3e4b0eef82cb0d373
+payload_sha256=2a4987dca02bb003b48dcff485d4363e1018e8224e7696f3e4b0eef82cb0d373
+payload_bytes=61
+reason=
+
+live remote worker survived initialization-absent-worker.pid
+
+SCENARIO initialization: public-pid=stale publication-barrier=worker.pid
+Verified lock pid/start/command; ready absent; worker.identity=published; worker.pid=4058051
+Published owner=4060543 group=4060501; worker process inventory:
+4060501 4058051 4060501 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh
+4060543 4060501 4060501 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0; distinct worker groups=4060501 
+Command result: id=job-ci4Ktx state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=60
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=179246f43d15e81268007ccd3e2a4bea0a397ba78e04b606ee903791f383e695
+payload_sha256=179246f43d15e81268007ccd3e2a4bea0a397ba78e04b606ee903791f383e695
+payload_bytes=60
+reason=
+
+live remote worker survived initialization-stale-worker.pid
+
+SCENARIO initialization: public-pid=absent publication-barrier=worker.identity
+Verified lock pid/start/command; ready absent; worker.identity=absent; worker.pid=absent
+Published owner=4062124 group=4062084; worker process inventory:
+4062084 4058051 4062084 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh
+4062124 4062084 4062084 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0; distinct worker groups=4062084 
+Command result: id=job-WncbOE state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=66
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=358c5dfb08cea81d375dbfaf07fab346b93630a0ebcbeb3ea64f37af2cf8fef4
+payload_sha256=358c5dfb08cea81d375dbfaf07fab346b93630a0ebcbeb3ea64f37af2cf8fef4
+payload_bytes=66
+reason=
+
+live remote worker survived initialization-absent-worker.identity
+
+SCENARIO aged heartbeat: repeat start beside a verified live frozen owner
+Published owner=4063604 group=4063538; worker process inventory:
+4063538 4058051 4063538 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh
+4063604 4063538 4063538 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh --serve
+4063729 4063604 4063538 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.sAFWOw/root/bin/fm-remote-job-worker.sh --serve
+Heartbeat mtime=946681200; readiness probe rejected; concurrent start repaired=0; distinct groups=4063538 
+Full ensure completed; repaired=0 owner=4063604
+Command result: id=job-nzVgvh state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=43
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=b864077100cee18628cb091889c9f880dbd4c714313cf28a67731182df2edb50
+payload_sha256=b864077100cee18628cb091889c9f880dbd4c714313cf28a67731182df2edb50
+payload_bytes=43
+reason=
+
+live remote worker survived aged-heartbeat
+
+SCENARIO readiness object binding: replace, unlink, recreate
+Replacement readiness: content=replacement-owner mtime-before=946681200 mtime-after=946681200
+Recreated readiness: owner=4066265 mode=600 mtime-before=1791179033 mtime-after=1791179035
+Command result: id=job-BDfU8A state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=48
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=a00f04aec4b67ae9ce1310ce0b52306dc4aa09d01308451b3a564a958edb2bd4
+payload_sha256=a00f04aec4b67ae9ce1310ce0b52306dc4aa09d01308451b3a564a958edb2bd4
+payload_bytes=48
+reason=
+
+live remote worker survived readiness-recreated
+Contested recreation: content=replacement-won-link-race inode-before=297929 inode-after=297929 mtime=946681200
+
+SCENARIO published identity mismatch: real ensure safely replaces stale-code owner
+Published mismatch: previous owner=4071764 current owner=4072880 repaired=1
+Command result: id=job-tEhazk state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=56
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=d98432da5f78a259dd4dd89e16f6f6b08283d5fd9d9c369a25371c5a71b9f7be
+payload_sha256=d98432da5f78a259dd4dd89e16f6f6b08283d5fd9d9c369a25371c5a71b9f7be
+payload_bytes=56
+reason=
+
+live remote worker survived published-identity-mismatch
+
+SCENARIO ownership loss: heartbeat stops and readiness ages
+Ownership-loss readiness mtime-before=1791179040 mtime-after=1791179040
+Readiness probe and owned-alive both reject the mismatched recorded owner.
+
+SCENARIO inode-aware touch injection: fd-based refresh is blocked and resumes on the same owner
+Inode-aware injector caught refresh target=/proc/self/fd/3; mtime-before=946681200 mtime-after=946681200
+Command result: id=job-C5MGXA state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=58
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=afbaf3395e3d3583a38dd454add847bf1003a1b8f70857ce3e03616040a7130d
+payload_sha256=afbaf3395e3d3583a38dd454add847bf1003a1b8f70857ce3e03616040a7130d
+payload_bytes=58
+reason=
+
+live remote worker survived inode-aware-refresh-injection
+
+All requested live scenarios completed successfully.
+Cleanup: disposable worker processes signalled; checkout, account and queue removed.

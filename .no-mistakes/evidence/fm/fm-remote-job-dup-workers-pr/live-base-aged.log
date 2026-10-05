@@ -1,0 +1,12 @@
+Source=base commit=9ea0c41a480cf965b80bba60a80701639f70f723; native platform=Linux; disposable root=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.nCghzl/root
+
+SCENARIO aged heartbeat: repeat start beside a verified live frozen owner
+Published owner=3936256 group=3936198; worker process inventory:
+3936198 3936120 3936198 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.nCghzl/root/bin/fm-remote-job-worker.sh
+3936256 3936198 3936198 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.nCghzl/root/bin/fm-remote-job-worker.sh --serve
+3936384 3936256 3936198 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.nCghzl/root/bin/fm-remote-job-worker.sh --serve
+3936789    1899 3936789 R /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.nCghzl/root/bin/fm-remote-job-worker.sh
+Heartbeat mtime=946681200; readiness probe rejected; concurrent start repaired=1; distinct groups=3936198 3936789 
+FAIL: aged readiness duplicated the verified live lock owner
+Cleanup: disposable worker processes signalled; checkout, account and queue removed.
+Baseline scenario=aged exit=1 (a behavioral regression failure is expected)

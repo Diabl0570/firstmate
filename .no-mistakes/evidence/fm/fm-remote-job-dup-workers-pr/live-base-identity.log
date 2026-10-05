@@ -1,0 +1,12 @@
+Source=base commit=9ea0c41a480cf965b80bba60a80701639f70f723; native platform=Linux; disposable root=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.EzPwbf/root
+
+SCENARIO initialization: public-pid=absent publication-barrier=worker.identity
+Verified lock pid/start/command; ready absent; worker.identity=absent; worker.pid=absent
+Published owner=3938151 group=3938115; worker process inventory:
+3938115 3937990 3938115 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.EzPwbf/root/bin/fm-remote-job-worker.sh
+3938151 3938115 3938115 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.EzPwbf/root/bin/fm-remote-job-worker.sh --serve
+3938384    1899 3938384 R /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.EzPwbf/root/bin/fm-remote-job-worker.sh
+Concurrent start repaired=1; distinct worker groups=3938115 3938384 
+FAIL: concurrent start launched another supervisor or killed initializing owner
+Cleanup: disposable worker processes signalled; checkout, account and queue removed.
+Baseline scenario=identity exit=1 (a behavioral regression failure is expected)

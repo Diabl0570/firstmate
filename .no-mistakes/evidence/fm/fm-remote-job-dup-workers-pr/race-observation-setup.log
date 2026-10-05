@@ -1,0 +1,106 @@
+Source=head commit=f7d2ab77594dbce136f305bfabd2b7d9c0458d2d; native platform=Linux; disposable root=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root
+
+SCENARIO initialization: public-pid=absent publication-barrier=worker.pid
+Verified lock pid/start/command; ready absent; worker.identity=published; worker.pid=absent
+Published owner=3854936 group=3854883; worker process inventory:
+3854883 3854782 3854883 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh
+3854936 3854883 3854883 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0; distinct worker groups=3854883 
+Command result: id=job-EZg4bs state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=61
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=2a4987dca02bb003b48dcff485d4363e1018e8224e7696f3e4b0eef82cb0d373
+payload_sha256=2a4987dca02bb003b48dcff485d4363e1018e8224e7696f3e4b0eef82cb0d373
+payload_bytes=61
+reason=
+
+live remote worker survived initialization-absent-worker.pid
+
+SCENARIO initialization: public-pid=stale publication-barrier=worker.pid
+Verified lock pid/start/command; ready absent; worker.identity=published; worker.pid=3854782
+Published owner=3856518 group=3856473; worker process inventory:
+3856473 3854782 3856473 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh
+3856518 3856473 3856473 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0; distinct worker groups=3856473 
+Command result: id=job-M68hM1 state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=60
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=179246f43d15e81268007ccd3e2a4bea0a397ba78e04b606ee903791f383e695
+payload_sha256=179246f43d15e81268007ccd3e2a4bea0a397ba78e04b606ee903791f383e695
+payload_bytes=60
+reason=
+
+live remote worker survived initialization-stale-worker.pid
+
+SCENARIO initialization: public-pid=absent publication-barrier=worker.identity
+Verified lock pid/start/command; ready absent; worker.identity=absent; worker.pid=absent
+Published owner=3858108 group=3858065; worker process inventory:
+3858065 3854782 3858065 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh
+3858108 3858065 3858065 S /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh --serve
+Concurrent start repaired=0; distinct worker groups=3858065 
+Command result: id=job-bwZtc1 state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=66
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=358c5dfb08cea81d375dbfaf07fab346b93630a0ebcbeb3ea64f37af2cf8fef4
+payload_sha256=358c5dfb08cea81d375dbfaf07fab346b93630a0ebcbeb3ea64f37af2cf8fef4
+payload_bytes=66
+reason=
+
+live remote worker survived initialization-absent-worker.identity
+
+SCENARIO aged heartbeat: repeat start beside a verified live frozen owner
+Published owner=3859594 group=3859530; worker process inventory:
+3859530 3854782 3859530 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh
+3859594 3859530 3859530 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh --serve
+3859708 3859594 3859530 T /bin/bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/root/bin/fm-remote-job-worker.sh --serve
+Heartbeat mtime=946681200; readiness probe rejected; concurrent start repaired=0; distinct groups=3859530 
+Command result: id=job-waqp6F state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=43
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=b864077100cee18628cb091889c9f880dbd4c714313cf28a67731182df2edb50
+payload_sha256=b864077100cee18628cb091889c9f880dbd4c714313cf28a67731182df2edb50
+payload_bytes=43
+reason=
+
+live remote worker survived aged-heartbeat
+
+SCENARIO readiness object binding: replace, unlink, recreate
+Replacement readiness: content=replacement-owner mtime-before=946681200 mtime-after=946681200
+Recreated readiness: owner=3861673 mode=600 mtime-before=1791178766 mtime-after=1791178768
+Command result: id=job-LOoA2L state=done exit=0
+schema=fm-remote-delta.v1
+status=delta
+path=result.log
+from_offset=0
+to_offset=48
+from_prefix_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+to_prefix_sha256=a00f04aec4b67ae9ce1310ce0b52306dc4aa09d01308451b3a564a958edb2bd4
+payload_sha256=a00f04aec4b67ae9ce1310ce0b52306dc4aa09d01308451b3a564a958edb2bd4
+payload_bytes=48
+reason=
+
+live remote worker survived readiness-recreated
+/home/kasper/.no-mistakes/evidence/01M458RD3HT76Y6NJNAFM7K96J/live-remote-worker.sh: line 179: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/queue/worker.ready: No such file or directory
+stat: cannot statx '/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/queue/worker.ready': No such file or directory
+Contested recreation: content= inode-before=12357328 inode-after= mtime=
+/home/kasper/.no-mistakes/evidence/01M458RD3HT76Y6NJNAFM7K96J/live-remote-worker.sh: line 180: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/queue/worker.ready: No such file or directory
+FAIL: heartbeat clobbered contested readiness
+ln: failed to create hard link '/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.ZWSoFz/queue/worker.ready': File exists
+remote-job-worker: readiness heartbeat process stopped
+Cleanup: disposable worker processes signalled; checkout, account and queue removed.

@@ -1,0 +1,7 @@
+Source=base commit=9ea0c41a480cf965b80bba60a80701639f70f723; native platform=Linux; disposable root=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M458RD3HT76Y6NJNAFM7K96J/.remote-live.vPNOPK/root
+
+SCENARIO readiness object binding: replace, unlink, recreate
+Replacement readiness: content=replacement-owner mtime-before=946681200 mtime-after=1791178861
+FAIL: obsolete heartbeat refreshed replacement readiness
+Cleanup: disposable worker processes signalled; checkout, account and queue removed.
+Baseline scenario=binding exit=1 (a behavioral regression failure is expected)
