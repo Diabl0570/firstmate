@@ -367,7 +367,7 @@ That presentation lock lives in a namespace private to the OS account, so anothe
 A namespace at this account's name that another account owns, or that is not mode 700, is still refused and is never adopted, chowned, or removed.
 
 A same-identity version 2 binding may replace one exact agent-free restart husk in place.
-A husk is a restored same-labeled tab with a missing pane or positively proved agent-free shell, as [Restart and liveness behavior](#restart-and-liveness-behavior) describes.
+[Restart and liveness behavior](#restart-and-liveness-behavior) owns the husk classification; a stale registration never licenses replacement by closing.
 The replacement is allowed only when all of these agree:
 
 - The physical home.
@@ -703,7 +703,8 @@ The native busy verdict is verified the same way, so a shell-only pane never rea
 ### Process-view version support
 
 The `pane process-info` subcommand that this process-level proof depends on is present in every supported release client from the 0.7.1 floor upward (measured 2026-09-10 on the pinned 0.7.1, 0.7.3, 0.7.4, and 0.7.5 release clients - [verification](verification/runtime-backends.md) "Stale agent registration").
-The response shape the adapter parses (`result.type` of `pane_process_info`, `process_info.shell_pid`, and `foreground_processes` entries carrying `name`, `argv0`, `argv`, and `cmdline`) is verified live only on Herdr 0.9.0.
+The registered-agent process view's response shape (`result.type` of `pane_process_info`, `process_info.shell_pid`, and `foreground_processes` entries carrying `name`, `argv0`, `argv`, and `cmdline`) was verified live on Herdr 0.9.0.
+The stricter missing-registration snapshot and lifecycle-incarnation checks have [portable fixture evidence only](verification/runtime-backends.md#missing-registration-and-original-process-stop-proof), not live verification.
 The idle-shell proof's narrower parse was previously verified on 0.7.5.
 A server response below 0.9.0 has not been measured for this parse.
 An unreadable or unparseable process view reads `unknown`, which refuses lifecycle verbs and recovery rather than trusting the registration.
@@ -723,8 +724,7 @@ Neither the stopped-server exception nor the stale-registration verdict widens h
 Those paths still refuse an unreadable pane.
 A `stale-agent` pane is reused by recovery, never closed as a husk, because the shell it holds may be a nested worktree shell.
 
-Pi can be recognized through its process identity even when its native registration is absent.
-The process-level proof is shared by ordinary delivery and lifecycle control, so a missing registration cannot advertise a living worker as exited.
+Ordinary delivery uses this same liveness probe; lifecycle control additionally requires the [process-transition postconditions](agent-control.md#verbs).
 `tests/fm-backend-herdr-agent-exit-shell-e2e.test.sh` pins the live-Pi versus leftover-shell distinction.
 [`verification/runtime-backends.md`](verification/runtime-backends.md#agent-lifecycle-control) owns the versioned evidence.
 

@@ -39,7 +39,8 @@ A recorded `harness=` is not always an exact adapter name: a task launched from 
 For Herdr, lifecycle success additionally requires OS process proof independent of registration: the original PID/start incarnations must disappear, the preserved pane must be positively shell-only before launch text, and a replacement must have a recognized new incarnation.
 The exact proof and journal fields are owned by [`bin/fm-control.sh`](../bin/fm-control.sh), and [`bin/fm-spawn.sh`](../bin/fm-spawn.sh) rechecks shell-only evidence at each relaunch shell-input boundary, including standalone use.
 Unreadable or contradictory evidence refuses rather than claiming already-stopped or replacement success.
-An exit that delivers lifecycle input but cannot prove the agent stopped fails with `exit=unconfirmed`, reports the observed agent state and any interrupt cancellation claim, and never claims that nothing changed.
+An exit that delivers lifecycle input but cannot prove the agent stopped fails without claiming that nothing changed.
+An agent-state wait timeout reports `exit=unconfirmed`, the observed agent state, and any interrupt cancellation claim; a failed Herdr process postcondition instead names the surviving or unreadable original incarnation, or the unexpected process evidence.
 Interrupt never rewrites busy state as proof of its own success.
 Claude exposes no lifecycle acknowledgement for a manual interrupt, so delivery succeeds with `cancel=unconfirmed` and its adapter-owned busy state remains as observed.
 Devin emits no lifecycle hook for cancellation either, so after an armed interrupt the control plane invalidates the interrupted turn's busy record to `unknown` with `cancel=unconfirmed`; that invalidation is a conservative loss of knowledge, never a fabricated idle.

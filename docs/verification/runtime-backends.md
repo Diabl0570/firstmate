@@ -166,7 +166,7 @@ Its installed `muse-bin-0.1.0-R708.1` foreground identity classified `alive`, wh
 
 The crewmate/scout-only Rovo CLI 202609.1.2 adapter added `*rovo*` to the same glob family as `*grok*`/`*kimi*` in the shared process-name classifier (now `fm_agent_process_classify_name` in `bin/fm-agent-process-lib.sh`), and was relaunched live under tmux 3.6a in an isolated private socket.
 `#{pane_current_command}` reported the truncated on-disk binary name `atlassian_cli_r` - macOS's 15-char `comm` truncation cuts `atlassian_cli_rovodev` off just before the `rovo` substring begins, the same truncation-volatility class codex/kimi's own patch-release name drift shows above - while the foreground ps-based `comm` correctly reported `rovo`, so `fm_backend_tmux_agent_state` returned `alive` through that primary source; the two-independent-name-sources design is exactly why the truncated title does not break the verdict.
-[`rovo.md`](rovo.md#backend-liveness-tmux-verified-live-herdr-placement-verified-live-with-a-herdr-side-agent-detection-gap) owns the fuller record, including the busy/interrupt/exit facts captured in that same live tmux session and the herdr agent-detection gap found when herdr placement was verified live in an isolated lab session.
+[`rovo.md`](rovo.md#backend-liveness-tmux-verified-live-herdr-placement-verified-live) owns the fuller backend record and its verification limits.
 
 Bounded observed output:
 
@@ -1656,14 +1656,16 @@ ok - real herdr: a stale registration no longer blocks relaunch, and the endpoin
 ok - real herdr: an agent that does not stop fails closed instead of being reported as stopped
 ```
 
-The registry read through `herdr pane report-agent` is the same source `fm_backend_herdr_agent_state` classifies, and since 2026-09-10 that registration counts as an agent only while `pane process-info` shows a harness process behind it, so the guard backs the registration with a real process named like a harness (using `fm_agent_standin` from [`tests/lib.sh`](../../tests/lib.sh)) and then stops that process, with no real harness launched.
+For this measurement, the guard backed a `herdr pane report-agent` registration with a real process named like a harness (a symlink to `sleep`) and then stopped that process, with no real harness launched. The portable guard now uses `fm_agent_standin` from [`tests/lib.sh`](../../tests/lib.sh) for that agent-named process.
+[Restart and liveness behavior](../herdr-backend.md#restart-and-liveness-behavior) owns the current registration/process classification; [Missing registration and original-process stop proof](#missing-registration-and-original-process-stop-proof) distinguishes the newer checks from this live evidence.
 That command is the guard that refreshes this record; run it after every Herdr upgrade rather than trusting the version above.
 
 For Pi on Herdr 0.9.0, `herdr agent get` reflects whether the agent process remains live; its registration does not persist merely because the pane and parent shell do.
 A Pi launched as a child of the pane shell (not via `exec`) that then `/quit`s or is SIGKILL'd leaves the pane and shell in place, and `agent get` returns `agent_not_found`.
 A sibling live idle Pi stays `agent=pi` with `agent_status=idle`.
-`fm_backend_herdr_pane_agent_state` maps that `agent_not_found` leftover shell to `no-agent` and `fm_backend_herdr_agent_state` maps it to `dead` (relaunch-allowed), while the live idle pane stays `alive`.
-`herdr pane get` `.agent_status` can still read `idle` after the occupant is gone; liveness is `agent get`, never that pane field.
+The classifier reported `no-agent`/`dead` for that leftover shell and `alive` for the live idle pane in this measurement.
+`herdr pane get` `.agent_status` still read `idle` after the occupant was gone; that field did not establish liveness.
+The current [agent-liveness probe](../herdr-backend.md#agent-liveness-probe) requires process evidence rather than treating `agent_not_found` as death.
 
 ```sh
 tests/fm-backend-herdr-agent-exit-shell-e2e.test.sh

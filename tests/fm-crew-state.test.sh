@@ -52,6 +52,13 @@ set -u
 
 CREW_STATE="$ROOT/bin/fm-crew-state.sh"
 TMP_ROOT=$(fm_test_tmproot fm-crew-state)
+mkdir -p "$TMP_ROOT"
+# Process proofs must inspect an independent idle shell, not this controller's
+# rapidly changing subtree of crew-state, jq, ps and command-substitution helpers.
+mkfifo "$TMP_ROOT/idle-shell.fifo"
+bash -c 'read -r _ < "$1"' -- "$TMP_ROOT/idle-shell.fifo" &
+FM_CREW_FIXTURE_SHELL_PID=$!
+trap 'printf "stop\n" > "$TMP_ROOT/idle-shell.fifo"; wait "$FM_CREW_FIXTURE_SHELL_PID"; fm_test_cleanup' EXIT
 fm_git_identity fmtest fmtest@example.invalid
 
 # A real git repo checked out on <branch>, so the helper's branch attribution
@@ -251,10 +258,9 @@ case "${1:-}" in
         exit 0 ;;
       process-info)
         # The process-level view a registration is verified against (#4115):
-        # `agent` puts a live claude in the foreground, `shell` a bare zsh whose
-        # pid is the test script itself (a real, long-lived process with no
-        # harness descendant, so the adapter's real process-table walk finds
-        # it), and anything else answers nothing (unreadable).
+        # `agent` puts a live claude in the foreground; `shell` uses the
+        # independent idle-shell fixture so real process-table reads can
+        # prove its childless subtree. Anything else is unreadable.
         pane=""; args=("$@"); for ((i=0; i<${#args[@]}; i++)); do [ "${args[$i]}" = --pane ] && pane=${args[$((i+1))]:-}; done
         case "${FM_FAKE_HERDR_PROCESS:-agent}" in
           agent) printf '{"result":{"type":"pane_process_info","process_info":{"pane_id":"%s","shell_pid":%s,"foreground_process_group_id":424242,"foreground_processes":[{"pid":424242,"name":"claude","argv0":"claude"}]}}}\n' "$pane" "${FM_FAKE_HERDR_SHELL_PID:-$PPID}" ;;
@@ -333,7 +339,7 @@ reset_fakes() {
   FM_FAKE_HERDR_HUSK=0
   FM_FAKE_HERDR_AGENT_STATUS=""
   FM_FAKE_HERDR_PROCESS=agent
-  FM_FAKE_HERDR_SHELL_PID=$$
+  FM_FAKE_HERDR_SHELL_PID=$FM_CREW_FIXTURE_SHELL_PID
   FM_FAKE_CI_LOGS=""
   FM_FAKE_DAEMON_DOWN=0
   FM_FAKE_DAEMON_TIMEOUT=0

@@ -439,7 +439,12 @@ test_cli_helper_sets_env_and_appends_trailing_session_flag() {
 # deliberate (SC2016).
 # shellcheck disable=SC2016
 run_with_clients() {  # <dir> <path> <body>
-  local dir=$1 path=$2 body=$3
+  local dir=$1 path=$2 body=$3 tool
+  # Keep real Herdr clients excluded, but provide the fixture body's tools
+  # explicitly on hosts where /usr/bin and /bin are not a full toolchain.
+  for tool in cat touch; do
+    ln -sf "$(command -v "$tool")" "$dir/tools/$tool"
+  done
   FM_HERDR_PAIR_DIR="$dir" PATH="$path:$dir/tools:/usr/bin:/bin" \
     bash -c ". \"\$0/bin/backends/herdr.sh\"; $body" "$ROOT"
 }
@@ -875,10 +880,7 @@ test_registered_agent_with_an_agent_descendant_outside_the_foreground_stays_aliv
   lab="$TMP_ROOT/stale-reg-descendant-bin"; mkdir -p "$lab"
   # A symlink to a real long-running stand-in so the kernel records `pi` as the
   # executable identity (tests/lib.sh fm_agent_standin owns why not host sleep).
-  standin=$(fm_agent_standin "$TMP_ROOT/standin") || {
-    echo "skip: no long-running stand-in survives a rename, so the agent-named descendant case cannot run"
-    return 0
-  }
+  standin=$(fm_agent_standin "$TMP_ROOT/standin") || fail "no native agent stand-in available"
   ln -sf "$standin" "$lab/pi"
   # A real shell whose child is that agent-named process, while the canned
   # foreground view shows only the shell (a suspended or backgrounded agent).
@@ -904,10 +906,7 @@ test_registered_agent_with_an_agent_descendant_outside_the_foreground_stays_aliv
 
 test_agent_descendant_under_a_spaced_install_path_stays_alive() {
   local lab standin shell_pid out
-  standin=$(fm_agent_standin "$TMP_ROOT/standin") || {
-    echo "skip: no long-running stand-in survives a rename, so the spaced-path descendant case cannot run"
-    return 0
-  }
+  standin=$(fm_agent_standin "$TMP_ROOT/standin") || fail "no native agent stand-in available"
   # The executable path the process table reports contains a space (the macOS
   # `/Library/Application Support/...` shape), so a field-split read of the
   # process table sees only a fragment of the name.
@@ -3789,7 +3788,7 @@ test_projection_reclaim_replaces_only_exact_husk_and_advances_binding() {
   [ -n "$agent_line" ] && [ "$agent_line" -lt "$close_line" ] \
     || fail "reclaim did not recheck the old pane agent state before the close"
   boundary_mutations=$(sed -n "$((agent_line + 1)),$((close_line - 1))p" "$log" \
-    | grep -Ev $'\x1f(tab\x1flist|pane\x1flist|workspace\x1flist|terminal\x1ftitle\x1fclear)' || true)
+    | grep -Ev $'\x1f(tab\x1flist|pane\x1flist|pane\x1fprocess-info|workspace\x1flist|terminal\x1ftitle\x1fclear)' || true)
   [ -z "$boundary_mutations" ] \
     || fail "reclaim mutated between the old pane agent recheck and the close: $boundary_mutations"
   assert_not_contains "$calls" $'workspace\x1fclose' "reclaim introduced workspace-close authority"
