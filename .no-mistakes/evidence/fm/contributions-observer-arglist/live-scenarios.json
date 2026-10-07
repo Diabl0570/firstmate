@@ -1,0 +1,58 @@
+[
+  {
+    "name": "HTTP failures report the correct PR and issue read stage, HTTP status and native exit without retries or forge writes",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 1\u201310",
+    "reason": ""
+  },
+  {
+    "name": "Concurrent failed reads produce stable ordered sanitized diagnostics and preserve saved evidence",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 11\u201312",
+    "reason": ""
+  },
+  {
+    "name": "Missing and beyond-4096-byte HTTP status is not fabricated and private response text never escapes",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 13\u201314",
+    "reason": ""
+  },
+  {
+    "name": "Shared owners wake once per failure episode; healthy recovery clears errors without consuming pending signals or verdicts",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 15\u201318",
+    "reason": ""
+  },
+  {
+    "name": "Head changes report a distinct fixed reason and reject mixed-head observations",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 19\u201319",
+    "reason": ""
+  },
+  {
+    "name": "Five-second read cap, explicit smaller budget and watcher budget cap remain silent and byte-preserving",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 20\u201322",
+    "reason": ""
+  },
+  {
+    "name": "Malformed response on the next URL cannot inherit a preceding HTTP diagnostic",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 23\u201323",
+    "reason": ""
+  },
+  {
+    "name": "Before-change replay confirms the formerly generic message with identical request count and preserved state",
+    "result": "pass",
+    "live": true,
+    "evidence": "live-transcript.json entries 24\u201324",
+    "reason": ""
+  }
+]

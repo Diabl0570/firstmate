@@ -1,0 +1,4345 @@
+[
+  {
+    "home": "stage-core",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "core": 404
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.293,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at core (HTTP 404; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at core (HTTP 404; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-comments",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "comments": 403
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.417,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at comments (HTTP 403; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at comments (HTTP 403; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-reviews",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "reviews": 502
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.428,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at reviews (HTTP 502; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at reviews (HTTP 502; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-inline",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "inline": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.42,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at inline (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at inline (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-checks",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "checks": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.419,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-statuses",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "statuses": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.427,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at statuses (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at statuses (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-repo",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "repo": 403
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.452,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at repo (HTTP 403; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at repo (HTTP 403; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "stage-closing",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "closing": 503
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.526,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at closing (HTTP 503; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "POST",
+        "path": "/graphql",
+        "stage": "closing",
+        "body": {
+          "query": "\n\tquery PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) {\n\t\trepository(owner: $owner, name: $repo) {\n\t\t\tpullRequest(number: $pr_number) {headRefOid,reviewDecision,id,number}\n\t\t}\n\t}",
+          "variables": {
+            "owner": "o",
+            "pr_number": 8,
+            "repo": "r"
+          }
+        }
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at closing (HTTP 503; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "issue-comments",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "comments": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.402,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/issues/8: forge read failed at comments (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/events?per_page=100",
+        "stage": "issue-events"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/issues/8",
+            "kind": "issue",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": [],
+              "ready": false
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/issues/8",
+            "kind": "issue",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at comments (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": [],
+              "ready": false
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "issue-issue-events",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "issue-events": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.388,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/issues/8: forge read failed at issue-events (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/events?per_page=100",
+        "stage": "issue-events"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/issues/8",
+            "kind": "issue",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": [],
+              "ready": false
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/issues/8",
+            "kind": "issue",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at issue-events (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": [],
+              "ready": false
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "parallel",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "checks": 500,
+        "statuses": 502
+      },
+      "delay": {
+        "checks": 0.3
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.723,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1); forge read failed at statuses (HTTP 502; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1); forge read failed at statuses (HTTP 502; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "all-parallel",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "checks": 500,
+        "comments": 500,
+        "inline": 500,
+        "repo": 500,
+        "reviews": 500,
+        "statuses": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.421,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1); forge read failed at comments (HTTP 500; exit 1); forge read failed at inline (HTTP 500; exit 1); forge read failed at repo (HTTP 500; exit 1); forge read failed at reviews (HTTP 500; exit 1); forge read failed at statuses (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1); forge read failed at comments (HTTP 500; exit 1); forge read failed at inline (HTTP 500; exit 1); forge read failed at repo (HTTP 500; exit 1); forge read failed at reviews (HTTP 500; exit 1); forge read failed at statuses (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "graphql-no-http",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "graphql_error": true
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.497,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at closing (exit 1; HTTP status unavailable)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "POST",
+        "path": "/graphql",
+        "stage": "closing",
+        "body": {
+          "query": "\n\tquery PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) {\n\t\trepository(owner: $owner, name: $repo) {\n\t\t\tpullRequest(number: $pr_number) {headRefOid,reviewDecision,id,number}\n\t\t}\n\t}",
+          "variables": {
+            "owner": "o",
+            "pr_number": 8,
+            "repo": "r"
+          }
+        }
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at closing (exit 1; HTTP status unavailable)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "oversized",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "reviews": 500
+      },
+      "oversized": true
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.44,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at reviews (exit 1; HTTP status unavailable)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at reviews (exit 1; HTTP status unavailable)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "episodes",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "checks": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.526,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      }
+    ],
+    "records_before": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "duplicate": false,
+      "delivery": false
+    },
+    "records": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "episodes",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "checks": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.517,
+    "stdout": "",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      }
+    ],
+    "records_before": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "duplicate": true,
+      "delivery": true
+    },
+    "records": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "episodes",
+    "script": "bin/fm-contributions.sh",
+    "settings": {},
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.598,
+    "stdout": "",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "POST",
+        "path": "/graphql",
+        "stage": "closing",
+        "body": {
+          "query": "\n\tquery PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) {\n\t\trepository(owner: $owner, name: $repo) {\n\t\t\tpullRequest(number: $pr_number) {headRefOid,reviewDecision,id,number}\n\t\t}\n\t}",
+          "variables": {
+            "owner": "o",
+            "pr_number": 8,
+            "repo": "r"
+          }
+        }
+      }
+    ],
+    "records_before": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "duplicate": false,
+      "delivery": false
+    },
+    "records": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "can_merge": false,
+              "review_decision": "APPROVED",
+              "reviews": [],
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "events": [],
+              "absent_checks": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "can_merge": false,
+              "review_decision": "APPROVED",
+              "reviews": [],
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "events": [],
+              "absent_checks": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "episodes",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "checks": 500
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.495,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1)\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      }
+    ],
+    "records_before": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "can_merge": false,
+              "review_decision": "APPROVED",
+              "reviews": [],
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "events": [],
+              "absent_checks": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "can_merge": false,
+              "review_decision": "APPROVED",
+              "reviews": [],
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "events": [],
+              "absent_checks": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "duplicate": false,
+      "delivery": false
+    },
+    "records": {
+      "duplicate": {
+        "schema": "fm-contributions.v1",
+        "task": "duplicate",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "can_merge": false,
+              "review_decision": "APPROVED",
+              "reviews": [],
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "events": [],
+              "absent_checks": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at checks (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "can_merge": false,
+              "review_decision": "APPROVED",
+              "reviews": [],
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "events": [],
+              "absent_checks": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "drift",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "drift": true
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.523,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: head changed during observation\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "POST",
+        "path": "/graphql",
+        "stage": "closing",
+        "body": {
+          "query": "\n\tquery PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) {\n\t\trepository(owner: $owner, name: $repo) {\n\t\t\tpullRequest(number: $pr_number) {headRefOid,reviewDecision,id,number}\n\t\t}\n\t}",
+          "variables": {
+            "owner": "o",
+            "pr_number": 8,
+            "repo": "r"
+          }
+        }
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "head changed during observation",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "bound-five-second",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "delay": {
+        "core": 7
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 5.184,
+    "stdout": "",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": true
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "bound-one-second",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "delay": {
+        "core": 7
+      }
+    },
+    "extra_env": {
+      "FM_CONTRIBUTIONS_BUDGET": "1"
+    },
+    "exit": 0,
+    "elapsed_seconds": 1.169,
+    "stdout": "",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": true
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "bound-watcher-cap",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "delay": {
+        "core": 7
+      }
+    },
+    "extra_env": {
+      "FM_CONTRIBUTIONS_BUDGET": "25",
+      "FM_CHECK_TIMEOUT": "4"
+    },
+    "exit": 0,
+    "elapsed_seconds": 1.17,
+    "stdout": "",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": true
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "schema",
+    "script": "bin/fm-contributions.sh",
+    "settings": {
+      "fail": {
+        "reviews": 500
+      },
+      "schema": true
+    },
+    "extra_env": {
+      "FM_CONTRIBUTIONS_BUDGET": "25"
+    },
+    "exit": 0,
+    "elapsed_seconds": 0.547,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at reviews (HTTP 500; exit 1)\ncontributions: observation unavailable for https://github.com/o/r/pull/9: forge observation unavailable or changed during read\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/9",
+        "stage": "core"
+      }
+    ],
+    "records_before": {
+      "second": {
+        "schema": "fm-contributions.v1",
+        "task": "second",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/9",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "second": false,
+      "delivery": false
+    },
+    "records": {
+      "second": {
+        "schema": "fm-contributions.v1",
+        "task": "second",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/9",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge observation unavailable or changed during read",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      },
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge read failed at reviews (HTTP 500; exit 1)",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  },
+  {
+    "home": "baseline",
+    "script": "bin/.test-contributions-baseline.sh",
+    "settings": {
+      "fail": {
+        "checks": 500,
+        "statuses": 502
+      }
+    },
+    "extra_env": {},
+    "exit": 0,
+    "elapsed_seconds": 0.393,
+    "stdout": "contributions: observation unavailable for https://github.com/o/r/pull/8\n",
+    "stderr": "",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8",
+        "stage": "core"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/issues/8/comments?per_page=100",
+        "stage": "comments"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/reviews?per_page=100",
+        "stage": "reviews"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r",
+        "stage": "repo"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+        "stage": "checks"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+        "stage": "statuses"
+      },
+      {
+        "method": "GET",
+        "path": "/repos/o/r/pulls/8/comments?per_page=100",
+        "stage": "inline"
+      }
+    ],
+    "records_before": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-15T08:00:00Z",
+            "error": null,
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "record_bytes_unchanged": {
+      "delivery": false
+    },
+    "records": {
+      "delivery": {
+        "schema": "fm-contributions.v1",
+        "task": "delivery",
+        "records": [
+          {
+            "url": "https://github.com/o/r/pull/8",
+            "kind": "pr",
+            "checked_at": "2026-09-16T08:00:00Z",
+            "error": "forge observation unavailable or changed during read",
+            "observation": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "state": "open",
+              "draft": false,
+              "mergeable": "mergeable",
+              "review_decision": "APPROVED",
+              "can_merge": false,
+              "checks": [
+                {
+                  "name": "test",
+                  "id": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "started_at": "2026-09-16T08:00:00Z"
+                }
+              ],
+              "reviews": [],
+              "events": []
+            },
+            "verdict": {
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": "maintainer",
+              "source": "https://github.com/o/r/pull/8#issuecomment-99",
+              "summary": "awaiting maintainer"
+            },
+            "pending": [
+              {
+                "token": "preserved",
+                "type": "comment",
+                "source": "https://github.com/o/r/pull/8#issuecomment-99",
+                "head": null,
+                "body": "existing signal"
+              }
+            ],
+            "seen": [
+              "preserved"
+            ],
+            "notified": [
+              "preserved"
+            ]
+          }
+        ]
+      }
+    },
+    "wake_queue": ""
+  }
+]

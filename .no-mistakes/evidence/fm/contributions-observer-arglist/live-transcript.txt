@@ -1,0 +1,168 @@
+1. stage-core (bin/fm-contributions.sh)
+exit=0, elapsed=0.293s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at core (HTTP 404; exit 1)
+stderr: (silent)
+requests: core
+stored error: delivery: forge read failed at core (HTTP 404; exit 1)
+
+2. stage-comments (bin/fm-contributions.sh)
+exit=0, elapsed=0.417s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at comments (HTTP 403; exit 1)
+stderr: (silent)
+requests: core, inline, repo, reviews, comments, checks, statuses
+stored error: delivery: forge read failed at comments (HTTP 403; exit 1)
+
+3. stage-reviews (bin/fm-contributions.sh)
+exit=0, elapsed=0.428s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at reviews (HTTP 502; exit 1)
+stderr: (silent)
+requests: core, statuses, repo, comments, reviews, inline, checks
+stored error: delivery: forge read failed at reviews (HTTP 502; exit 1)
+
+4. stage-inline (bin/fm-contributions.sh)
+exit=0, elapsed=0.42s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at inline (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, comments, checks, reviews, statuses, repo, inline
+stored error: delivery: forge read failed at inline (HTTP 500; exit 1)
+
+5. stage-checks (bin/fm-contributions.sh)
+exit=0, elapsed=0.419s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, inline, comments, statuses, reviews, repo, checks
+stored error: delivery: forge read failed at checks (HTTP 500; exit 1)
+
+6. stage-statuses (bin/fm-contributions.sh)
+exit=0, elapsed=0.427s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at statuses (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, inline, comments, repo, checks, statuses, reviews
+stored error: delivery: forge read failed at statuses (HTTP 500; exit 1)
+
+7. stage-repo (bin/fm-contributions.sh)
+exit=0, elapsed=0.452s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at repo (HTTP 403; exit 1)
+stderr: (silent)
+requests: core, comments, statuses, repo, checks, reviews, inline
+stored error: delivery: forge read failed at repo (HTTP 403; exit 1)
+
+8. stage-closing (bin/fm-contributions.sh)
+exit=0, elapsed=0.526s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at closing (HTTP 503; exit 1)
+stderr: (silent)
+requests: core, repo, inline, reviews, checks, statuses, comments, closing
+stored error: delivery: forge read failed at closing (HTTP 503; exit 1)
+
+9. issue-comments (bin/fm-contributions.sh)
+exit=0, elapsed=0.402s
+stdout: contributions: observation unavailable for https://github.com/o/r/issues/8: forge read failed at comments (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, comments, issue-events
+stored error: delivery: forge read failed at comments (HTTP 500; exit 1)
+
+10. issue-issue-events (bin/fm-contributions.sh)
+exit=0, elapsed=0.388s
+stdout: contributions: observation unavailable for https://github.com/o/r/issues/8: forge read failed at issue-events (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, issue-events, comments
+stored error: delivery: forge read failed at issue-events (HTTP 500; exit 1)
+
+11. parallel (bin/fm-contributions.sh)
+exit=0, elapsed=0.723s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1); forge read failed at statuses (HTTP 502; exit 1)
+stderr: (silent)
+requests: core, inline, statuses, comments, repo, checks, reviews
+stored error: delivery: forge read failed at checks (HTTP 500; exit 1); forge read failed at statuses (HTTP 502; exit 1)
+
+12. all-parallel (bin/fm-contributions.sh)
+exit=0, elapsed=0.421s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1); forge read failed at comments (HTTP 500; exit 1); forge read failed at inline (HTTP 500; exit 1); forge read failed at repo (HTTP 500; exit 1); forge read failed at reviews (HTTP 500; exit 1); forge read failed at statuses (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, checks, inline, statuses, repo, comments, reviews
+stored error: delivery: forge read failed at checks (HTTP 500; exit 1); forge read failed at comments (HTTP 500; exit 1); forge read failed at inline (HTTP 500; exit 1); forge read failed at repo (HTTP 500; exit 1); forge read failed at reviews (HTTP 500; exit 1); forge read failed at statuses (HTTP 500; exit 1)
+
+13. graphql-no-http (bin/fm-contributions.sh)
+exit=0, elapsed=0.497s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at closing (exit 1; HTTP status unavailable)
+stderr: (silent)
+requests: core, comments, statuses, repo, inline, reviews, checks, closing
+stored error: delivery: forge read failed at closing (exit 1; HTTP status unavailable)
+
+14. oversized (bin/fm-contributions.sh)
+exit=0, elapsed=0.44s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at reviews (exit 1; HTTP status unavailable)
+stderr: (silent)
+requests: core, statuses, checks, inline, comments, reviews, repo
+stored error: delivery: forge read failed at reviews (exit 1; HTTP status unavailable)
+
+15. episodes (bin/fm-contributions.sh)
+exit=0, elapsed=0.526s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, comments, checks, reviews, statuses, repo, inline
+stored error: duplicate: forge read failed at checks (HTTP 500; exit 1); delivery: forge read failed at checks (HTTP 500; exit 1)
+
+16. episodes (bin/fm-contributions.sh)
+exit=0, elapsed=0.517s
+stdout: (silent)
+stderr: (silent)
+requests: core, inline, reviews, comments, repo, statuses, checks
+stored error: duplicate: forge read failed at checks (HTTP 500; exit 1); delivery: forge read failed at checks (HTTP 500; exit 1)
+
+17. episodes (bin/fm-contributions.sh)
+exit=0, elapsed=0.598s
+stdout: (silent)
+stderr: (silent)
+requests: core, comments, reviews, statuses, checks, inline, repo, closing
+stored error: duplicate: None; delivery: None
+
+18. episodes (bin/fm-contributions.sh)
+exit=0, elapsed=0.495s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at checks (HTTP 500; exit 1)
+stderr: (silent)
+requests: core, reviews, comments, checks, repo, statuses, inline
+stored error: duplicate: forge read failed at checks (HTTP 500; exit 1); delivery: forge read failed at checks (HTTP 500; exit 1)
+
+19. drift (bin/fm-contributions.sh)
+exit=0, elapsed=0.523s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: head changed during observation
+stderr: (silent)
+requests: core, inline, repo, comments, reviews, statuses, checks, closing
+stored error: delivery: head changed during observation
+
+20. bound-five-second (bin/fm-contributions.sh)
+exit=0, elapsed=5.184s
+stdout: (silent)
+stderr: (silent)
+requests: core
+stored error: delivery: None
+
+21. bound-one-second (bin/fm-contributions.sh)
+exit=0, elapsed=1.169s
+stdout: (silent)
+stderr: (silent)
+requests: core
+stored error: delivery: None
+
+22. bound-watcher-cap (bin/fm-contributions.sh)
+exit=0, elapsed=1.17s
+stdout: (silent)
+stderr: (silent)
+requests: core
+stored error: delivery: None
+
+23. schema (bin/fm-contributions.sh)
+exit=0, elapsed=0.547s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8: forge read failed at reviews (HTTP 500; exit 1)
+contributions: observation unavailable for https://github.com/o/r/pull/9: forge observation unavailable or changed during read
+stderr: (silent)
+requests: core, repo, reviews, inline, statuses, checks, comments, core
+stored error: second: forge observation unavailable or changed during read; delivery: forge read failed at reviews (HTTP 500; exit 1)
+
+24. baseline (bin/.test-contributions-baseline.sh)
+exit=0, elapsed=0.393s
+stdout: contributions: observation unavailable for https://github.com/o/r/pull/8
+stderr: (silent)
+requests: core, comments, reviews, repo, checks, statuses, inline
+stored error: delivery: forge observation unavailable or changed during read

@@ -1,0 +1,10 @@
+ok - HTTP 500 names every failed read stage without raw stderr, retries or pending/verdict changes
+ok - missing, oversized and invalid HTTP-status text stays unmeasured with a fixed stage/exit reason
+ok - mid-wave deadline and per-read timeout leave prior record bytes and signals untouched
+ok - head drift stays distinct from HTTP failure and never accepts mixed-head evidence
+ok - response validation failure never inherits HTTP diagnostics from a different URL
+ok - a genuine forge failure inside the budget still records the error and wakes
+ok - a URL owned by two tasks is observed once and every owner receives the result
+ok - a genuinely unavailable forge records an error and wakes once per failure episode
+ok - a late owner does not restart a shared forge failure episode
+ok - the effective budget is cut down to the watcher per-check bound with margin
