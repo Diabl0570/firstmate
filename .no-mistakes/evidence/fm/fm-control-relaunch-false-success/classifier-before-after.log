@@ -1,0 +1,9 @@
+Portable counterfactual fixture, not live Herdr acceptance. Identical registration/process inputs, independent expected live/alive/refused verdict.
+
+base ac0811c4
+not ok - claude missing registration + agent: expected 'live alive refused', got 'no-agent dead husk'
+actual_exit=1, expected_exit=1
+
+current target plus test-only fixes
+ok - herdr missing registration: a live process stays alive; only positive shell proof permits recovery
+actual_exit=0, expected_exit=0

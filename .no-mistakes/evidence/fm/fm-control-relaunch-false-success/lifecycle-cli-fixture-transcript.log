@@ -1,0 +1,231 @@
+Portable fixture evidence only: real Firstmate CLI, fake Herdr transport, renamed Bash agents. No real Claude/Pi or Herdr session.
+
+$ run_spawn missing-live-claude --relaunch --harness claude
+exit=1
+error: task missing-live-claude's endpoint reads 'alive'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh missing-live-claude exit)
+Recorded transport literal writes:
+Current fixture-owned process:
+1719593 1719550 claude --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/missing-live-claude-26713/fake/agent-input
+
+$ run_control missing-live-claude exit
+exit=1
+error: exit-delivered missing-live-claude interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+Recorded transport literal writes:
+/exit
+Current fixture-owned process:
+1719593 1719550 claude --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/missing-live-claude-26713/fake/agent-input
+
+$ run_control missing-live-claude relaunch --note preserve this original
+exit=1
+error: exit-delivered missing-live-claude interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+error: relaunch of missing-live-claude failed while stopping the old agent, which is still running; its original instructions were restored
+Recorded transport literal writes:
+/exit
+/exit
+Current fixture-owned process:
+1719593 1719550 claude --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/missing-live-claude-26713/fake/agent-input
+Persisted lifecycle journal:
+v1
+task=missing-live-claude
+phase=failed:stopping
+ts=2026-10-07T18:38:17Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/missing-live-claude-26713/wt
+kind=ship
+from_harness=claude
+from_model=default
+from_effort=default
+to_harness=claude
+to_model=default
+to_effort=default
+rollback=instructions-restored-agent-alive
+
+$ run_spawn missing-live-pi --relaunch --harness pi
+exit=1
+error: task missing-live-pi's endpoint reads 'alive'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh missing-live-pi exit)
+Recorded transport literal writes:
+Current fixture-owned process:
+1729122 1729087 pi --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/missing-live-pi-25648/fake/agent-input
+
+$ run_control missing-live-pi exit
+exit=1
+error: exit-delivered missing-live-pi interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+Recorded transport literal writes:
+/quit
+Current fixture-owned process:
+1729122 1729087 pi --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/missing-live-pi-25648/fake/agent-input
+
+$ run_control missing-live-pi relaunch --note preserve this original
+exit=1
+error: exit-delivered missing-live-pi interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+error: relaunch of missing-live-pi failed while stopping the old agent, which is still running; its original instructions were restored
+Recorded transport literal writes:
+/quit
+/quit
+Current fixture-owned process:
+1729122 1729087 pi --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/missing-live-pi-25648/fake/agent-input
+Persisted lifecycle journal:
+v1
+task=missing-live-pi
+phase=failed:stopping
+ts=2026-10-07T18:38:25Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/missing-live-pi-25648/wt
+kind=ship
+from_harness=pi
+from_model=default
+from_effort=default
+to_harness=pi
+to_model=default
+to_effort=default
+rollback=instructions-restored-agent-alive
+
+$ run_control new-incarnation-claude relaunch --note continue the preserved work
+exit=0
+warning: /tmp/fm-control-relaunch.jiaxJk/new-incarnation-claude-8006/home/data/new-incarnation-claude/launch-brief.md records no ship branch; defaulting to legacy branch fm/new-incarnation-claude
+warning: /tmp/fm-control-relaunch.jiaxJk/new-incarnation-claude-8006/home/data/new-incarnation-claude/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+relaunched new-incarnation-claude harness=claude from=claude model=default effort=default backend=herdr endpoint=fmlab:%7 worktree=/tmp/fm-control-relaunch.jiaxJk/new-incarnation-claude-8006/wt
+Recorded transport literal writes:
+/exit
+. '/tmp/fm-new-incarnation-claude+0358fa413ff1b41084bb27ca56cfbf9461eaf8a810b17d3b18a442f1195316c3/launch.s1791398309.1736758.25374.sh'
+Current fixture-owned process:
+1738246 1735736 claude --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/new-incarnation-claude-8006/fake/agent-input
+Persisted lifecycle journal:
+v1
+task=new-incarnation-claude
+phase=complete
+ts=2026-10-07T18:38:31Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/new-incarnation-claude-8006/wt
+kind=ship
+from_harness=claude
+from_model=default
+from_effort=default
+to_harness=claude
+to_model=default
+to_effort=default
+worktree_head=17bd987559cd82a19c722523076627053958ae55
+worktree_dirty=no
+original_pid_start=1735777	proc:43498538
+note_file=/tmp/fm-control-relaunch.jiaxJk/new-incarnation-claude-8006/home/state/new-incarnation-claude.control-relaunch.note
+exit_result=stopped
+
+$ run_control new-incarnation-pi relaunch --note continue the preserved work
+exit=0
+warning: /tmp/fm-control-relaunch.jiaxJk/new-incarnation-pi-13427/home/data/new-incarnation-pi/launch-brief.md records no ship branch; defaulting to legacy branch fm/new-incarnation-pi
+warning: /tmp/fm-control-relaunch.jiaxJk/new-incarnation-pi-13427/home/data/new-incarnation-pi/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+relaunched new-incarnation-pi harness=pi from=pi model=default effort=default backend=herdr endpoint=fmlab:%7 worktree=/tmp/fm-control-relaunch.jiaxJk/new-incarnation-pi-13427/wt
+Recorded transport literal writes:
+/quit
+. '/tmp/fm-new-incarnation-pi+623a5b786f4b0c94a99c05da10baf2b1d493480b8807cfb061fb52b35394289a/launch.s1791398315.1739691.32467.sh'
+Current fixture-owned process:
+1741173 1738741 pi --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/new-incarnation-pi-13427/fake/agent-input
+Persisted lifecycle journal:
+v1
+task=new-incarnation-pi
+phase=complete
+ts=2026-10-07T18:38:38Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/new-incarnation-pi-13427/wt
+kind=ship
+from_harness=pi
+from_model=default
+from_effort=default
+to_harness=pi
+to_model=default
+to_effort=default
+worktree_head=9ea94e3ff9eac63d8a674d7057aa103663ef7a59
+worktree_dirty=no
+original_pid_start=1738757	proc:43499111
+note_file=/tmp/fm-control-relaunch.jiaxJk/new-incarnation-pi-13427/home/state/new-incarnation-pi.control-relaunch.note
+exit_result=stopped
+
+$ run_control registration-only relaunch --note do not borrow registration as process proof
+exit=1
+warning: /tmp/fm-control-relaunch.jiaxJk/registration-only-15216/home/data/registration-only/launch-brief.md records no ship branch; defaulting to legacy branch fm/registration-only
+warning: /tmp/fm-control-relaunch.jiaxJk/registration-only-15216/home/data/registration-only/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+error: task registration-only's replacement launch was delivered but no recognized OS process incarnation was confirmed (process evidence 'shell'); relaunch is unconfirmed
+error: the replacement agent for registration-only could not be launched on claude
+error: registration-only was relaunched on claude but no running agent could be confirmed; its work is preserved at /tmp/fm-control-relaunch.jiaxJk/registration-only-15216/wt
+Recorded transport literal writes:
+. '/tmp/fm-registration-only+d014ab23308bdc9e35064f72a4389fa3c21b2bdb21ad0e5ef688795429a332ed/launch.s1791398319.1742105.4136.sh'
+Persisted lifecycle journal:
+v1
+task=registration-only
+phase=failed:launching
+ts=2026-10-07T18:38:42Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/registration-only-15216/wt
+kind=ship
+from_harness=claude
+from_model=default
+from_effort=default
+to_harness=claude
+to_model=default
+to_effort=default
+rollback=none-new-record-kept
+
+$ run_spawn registration-only --relaunch --harness claude
+exit=1
+warning: /tmp/fm-control-relaunch.jiaxJk/registration-only-15216/home/data/registration-only/launch-brief.md records no ship branch; defaulting to legacy branch fm/registration-only
+warning: /tmp/fm-control-relaunch.jiaxJk/registration-only-15216/home/data/registration-only/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+error: task registration-only's replacement launch was delivered but no recognized OS process incarnation was confirmed (process evidence 'shell'); relaunch is unconfirmed
+Recorded transport literal writes:
+. '/tmp/fm-registration-only+d014ab23308bdc9e35064f72a4389fa3c21b2bdb21ad0e5ef688795429a332ed/launch.s1791398319.1742105.4136.sh'
+. '/tmp/fm-registration-only+d014ab23308bdc9e35064f72a4389fa3c21b2bdb21ad0e5ef688795429a332ed/launch.s1791398323.1743838.1805.sh'
+Persisted lifecycle journal:
+v1
+task=registration-only
+phase=failed:launching
+ts=2026-10-07T18:38:42Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/registration-only-15216/wt
+kind=ship
+from_harness=claude
+from_model=default
+from_effort=default
+to_harness=claude
+to_model=default
+to_effort=default
+rollback=none-new-record-kept
+
+$ run_spawn late-process --relaunch --harness claude
+exit=1
+warning: /tmp/fm-control-relaunch.jiaxJk/late-process-22866/home/data/late-process/launch-brief.md records no ship branch; defaulting to legacy branch fm/late-process
+warning: /tmp/fm-control-relaunch.jiaxJk/late-process-22866/home/data/late-process/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+error: task late-process's Herdr pane is 'agent', not positively shell-only; refusing to type a relaunch shell command into it
+error: task late-process's endpoint could not be moved into its recorded worktree '/tmp/fm-control-relaunch.jiaxJk/late-process-22866/wt'; refusing to launch outside the copy holding its work
+Recorded transport literal writes:
+Current fixture-owned process:
+1746008 1745554 claude --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/late-process-22866/fake/agent-input
+
+$ run_control masked-original relaunch --note do not borrow pane death
+exit=1
+error: task masked-original's original PID/start incarnation survives or cannot be read; relaunch cannot claim a stop or replacement
+error: relaunch of masked-original failed while stopping the old agent and its state is 'unreadable-original-process', so it was not proven stopped; its original instructions were restored and the durable record was retained for recovery
+Recorded transport literal writes:
+/exit
+Current fixture-owned process:
+1746176 1746159 claude --noprofile --norc -c read -r _ < "$1" -- /tmp/fm-control-relaunch.jiaxJk/masked-original-2562/fake/agent-input
+Persisted lifecycle journal:
+v1
+task=masked-original
+phase=failed:stopping
+ts=2026-10-07T18:38:49Z
+backend=herdr
+endpoint=fmlab:%7
+worktree=/tmp/fm-control-relaunch.jiaxJk/masked-original-2562/wt
+kind=ship
+from_harness=claude
+from_model=default
+from_effort=default
+to_harness=claude
+to_model=default
+to_effort=default
+rollback=instructions-restored-agent-state-unreadable-original-process

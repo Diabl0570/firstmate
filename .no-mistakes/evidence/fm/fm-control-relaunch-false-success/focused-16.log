@@ -1,0 +1,20 @@
+Executing existing fixture functions from fm-backend-herdr.test.sh
+ok - herdr missing registration: a live process stays alive; only positive shell proof permits recovery
+ok - herdr registration parser: business errors work at exit 0/1; foreign, contradictory and unreadable registration refuses
+ok - herdr strict process snapshots: Claude/Pi foreground and nested incarnations, shell-only, foreign, unreadable and contradictory evidence
+ok - herdr stop proof: the original live incarnation cannot be declared gone; reuse differs and unreadable start refuses
+ok - herdr recovery-grade read: a stopped server means missing there, and nowhere else
+ok - herdr stale registration: a shell-only pane with a lingering Pi record is agent-free with an explicit reason
+ok - herdr stale registration: no registered status can outrank a shell-only process view
+ok - herdr stale registration: busy_state proves a working record at process level before reporting busy
+Executing existing fixture functions from fm-control-relaunch.test.sh
+ok - Herdr Claude/Pi missing registration: delivery stays live, original survival refuses exit/relaunch, and no launch command reaches the TUI
+ok - Herdr relaunch: real stop/new incarnation succeeds; registration-only replacement never reports success
+ok - Herdr relaunch: a late process cannot borrow the earlier shell-only read to receive launch text
+ok - Herdr stop postcondition: a dead pane read cannot override a surviving exact original incarnation
+Executing existing fixture functions from fm-crew-state.test.sh
+ok - herdr missing registration without verified OS evidence refuses reclaim
+ok - herdr stale registration over a shell-only pane reads agent gone, not alive
+ok - herdr stale working record never reports a shell-only pane busy
+Executing existing fixture functions from fm-agy-harness.test.sh
+ok - herdr exit detection: missing registration without process proof refuses replacement
