@@ -1791,6 +1791,37 @@ ok - real herdr 0.9.0 + pi 0.85.1: the registration left behind by a quit pi rea
 `tests/fm-crew-state.test.sh` pins the recovery classifier: a stale registration over a shell-only pane reports agent gone rather than alive or unreachable, and a stale `working` record never reports the pane working.
 A stale-registration pane is never a husk: create, reclaim, presentation recovery, and session cleanup keep refusing it, and only recovery reuses it.
 
+### Missing registration and original-process stop proof
+
+The strict missing-registration and lifecycle-incarnation checks have focused portable fixture evidence on 2026-10-07, Linux 6.18.54 with Bash 5.3.9.
+No real Herdr session or installed Claude/Pi runtime was exercised for this addition, so the earlier live observations above do not verify the new stricter lifecycle path.
+The current behavior and proof owners are [Restart and liveness behavior](../herdr-backend.md#restart-and-liveness-behavior) and [`bin/fm-control.sh`](../../bin/fm-control.sh).
+
+`tests/fm-backend-herdr.test.sh` adds the registration/process counterfactual, Claude/Pi foreground and nested process snapshots, malformed or contradictory responses, and exact PID/start-incarnation survival and reuse checks.
+`tests/fm-control-relaunch.test.sh` drives real fixture-owned renamed Bash processes through fake Herdr reads, ordinary durable delivery, and the standalone/control relaunch interfaces.
+It distinguishes a genuine stopped original plus new replacement from a surviving original, a false pane-death read, a registration-only replacement, and a process appearing after the initial shell-only read.
+The portable regression refresh entry point is:
+
+```sh
+bash bin/fm-test-run.sh tests/fm-backend-herdr.test.sh tests/fm-control-relaunch.test.sh
+```
+
+The focused fixture functions emitted these results, without running either whole suite:
+
+```text
+ok - herdr missing registration: a live process stays alive; only positive shell proof permits recovery
+ok - herdr registration parser: business errors work at exit 0/1; foreign, contradictory and unreadable registration refuses
+ok - herdr strict process snapshots: Claude/Pi foreground and nested incarnations, shell-only, foreign, unreadable and contradictory evidence
+ok - herdr stop proof: the original live incarnation cannot be declared gone; reuse differs and unreadable start refuses
+ok - Herdr Claude/Pi missing registration: delivery stays live, original survival refuses exit/relaunch, and no launch command reaches the TUI
+ok - Herdr relaunch: real stop/new incarnation succeeds; registration-only replacement never reports success
+ok - Herdr relaunch: a late process cannot borrow the earlier shell-only read to receive launch text
+ok - Herdr stop postcondition: a dead pane read cannot override a surviving exact original incarnation
+```
+
+A real named-session lab refresh remains required before treating this stricter path as live-verified.
+The [destructive lab safety contract](../herdr-backend.md#destructive-lab-safety) still governs that stage; no original or shared-session worker is an acceptance fixture.
+
 ### Pane status authority across a relaunch
 
 Measured 2026-09-21 on Linux x86_64 against Herdr 0.9.1 (client protocol 22) and Pi 0.86.1, in an isolated `fm-lab-` session (`bin/fm-herdr-lab.sh`), after the same freeze was observed live on a relaunched Pi crewmate whose pane read `idle` while its validation pipeline ran.

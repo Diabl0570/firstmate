@@ -2671,10 +2671,9 @@ test_no_run_herdr_stale_working_record_is_never_busy() {
   pass "herdr stale working record never reports a shell-only pane busy"
 }
 
-# Decision follow-up (2026-09-05 review): a husk pane (pane present,
-# agent_not_found) is authoritative death evidence - it keeps the gone-class
-# text so the stale sweep may still reclaim it, never unknown/unreachable.
-test_no_run_herdr_husk_dead_still_reads_gone() {
+# A pane with missing registration but no verified OS process view is not a
+# proved husk. Its unreadable evidence cannot authorize reclaim or stop.
+test_no_run_herdr_missing_registration_without_os_proof_refuses() {
   command -v jq >/dev/null 2>&1 || { pass "herdr husk test skipped without jq"; return; }
   reset_fakes
   local d; d=$(new_case herdr-husk-dead)
@@ -2690,11 +2689,11 @@ test_no_run_herdr_husk_dead_still_reads_gone() {
   FM_FAKE_HERDR_READ_FAIL=1
   FM_FAKE_HERDR_HUSK=1
   local out; out=$(run_crew_state "$d" feat-herdr-husk)
-  assert_contains "$out" "state: unknown" "a husk pane has no live current state"
-  assert_contains "$out" "backend target gone" "a husk pane keeps its gone-class death evidence"
-  assert_contains "$out" "agent gone, pane shell remains" "the husk verdict names what actually died"
-  assert_not_contains "$out" "backend unreachable" "a husk pane is not an unreachable backend"
-  pass "a husk pane (agent gone) still reads gone for reclaim"
+  assert_contains "$out" "state: unknown" "missing registration with unverified process evidence must stay unknown"
+  assert_not_contains "$out" "backend target gone" "missing registration cannot manufacture death evidence"
+  assert_not_contains "$out" "agent gone, pane shell remains" "no remaining shell has been proved by this fixture"
+  assert_contains "$out" "backend unreachable" "unreadable OS evidence must refuse reclaim rather than promise absence"
+  pass "herdr missing registration without verified OS evidence refuses reclaim"
 }
 
 # Regression (2026-07 herdr false-surface incident, now solved semantically):
@@ -5585,7 +5584,7 @@ test_no_run_grok_uses_isolated_fallback
 test_no_run_herdr_unknown_uses_backend_capture
 test_no_run_herdr_cli_failure_reads_unreachable_not_gone
 test_no_run_herdr_alive_with_failed_read_stays_live
-test_no_run_herdr_husk_dead_still_reads_gone
+test_no_run_herdr_missing_registration_without_os_proof_refuses
 test_no_run_herdr_idle_agent_status_outranked_by_record
 test_no_run_herdr_idle_agent_status_and_idle_record_stays_idle
 test_no_run_idle_pane_uses_log

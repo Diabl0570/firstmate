@@ -367,7 +367,7 @@ That presentation lock lives in a namespace private to the OS account, so anothe
 A namespace at this account's name that another account owns, or that is not mode 700, is still refused and is never adopted, chowned, or removed.
 
 A same-identity version 2 binding may replace one exact agent-free restart husk in place.
-A husk is a restored same-labeled tab with a missing pane or no registered agent, as [Restart and liveness behavior](#restart-and-liveness-behavior) describes.
+A husk is a restored same-labeled tab with a missing pane or positively proved agent-free shell, as [Restart and liveness behavior](#restart-and-liveness-behavior) describes.
 The replacement is allowed only when all of these agree:
 
 - The physical home.
@@ -670,14 +670,16 @@ No Herdr-specific copy of that protocol exists.
 
 Stopping and restarting a named Herdr server preserves workspace, tab, pane, and label ids.
 The underlying harness processes and live agent registrations do not survive.
-A restored same-labeled tab with a missing pane or no registered agent is a husk.
+A restored same-labeled tab with a missing pane, or missing registration backed by a positively proved shell-only process view, is a husk.
 
 Create replaces only a confidently dead or no-agent husk, creates the replacement before closing the old tab, and refuses live or unknown states.
 This prevents closing the workspace's last tab before a replacement exists.
 
 ### Stale agent registrations
 
-A registration alone never proves an agent.
+A registration alone never proves an agent, and missing registration alone never proves its absence.
+An `agent_not_found` response still consults the exact pane's OS process evidence: a recognized live harness remains alive, while foreign, contradictory or unreadable evidence refuses recovery.
+`bin/backends/herdr.sh` owns the strict snapshot and shell-only proof.
 Herdr keeps a Pi registration after the Pi process has exited to a plain shell, whenever a nested interactive shell sits under the pane's top shell.
 In that case `agent get` still reports `agent=pi` with its last status.
 That nested shell is the crew shape `treehouse get` leaves behind (measured on Herdr 0.9.0 - [verification](verification/runtime-backends.md) "Stale agent registration"; upstream issue #4115).
@@ -714,15 +716,15 @@ The generic Herdr agent-liveness probe reuses that pane classifier, then applies
 | --- | --- |
 | A structurally gone pane, or a pane read from a session positively reported as having no running server | `missing` |
 | A restored agent-less shell, or a stale registration over a shell-only pane | `dead` |
-| A registered agent with a live process | `alive` |
+| A registered agent with a live process, or a recognized live process despite missing registration | `alive` |
 | Every other unexpected read | `unreadable` |
 
 Neither the stopped-server exception nor the stale-registration verdict widens husk detection or any close authority.
 Those paths still refuse an unreadable pane.
 A `stale-agent` pane is reused by recovery, never closed as a husk, because the shell it holds may be a nested worktree shell.
 
-Native registration still identifies Pi by name where tmux would see a generic interpreter.
-The process-level proof only decides whether that registration is backed by a running process.
+Pi can be recognized through its process identity even when its native registration is absent.
+The process-level proof is shared by ordinary delivery and lifecycle control, so a missing registration cannot advertise a living worker as exited.
 `tests/fm-backend-herdr-agent-exit-shell-e2e.test.sh` pins the live-Pi versus leftover-shell distinction.
 [`verification/runtime-backends.md`](verification/runtime-backends.md#agent-lifecycle-control) owns the versioned evidence.
 
