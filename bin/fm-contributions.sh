@@ -65,8 +65,8 @@
 # A final observation applies
 # to every owner without another forge read. When the budget refuses a read
 # mid-observation, that URL's records stay untouched and the poll moves to the
-# next URL that still has a full observation reserve; only a genuine forge
-# failure or head change records an error.
+# next URL that still has a full observation reserve; a genuine forge failure,
+# head change or invalid response records an error.
 # API failure leaves error evidence; an expired or absent observation is not
 # silence. FM_CONTRIBUTIONS_MAX_AGE (default 900 seconds) bounds freshness.
 # A URL whose last good observation is merged or closed is final: it is
@@ -74,11 +74,14 @@
 # observation, with a stale error beside it cleared.
 # A genuine failure prints its unavailable line only when it starts an episode
 # (no prior owner has an error); a successful read ends the episode.
-# Failed forge reads name their fixed read stage, exit code and HTTP status
-# when present in the first 4096 stderr bytes. Only that numeric status is
-# retained, never raw stderr, endpoints, headers or response bodies. Parallel
-# failures are joined in stage order. Head drift has its own fixed reason.
-# These same sanitized reasons appear in error and the first unavailable line.
+# Failed forge reads name their fixed read stage, exit code and first recognized
+# HTTP status in the first 4096 stderr bytes, or say HTTP status unavailable.
+# Only that numeric status is copied from stderr into durable records and
+# diagnostics, never raw stderr, endpoints, headers or response bodies.
+# Parallel failures are joined in sorted stage-name order, not completion order.
+# Head drift has its own fixed reason; response-validation failures retain the
+# generic reason. These same sanitized reasons appear in error and the first
+# unavailable line.
 # FM_CONTRIBUTIONS_NOW supplies an ISO UTC clock for tests, otherwise UTC now.
 # FM_CONTRIBUTIONS_READY_LABEL selects the equivalent triage label, default
 # ready-for-pr. Labels are matched case-insensitively and exactly.
