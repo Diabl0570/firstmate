@@ -103,7 +103,7 @@
 # (no prior owner has an error); a successful read ends the episode.
 # That class is read from the first 4096 stderr bytes only; raw stderr,
 # endpoints, headers and response bodies are never retained. Failed parallel
-# reads are joined in label order. Head drift has its own fixed reason.
+# reads are joined in sorted label order, not completion order. Head drift has its own fixed reason.
 # These same sanitized reasons appear in error and the first unavailable line.
 # FM_CONTRIBUTIONS_NOW supplies an ISO UTC clock for tests, otherwise UTC now.
 # FM_CONTRIBUTIONS_READY_LABEL selects the equivalent triage label, default
