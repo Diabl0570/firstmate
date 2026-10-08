@@ -416,7 +416,7 @@ Firstmate then cleans up the candidate in this order:
 1. Acquire the existing task-id spawn lock, and then the shared named-session presentation lock.
 2. Inside both locks, take one exact snapshot.
 3. Require one unambiguous non-target focus and the exact title, token, tab, and pane shape.
-4. Positively confirm no registered agent.
+4. Require the pane classifier's `no-agent` verdict, as defined in [Restart and liveness behavior](#restart-and-liveness-behavior).
 5. Read Herdr's process information for the exact named-session pane and apply the process proof below.
 6. Immediately revalidate the same journal, metadata absence, workspace title and token uniqueness, one-tab and one-pane topology, exact pane relationship, absent agent, process proof, and non-target focus.
 7. Call the existing exact-pane focus-preserving close helper.

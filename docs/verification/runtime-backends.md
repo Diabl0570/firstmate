@@ -1656,7 +1656,8 @@ ok - real herdr: a stale registration no longer blocks relaunch, and the endpoin
 ok - real herdr: an agent that does not stop fails closed instead of being reported as stopped
 ```
 
-For this measurement, the guard backed a `herdr pane report-agent` registration with a real process named like a harness (a symlink to `sleep`) and then stopped that process, with no real harness launched. The portable guard now uses `fm_agent_standin` from [`tests/lib.sh`](../../tests/lib.sh) for that agent-named process.
+For this measurement, the guard backed a `herdr pane report-agent` registration with a real process named like a harness (a symlink to `sleep`) and then stopped that process, with no real harness launched.
+The guard now uses `fm_agent_standin` from [`tests/lib.sh`](../../tests/lib.sh) for that agent-named process.
 [Restart and liveness behavior](../herdr-backend.md#restart-and-liveness-behavior) owns the current registration/process classification; [Missing registration and original-process stop proof](#missing-registration-and-original-process-stop-proof) distinguishes the newer checks from this live evidence.
 That command is the guard that refreshes this record; run it after every Herdr upgrade rather than trusting the version above.
 
