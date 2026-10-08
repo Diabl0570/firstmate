@@ -1,0 +1,234 @@
+Evidence scope: real Firstmate entrypoints and fixture-owned Bash PID/start transitions, with fake Herdr transport. No real Herdr session or Claude/Pi runtime launched.
+
+$ bin/fm-send.sh missing-live-claude "read the preserved instruction"
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the requested message WILL still be sent.
+●  repair a missing or failed watcher cycle with the Pi tool fm_watch_arm_pi, or restart Pi with -e /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.pi/extensions/fm-primary-turnend-guard.ts -e /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.pi/extensions/fm-primary-pi-watch.ts if the extensions are not loaded.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Fake transport payloads from ordinary delivery:
+: Firstmate instruction waiting: list "$FM_TASK_INBOX"/*.msg in your 'missing-live-claude.inbox' steering inbox, read and act on each in numeric order, then mv each into its handled/.
+
+Persisted inbox:
+
+
+$ bin/fm-spawn.sh missing-live-claude --relaunch --harness claude
+Before:
+fixture-owned agent PID/start: 1823334 proc:47591257
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+error: task missing-live-claude's endpoint reads 'alive'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh missing-live-claude exit)
+exit=1
+After:
+fixture-owned agent PID/start: 1823334 proc:47591257
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+Independent original PID re-read (1823334):
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+
+
+$ bin/fm-control.sh missing-live-claude exit
+Before:
+fixture-owned agent PID/start: 1823334 proc:47591257
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+error: exit-delivered missing-live-claude interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+exit=1
+After:
+fixture-owned agent PID/start: 1823334 proc:47591257
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+Independent original PID re-read (1823334):
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+/exit
+
+
+$ bin/fm-control.sh missing-live-claude relaunch --note preserve this original
+Before:
+fixture-owned agent PID/start: 1823334 proc:47591257
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+error: exit-delivered missing-live-claude interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+error: relaunch of missing-live-claude failed while stopping the old agent, which is still running; its original instructions were restored
+exit=1
+After:
+fixture-owned agent PID/start: 1823334 proc:47591257
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+phase=failed:stopping
+rollback=instructions-restored-agent-alive
+Independent original PID re-read (1823334):
+1823334 1823220 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-claude-2126/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+/exit
+/exit
+
+
+$ bin/fm-send.sh missing-live-pi "read the preserved instruction"
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the requested message WILL still be sent.
+●  repair a missing or failed watcher cycle with the Pi tool fm_watch_arm_pi, or restart Pi with -e /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.pi/extensions/fm-primary-turnend-guard.ts -e /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.pi/extensions/fm-primary-pi-watch.ts if the extensions are not loaded.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Fake transport payloads from ordinary delivery:
+: Firstmate instruction waiting: list "$FM_TASK_INBOX"/*.msg in your 'missing-live-pi.inbox' steering inbox, read and act on each in numeric order, then mv each into its handled/.
+
+Persisted inbox:
+
+
+$ bin/fm-spawn.sh missing-live-pi --relaunch --harness pi
+Before:
+fixture-owned agent PID/start: 1836777 proc:47592078
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+error: task missing-live-pi's endpoint reads 'alive'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh missing-live-pi exit)
+exit=1
+After:
+fixture-owned agent PID/start: 1836777 proc:47592078
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+Independent original PID re-read (1836777):
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+
+
+$ bin/fm-control.sh missing-live-pi exit
+Before:
+fixture-owned agent PID/start: 1836777 proc:47592078
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+error: exit-delivered missing-live-pi interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+exit=1
+After:
+fixture-owned agent PID/start: 1836777 proc:47592078
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+Independent original PID re-read (1836777):
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+/quit
+
+
+$ bin/fm-control.sh missing-live-pi relaunch --note preserve this original
+Before:
+fixture-owned agent PID/start: 1836777 proc:47592078
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+error: exit-delivered missing-live-pi interrupt=not-needed exit-command=delivered agent-state=alive exit=unconfirmed; the agent did not stop within 0.05s
+error: relaunch of missing-live-pi failed while stopping the old agent, which is still running; its original instructions were restored
+exit=1
+After:
+fixture-owned agent PID/start: 1836777 proc:47592078
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+phase=failed:stopping
+rollback=instructions-restored-agent-alive
+Independent original PID re-read (1836777):
+1836777 1836723 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/missing-live-pi-2637/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+/quit
+/quit
+
+
+$ bin/fm-control.sh new-incarnation-claude relaunch --note continue the preserved work
+Before:
+fixture-owned agent PID/start: 1841133 proc:47592882
+1841133 1841116 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-claude-32252/fake/agent-input
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-claude-32252/home/data/new-incarnation-claude/launch-brief.md records no ship branch; defaulting to legacy branch fm/new-incarnation-claude
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-claude-32252/home/data/new-incarnation-claude/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+relaunched new-incarnation-claude harness=claude from=claude model=default effort=default backend=herdr endpoint=fmlab:%7 worktree=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-claude-32252/wt
+exit=0
+After:
+fixture-owned agent PID/start: 1843577 proc:47593342
+1843577 1841116 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-claude-32252/fake/agent-input
+phase=complete
+original_pid_start=1841133	proc:47592882
+exit_result=stopped
+Independent original PID re-read (1841133):
+original PID absent from OS process table
+Transport payloads (fake Herdr, not a vendor TUI):
+/exit
+. '/tmp/fm-new-incarnation-claude+d8cc78498d236cd0454865ac0cb82b590ad960911600a317b0789bc608b1f7e5/launch.s1791439252.1842079.23260.sh'
+
+
+$ bin/fm-control.sh new-incarnation-pi relaunch --note continue the preserved work
+Before:
+fixture-owned agent PID/start: 1844052 proc:47593437
+1844052 1844036 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-pi-31611/fake/agent-input
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-pi-31611/home/data/new-incarnation-pi/launch-brief.md records no ship branch; defaulting to legacy branch fm/new-incarnation-pi
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-pi-31611/home/data/new-incarnation-pi/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+relaunched new-incarnation-pi harness=pi from=pi model=default effort=default backend=herdr endpoint=fmlab:%7 worktree=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-pi-31611/wt
+exit=0
+After:
+fixture-owned agent PID/start: 1849243 proc:47593956
+1849243 1844036 bash            pi --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/new-incarnation-pi-31611/fake/agent-input
+phase=complete
+original_pid_start=1844052	proc:47593437
+exit_result=stopped
+Independent original PID re-read (1844052):
+original PID absent from OS process table
+Transport payloads (fake Herdr, not a vendor TUI):
+/quit
+. '/tmp/fm-new-incarnation-pi+d47ff2b395c3e7956e3633c46da769d738f51596adc0c891c36ae0885c899883/launch.s1791439258.1845644.31979.sh'
+
+
+$ bin/fm-control.sh registration-only relaunch --note do not borrow registration as process proof
+Before:
+fixture-owned agent: absent
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/registration-only-29746/home/data/registration-only/launch-brief.md records no ship branch; defaulting to legacy branch fm/registration-only
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/registration-only-29746/home/data/registration-only/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+error: task registration-only's replacement launch was delivered but no recognized OS process incarnation was confirmed (process evidence 'shell'); relaunch is unconfirmed
+error: the replacement agent for registration-only could not be launched on claude
+error: registration-only was relaunched on claude but no running agent could be confirmed; its work is preserved at /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/registration-only-29746/wt
+exit=1
+After:
+fixture-owned agent: absent
+phase=failed:launching
+rollback=none-new-record-kept
+Transport payloads (fake Herdr, not a vendor TUI):
+. '/tmp/fm-registration-only+379038283f067d8eb838151ff2c37c1fc03b83cb6c8e7eca94ae3a94da51eabb/launch.s1791439262.1850149.3493.sh'
+
+
+$ bin/fm-spawn.sh registration-only --relaunch --harness claude
+Before:
+fixture-owned agent: absent
+phase=failed:launching
+rollback=none-new-record-kept
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/registration-only-29746/home/data/registration-only/launch-brief.md records no ship branch; defaulting to legacy branch fm/registration-only
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/registration-only-29746/home/data/registration-only/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+error: task registration-only's replacement launch was delivered but no recognized OS process incarnation was confirmed (process evidence 'shell'); relaunch is unconfirmed
+exit=1
+After:
+fixture-owned agent: absent
+phase=failed:launching
+rollback=none-new-record-kept
+Transport payloads (fake Herdr, not a vendor TUI):
+. '/tmp/fm-registration-only+379038283f067d8eb838151ff2c37c1fc03b83cb6c8e7eca94ae3a94da51eabb/launch.s1791439262.1850149.3493.sh'
+. '/tmp/fm-registration-only+379038283f067d8eb838151ff2c37c1fc03b83cb6c8e7eca94ae3a94da51eabb/launch.s1791439265.1851839.972.sh'
+
+
+$ bin/fm-spawn.sh late-process --relaunch --harness claude
+Before:
+fixture-owned agent: absent
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/late-process-24589/home/data/late-process/launch-brief.md records no ship branch; defaulting to legacy branch fm/late-process
+warning: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/late-process-24589/home/data/late-process/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+error: task late-process's Herdr pane is 'agent', not positively shell-only; refusing to type a relaunch shell command into it
+error: task late-process's endpoint could not be moved into its recorded worktree '/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/late-process-24589/wt'; refusing to launch outside the copy holding its work
+exit=1
+After:
+fixture-owned agent PID/start: 1854070 proc:47594810
+1854070 1853532 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/late-process-24589/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+
+
+$ bin/fm-control.sh masked-original relaunch --note do not borrow pane death
+Before:
+fixture-owned agent PID/start: 1854329 proc:47594837
+1854329 1854273 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/masked-original-27508/fake/agent-input
+error: task masked-original's original PID/start incarnation survives or cannot be read; relaunch cannot claim a stop or replacement
+error: relaunch of masked-original failed while stopping the old agent and its state is 'unreadable-original-process', so it was not proven stopped; its original instructions were restored and the durable record was retained for recovery
+exit=1
+After:
+fixture-owned agent PID/start: 1854329 proc:47594837
+1854329 1854273 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/masked-original-27508/fake/agent-input
+phase=failed:stopping
+rollback=instructions-restored-agent-state-unreadable-original-process
+Independent original PID re-read (1854329):
+1854329 1854273 bash            claude --noprofile --norc -c read -r _ < "$1" -- /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M4CPXBSKQ9HYZA4V3XC0CNHD/.test-phase-tmp/fm-control-relaunch.V0LBCT/masked-original-27508/fake/agent-input
+Transport payloads (fake Herdr, not a vendor TUI):
+/exit
+

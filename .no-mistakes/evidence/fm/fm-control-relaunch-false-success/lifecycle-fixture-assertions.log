@@ -1,0 +1,4 @@
+ok - Herdr Claude/Pi missing registration: delivery stays live, original survival refuses exit/relaunch, and no launch command reaches the TUI
+ok - Herdr relaunch: real stop/new incarnation succeeds; registration-only replacement never reports success
+ok - Herdr relaunch: a late process cannot borrow the earlier shell-only read to receive launch text
+ok - Herdr stop postcondition: a dead pane read cannot override a surviving exact original incarnation

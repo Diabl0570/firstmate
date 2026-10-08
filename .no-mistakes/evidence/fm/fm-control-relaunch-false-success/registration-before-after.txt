@@ -1,0 +1,19 @@
+Deterministic classifier counterfactual; process evidence is supplied by fixtures, not a running vendor agent.
+Base: 3c58ec8e0123b0047f9bf319e0edd5788eec988d
+Target: ea2e3e0969ba4b109a458bce471e13d1e2ee2e65
+baseline claude missing registration + agent => pane=no-agent recovery=dead husk=permitted
+baseline claude missing registration + shell => pane=no-agent recovery=dead husk=permitted
+baseline claude missing registration + other => pane=no-agent recovery=dead husk=permitted
+baseline claude missing registration + unreadable => pane=no-agent recovery=dead husk=permitted
+baseline pi missing registration + agent => pane=no-agent recovery=dead husk=permitted
+baseline pi missing registration + shell => pane=no-agent recovery=dead husk=permitted
+baseline pi missing registration + other => pane=no-agent recovery=dead husk=permitted
+baseline pi missing registration + unreadable => pane=no-agent recovery=dead husk=permitted
+current claude missing registration + agent => pane=live recovery=alive husk=refused
+current claude missing registration + shell => pane=no-agent recovery=dead husk=permitted
+current claude missing registration + other => pane=unknown recovery=unreadable husk=refused
+current claude missing registration + unreadable => pane=unknown recovery=unreadable husk=refused
+current pi missing registration + agent => pane=live recovery=alive husk=refused
+current pi missing registration + shell => pane=no-agent recovery=dead husk=permitted
+current pi missing registration + other => pane=unknown recovery=unreadable husk=refused
+current pi missing registration + unreadable => pane=unknown recovery=unreadable husk=refused
