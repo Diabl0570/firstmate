@@ -35,8 +35,10 @@ install_remote_herdr_fixture() { # <remote-root> <state> <log> <send-fail> <sock
   # Stable, childless OS incarnations, not the short-lived CLI's own PID.
   # Each exits when the owning suite removes its state file.
   mkfifo "$state.shell-input" "$state.agent-input"
+  # shellcheck disable=SC2016 # Positional parameters expand in the child Bash.
   "$bash_bin" -c 'while [ -e "$1" ]; do read -r -t 1 _ <&3 || :; done' -- "$state" 3<> "$state.shell-input" >/dev/null 2>&1 &
   shell_pid=$!
+  # shellcheck disable=SC2016 # Positional parameters expand in the nested child Bash shells.
   "$bash_bin" -c 'exec -a codex "$1" -c '\''while [ -e "$1" ]; do read -r -t 1 _ <&3 || :; done'\'' -- "$2"' -- "$bash_bin" "$state" 3<> "$state.agent-input" >/dev/null 2>&1 &
   agent_pid=$!
   cat > "$script" <<SH
