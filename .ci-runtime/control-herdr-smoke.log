@@ -1,4 +1,0 @@
-fm-herdr-lab: fleet-state tripwire requires exactly one running default session
-not ok - could not prepare isolated Herdr lab session
-fm-herdr-lab: missing fleet-state tripwire for 'fm-lab-control-smoke-563204'; refusing destructive calls
-fm-herdr-lab: missing fleet-state tripwire for 'fm-lab-control-smoke-563204'; refusing destructive calls
