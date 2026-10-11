@@ -641,7 +641,7 @@ spawn_secondmate_harness() { # <case-dir> <id> <harness> [extra fake tools...]
 }
 
 secondmate_stall_watch() { # <primary> <id> <out> [seconds]
-  local primary=$1 id=$2 out=$3 seconds=${4:-4} state window fakebin
+  local primary=$1 id=$2 out=$3 seconds=${4:-4} state window fakebin agent_state
   state="$primary/state"
   window=$(grep '^window=' "$state/$id.meta" | cut -d= -f2-)
   # A previous quiet checkpoint leaves a downtime marker. The next watcher
@@ -667,11 +667,22 @@ case "\${1:-}" in
     esac
     ;;
   capture-pane) printf 'working\n' ;;
-  display-message) printf '0\n' ;;
+  display-message)
+    # This checkpoint observes a running Claude mate, not an absent agent.
+    # Returning 0 for its command makes liveness recovery run before the
+    # busy/idle stall gate gets a chance to inspect the frozen wake row.
+    case "\$*" in
+      *pane_current_command*) printf 'claude\n' ;;
+      *) printf '0\n' ;;
+    esac
+    ;;
   *) exit 0 ;;
 esac
 SH
   chmod +x "$fakebin/tmux"
+  agent_state=$(PATH="$fakebin:$PATH" FM_HOME="$primary" bash -c \
+    '. "$1/bin/fm-backend.sh"; fm_backend_agent_state tmux "$2"' _ "$ROOT" "$window")
+  [ "$agent_state" = alive ] || fail "stall fixture must model a running agent, got $agent_state"
   PATH="$fakebin:$PATH" FM_HOME="$primary" FM_ROOT_OVERRIDE="$ROOT" \
     FM_STATE_OVERRIDE="$state" FM_BACKEND=tmux \
     FM_SECONDMATE_WAKE_STALL_SECS=1 FM_POLL=1 \
