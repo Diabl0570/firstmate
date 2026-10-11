@@ -1889,7 +1889,7 @@ claude_worker_settings_update() {  # <settings-file> [generated-settings-json]
       cp -p -- "$settings" "$staged"
     else
       chmod "$(printf '%o' $((0666 & ~8#$(umask))))" "$staged"
-    fi && printf '%s\n' "$updated" >"$staged" && mv -f -- "$staged" "$settings"
+    fi && (printf '%s\n' "$updated" >"$staged") && mv -f -- "$staged" "$settings"
   }; then
     rm -f -- "$staged"
     echo "error: could not publish refreshed Claude worker hooks to $settings; left it unchanged" >&2
