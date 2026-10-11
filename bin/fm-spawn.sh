@@ -1553,7 +1553,7 @@ EOF
 # removed and an unchanged one is not rewritten. Malformed settings are refused
 # and left untouched.
 claude_worker_settings_update() {  # <settings-file> [generated-settings-json]
-  local settings=$1 generated=${2-} current='{}' updated
+  local settings=$1 generated=${2-} current='{}' updated staged
   if [ -e "$settings" ]; then
     current=$(cat "$settings") || current=
   elif [ -z "$generated" ]; then
@@ -1603,8 +1603,19 @@ claude_worker_settings_update() {  # <settings-file> [generated-settings-json]
     return 0
   elif [ "$updated" = '{}' ]; then
     rm -f -- "$settings"
-  else
-    printf '%s\n' "$updated" >"$settings"
+  elif ! staged=$(mktemp "${settings%/*}/.${settings##*/}.XXXXXX"); then
+    echo "error: could not stage refreshed Claude worker hooks beside $settings" >&2
+    return 1
+  elif ! {
+    if [ -e "$settings" ]; then
+      cp -p -- "$settings" "$staged"
+    else
+      chmod "$(printf '%o' $((0666 & ~8#$(umask))))" "$staged"
+    fi && printf '%s\n' "$updated" >"$staged" && mv -f -- "$staged" "$settings"
+  }; then
+    rm -f -- "$staged"
+    echo "error: could not publish refreshed Claude worker hooks to $settings; left it unchanged" >&2
+    return 1
   fi
 }
 
