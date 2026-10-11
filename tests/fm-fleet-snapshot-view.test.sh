@@ -1291,6 +1291,8 @@ fault=$(cat "${FM_HOME:?}/endpoint-fault" 2>/dev/null) || exec "$live" "$@"
 case "$fault:$*" in
   unreadable:list-windows*) printf 'server not answering\n' >&2; exit 1 ;;
   missing:list-windows*) "$live" "$@" | grep -vFx fm-predecessor; exit 0 ;;
+  stalled:list-windows*) sleep 20; exec "$live" "$@" ;;
+  stalled:*) exec "$live" "$@" ;;
   *fm-predecessor*) printf "can't find window: fm-predecessor\n" >&2; exit 1 ;;
 esac
 exec "$live" "$@"
@@ -1334,6 +1336,28 @@ SH
     and (.decisions_open | any(.id == "predecessor" and .key == "current-choice"))
     and (.retained_attempts | any(.id == "predecessor" and .state == "failed"))
   ' >/dev/null || fail "terminal native attempt answered an unresolved current call: $out"
+  gen=$("$ROOT/bin/fm-busy-event.sh" arm "$home/state" predecessor)
+  "$ROOT/bin/fm-busy-event.sh" apply "$home/state" predecessor busy --gen "$gen" \
+    --source claude-hook --event user-prompt-submit
+  printf stalled > "$home/endpoint-fault"
+  started=$SECONDS
+  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" FM_SNAPSHOT_CREW_STATE_TIMEOUT=1 \
+    "$SNAPSHOT" --secondmate-home-summary)
+  elapsed=$((SECONDS - started))
+  rm "$home/endpoint-fault"
+  [ "$elapsed" -lt 10 ] || fail "stalled endpoint probe held the snapshot for ${elapsed}s"
+  printf '%s' "$out" | jq -e '
+    .valid == false and .state == "unknown"
+    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor"]}
+    and [.active_children[].id] == ["continuation"]
+    and (.retained_attempts | any(.id == "predecessor" and .state == "failed" and .source == "run-step"
+          and .runtime_activity.state == "unknown" and .runtime_activity.source == "endpoint-unverified"))
+    and (.holds | any(.id == "predecessor" and .source == "backlog"))
+    and (.decisions_open | any(.id == "predecessor" and .key == "current-choice"
+          and .verb == "needs-decision"))
+    and (.decisions_open | any(.id == "delivered" and .verb == "captain-hold"))
+  ' >/dev/null || fail "stalled endpoint probe became inactive or answered an open call: $out"
+  record_claude_idle "$home/state" predecessor
   wt="$home/projects/predecessor"
   cp "$wt/.fixture-overview" "$home/predecessor-overview"
   printf 'count: 2 of 2 total\nruns[2]{id,branch,status,head,pr}:\n' > "$wt/.fixture-overview"

@@ -293,8 +293,9 @@ schema, even when it contains no captain holds; older summaries are rejected. A
 home with neither a valid current ledger nor a valid current cached copy is
 reported unreadable with the reason; collection never computes a summary in
 that home.
-Each local per-task current-state read is bounded by FM_SNAPSHOT_CREW_STATE_TIMEOUT
-(default 10 seconds); a read that hits the bound reports state unknown. Local task
+Each local per-task current-state read and recovery-grade endpoint probe is bounded
+by FM_SNAPSHOT_CREW_STATE_TIMEOUT (default 10 seconds); a read that hits the bound
+reports state unknown, and a probe that hits it reports the endpoint unknown. Local task
 observations run concurrently, up to FM_SNAPSHOT_LOCAL_READ_CONCURRENCY (default 8).
 Remote secondmate endpoint liveness is not probed by this command.
 Terminal contradiction evidence uses
@@ -694,11 +695,13 @@ prefetch_task_observations() {  # <meta> <id>
       else
         endpoint_exists=false
       fi
-      if [ "$kind" = secondmate ]; then
-        agent_alive=$(fm_backend_agent_alive "$backend" "$target" 2>/dev/null || printf unknown)
-        activity_endpoint=$agent_alive
-      elif [ -f "$SNAPSHOT_TASK_DIR/$id.busy-state" ]; then
-        activity_endpoint=$(fm_backend_agent_alive "$backend" "$target" 2>/dev/null || printf unknown)
+      if [ "$kind" = secondmate ] || [ -f "$SNAPSHOT_TASK_DIR/$id.busy-state" ]; then
+        # shellcheck disable=SC2016 # Positional parameters expand inside the child bash, not here.
+        activity_endpoint=$(fm_run_timed "$FM_SNAPSHOT_CREW_STATE_TIMEOUT" bash -c \
+          '. "$1"; fm_backend_agent_alive "$2" "$3"' \
+          fm-agent-alive "$SCRIPT_DIR/fm-backend.sh" "$backend" "$target" 2>/dev/null) \
+          || activity_endpoint=unknown
+        [ "$kind" != secondmate ] || agent_alive=$activity_endpoint
       fi
     fi
   else
