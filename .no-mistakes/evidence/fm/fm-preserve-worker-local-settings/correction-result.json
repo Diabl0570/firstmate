@@ -1,0 +1,29 @@
+{
+  "tested_head_sha": "ba740e88513f48cf59b34cbd3ecb9c491075fa3a",
+  "working_tree_change": "Previously retained stall-fixture correction in tests/fm-busy-adapter-wiring.test.sh, preserved and verified without additional edits.",
+  "reproduction": {
+    "command": "FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_secondmate_claude_spawn_arms_busy_for_the_stall_gate bash bin/fm-test-run.sh tests/.test-phase-before.test.sh",
+    "baseline": "Temporary test copy from HEAD, with the current production scripts",
+    "exit": 1,
+    "failure": "a secondmate inside an armed turn published a durable stall notification"
+  },
+  "verification": {
+    "command": "FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_secondmate_claude_spawn_arms_busy_for_the_stall_gate bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh",
+    "exit": 0,
+    "root_cause": "The fake tmux display-message returned 0 for pane_current_command, modeling an absent agent and triggering recovery before the intended stall gate. The retained correction supplies the running Claude command and asserts the backend classifies the fixture alive without weakening the stall assertions."
+  },
+  "setup_observation": "An initial attempt using a worktree-local TMPDIR hit the existing secondmate placement refusal. Reproduction and verification then used the ordinary temporary test fixture location, allowed as an incidental toolchain side effect; fixture cleanup is owned by tests/lib.sh.",
+  "live_verdict": "inconclusive",
+  "live_blocker": "The complete generated launch contract was supplied and inspected. Its narrowly authorized lab round requires provisioning a named Herdr session, which changes external session/server state. This phase's explicit workspace boundary prohibits intentional system/project/user-data changes outside the worktree, except evidence files. Ephemeral incidental toolchain writes do not authorize an intentional external session lifecycle. No lab was provisioned, no lifecycle round was performed, and no authentication/configuration/credential changes or pipeline-control actions were attempted. Reconciling this boundary is required before the live proof can proceed; synthetic evidence is not live proof.",
+  "scenarios": [
+    {"name": "Install or refresh ordinary-worker hooks while preserving saved settings and custom hook metadata", "result": "untested", "live": false},
+    {"name": "Relaunch the same disposable worker and replace only generated hook incarnation", "result": "untested", "live": false},
+    {"name": "Switch away from Claude and retain worker-owned settings", "result": "untested", "live": false},
+    {"name": "Abort a replacement and retire only generated wiring", "result": "untested", "live": false},
+    {"name": "Refuse malformed or unreadable settings without changing bytes or permissions", "result": "untested", "live": false},
+    {"name": "Preserve original settings on staging, staged-write, and publication failures", "result": "untested", "live": false},
+    {"name": "Use refreshed vendor hooks for busy and idle and reject obsolete incarnations", "result": "untested", "live": false},
+    {"name": "Leave secondmate-local settings untouched during spawn and relaunch", "result": "untested", "live": false}
+  ],
+  "scope": "Only the focused stall failure was reproduced and reverified this correction turn. No full suite, lint, formatting, static analysis, other pipeline phases, push, PR, or CI operation was run. Prior evidence remains preserved; T1 and test-2 remain unresolved."
+}

@@ -1,0 +1,72 @@
+
+COMMAND: TMPDIR=<worktree>/.phase-test/tmp FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_claude_worker_partial_settings_write_keeps_original bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:25:42Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - Claude worker settings survive a real partial staged write with no incomplete output left behind
+FM_TEST_END 2026-10-11T16:25:47Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=4904 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=4969
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=4904 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=4904
+runner exit=0
+
+COMMAND: TMPDIR=<worktree>/.phase-test/tmp FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_claude_worker_settings_preserved bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:25:47Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - Claude worker hook creation and refresh preserve settings, nested fields, and ordinary hook semantics
+FM_TEST_END 2026-10-11T16:25:57Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=10365 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=10431
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=10365 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=10365
+runner exit=0
+
+COMMAND: TMPDIR=<worktree>/.phase-test/tmp FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_claude_worker_invalid_settings_untouched bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:25:57Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - Claude worker refuses malformed settings without overwriting the existing file
+FM_TEST_END 2026-10-11T16:26:08Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=10847 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=10919
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=10847 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=10847
+runner exit=0
+
+COMMAND: TMPDIR=<worktree>/.phase-test/tmp FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_claude_worker_settings_publish_failures_keep_original bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:26:08Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - Claude worker settings stay intact through failed staging, writes, and replacement
+FM_TEST_END 2026-10-11T16:26:32Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=23926 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=23991
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=23926 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=23926
+runner exit=0
+
+COMMAND: TMPDIR=<worktree>/.phase-test/tmp FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_claude_hooks_semantic_lifecycle bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:26:32Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - claude hooks open on UserPromptSubmit and close on Stop, StopFailure, and SessionEnd
+FM_TEST_END 2026-10-11T16:26:35Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=3364 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=3428
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=3364 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=3364
+runner exit=0
+
+COMMAND: TMPDIR=<worktree>/.phase-test/tmp FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_claude_hooks_stale_incarnation_harmless bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:26:36Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - claude hook events from a superseded incarnation are rejected without breaking the hook
+FM_TEST_END 2026-10-11T16:26:39Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=3276 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=3343
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=3276 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=3276
+runner exit=0
+
+COMMAND: env -u TMPDIR FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_secondmate_claude_spawn_leaves_local_settings_untouched bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:26:39Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - a claude secondmate spawn leaves an existing settings.local.json untouched
+FM_TEST_END 2026-10-11T16:26:41Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=1962 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=2029
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=1962 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=1962
+runner exit=0
+
+COMMAND: env -u TMPDIR FM_TEST_SKIP_ORPHAN_REAP=1 FM_TEST_ONLY=test_secondmate_claude_spawn_arms_busy_for_the_stall_gate bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_BEGIN 2026-10-11T16:26:41Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - a claude secondmate spawn arms the busy contract the stall gate can see, and Stop does not wake the parent
+FM_TEST_END 2026-10-11T16:26:53Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=11988 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=12053
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=11988 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=11988
+runner exit=0

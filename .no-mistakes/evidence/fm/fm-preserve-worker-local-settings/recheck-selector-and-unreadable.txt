@@ -1,0 +1,40 @@
+## extra-results.txt
+Unreadable fixture runner exit=0
+Unknown selection runner exit=1 (expected 1)
+Selected failure runner exit=1 (expected 1)
+Valid selection runner exit=0 (expected 0)
+
+
+## unreadable.txt
+FM_TEST_BEGIN 2026-10-11T16:27:32Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - unreadable settings refuse publication without changing bytes or mode
+FM_TEST_END 2026-10-11T16:27:34Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=1868 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=1935
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=1868 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=1868
+
+
+## selector-unknown.txt
+FM_TEST_BEGIN 2026-10-11T16:27:34Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+not ok - unknown FM_TEST_ONLY test: test_unknown_focused_function
+FM_TEST_END 2026-10-11T16:27:34Z tests/fm-busy-adapter-wiring.test.sh exit=1 duration_ms=67 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=1 skipped_gate=0 duration_ms=132
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=67 failed=1
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=67
+
+
+## selector-failing.txt
+FM_TEST_BEGIN 2026-10-11T16:27:34Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+FM_TEST_END 2026-10-11T16:27:34Z tests/fm-busy-adapter-wiring.test.sh exit=37 duration_ms=70 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=1 skipped_gate=0 duration_ms=135
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=70 failed=1
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=70
+
+
+## selector-passing.txt
+FM_TEST_BEGIN 2026-10-11T16:27:34Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - claude hook events from a superseded incarnation are rejected without breaking the hook
+FM_TEST_END 2026-10-11T16:27:37Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=3310 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=3384
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=3310 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=3310

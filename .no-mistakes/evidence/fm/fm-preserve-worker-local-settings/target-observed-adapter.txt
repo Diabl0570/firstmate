@@ -1,0 +1,27 @@
+
+EVIDENCE CHECK: test_claude_worker_settings_preserved
+FM_TEST_BEGIN 2026-10-11T15:19:06Z tests/.settings-phase-adapter.test.sh family=unclassified expected_gate_skip=none
+ok - Claude worker hook creation and refresh preserve settings, nested fields, and ordinary hook semantics
+FM_TEST_END 2026-10-11T15:19:16Z tests/.settings-phase-adapter.test.sh exit=0 duration_ms=9682 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=9751
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=9682 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-adapter.test.sh duration_ms=9682
+EXIT: 0
+
+EVIDENCE CHECK: test_claude_worker_invalid_settings_untouched
+FM_TEST_BEGIN 2026-10-11T15:19:16Z tests/.settings-phase-adapter.test.sh family=unclassified expected_gate_skip=none
+ok - Claude worker refuses malformed settings without overwriting the existing file
+FM_TEST_END 2026-10-11T15:19:26Z tests/.settings-phase-adapter.test.sh exit=0 duration_ms=10740 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=10805
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=10740 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-adapter.test.sh duration_ms=10740
+EXIT: 0
+
+EVIDENCE CHECK: test_claude_worker_settings_publish_failures_keep_original
+FM_TEST_BEGIN 2026-10-11T15:19:26Z tests/.settings-phase-adapter.test.sh family=unclassified expected_gate_skip=none
+ok - Claude worker settings stay intact through failed staging, writes, and replacement
+FM_TEST_END 2026-10-11T15:19:51Z tests/.settings-phase-adapter.test.sh exit=0 duration_ms=24496 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=24559
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=24496 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-adapter.test.sh duration_ms=24496
+EXIT: 0

@@ -1,0 +1,7 @@
+FM_TEST_BEGIN 2026-10-11T15:26:11Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+not ok - a partial staged write must refuse the spawn rather than kill its writer: warning: <fixture>/worker-partial-write/home/data/worker-partial-write/launch-brief.md records no ship branch; defaulting to legacy branch fm/worker-partial-write
+warning: <fixture>/worker-partial-write/home/data/worker-partial-write/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches: expected exit 1, got 153
+FM_TEST_END 2026-10-11T15:26:13Z tests/fm-busy-adapter-wiring.test.sh exit=1 duration_ms=1926 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=1 skipped_gate=0 duration_ms=1987
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=1926 failed=1
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=1926

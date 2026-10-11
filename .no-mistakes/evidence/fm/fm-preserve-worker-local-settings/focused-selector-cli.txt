@@ -1,0 +1,18 @@
+Actual canonical runner and focused selector invocations.
+
+$ FM_TEST_ONLY=test_unknown_selection bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+not ok - unknown FM_TEST_ONLY test: test_unknown_selection
+FM_TEST_END 2026-10-11T14:22:46Z tests/fm-busy-adapter-wiring.test.sh exit=1 duration_ms=141 gate_skip=false
+Runner exit: 1
+
+Disposable BASH_ENV fixture: test_selected_return_failure() { return 37; }
+$ BASH_ENV="$PWD/.test-phase-tmp/selected-return-failure.sh" FM_TEST_ONLY=test_selected_return_failure bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+FM_TEST_END 2026-10-11T14:26:43Z tests/fm-busy-adapter-wiring.test.sh exit=37 duration_ms=137 gate_skip=false
+Runner exit: 1
+
+$ FM_TEST_ONLY=test_claude_worker_settings_preserved bash bin/fm-test-run.sh tests/fm-busy-adapter-wiring.test.sh
+ok - Claude worker hook creation and refresh preserve settings, nested fields, and ordinary hook semantics
+FM_TEST_END 2026-10-11T14:26:53Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=10014 gate_skip=false
+Runner exit: 0
+
+The failing-test fixture supplies a return status to the actual selector; it does not replace the selector or the runner. The selected settings regression uses synthetic task/session fixtures and is not a live Claude session.

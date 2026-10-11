@@ -1,0 +1,45 @@
+
+POST-FIX EVIDENCE CHECK: test_relaunch_keeps_worker_local_settings_and_refreshes_only_firstmate_hooks
+FM_TEST_BEGIN 2026-10-11T15:27:23Z tests/.settings-phase-relaunch.test.sh family=unclassified expected_gate_skip=none
+ok - fm-control relaunch: worker-local settings survive same-task refreshes and a harness switch
+FM_TEST_END 2026-10-11T15:27:30Z tests/.settings-phase-relaunch.test.sh exit=0 duration_ms=6969 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=7027
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=6969 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-relaunch.test.sh duration_ms=6969
+EXIT: 0
+
+POST-FIX EVIDENCE CHECK: test_malformed_worker_settings_refuse_relaunch_untouched
+FM_TEST_BEGIN 2026-10-11T15:27:30Z tests/.settings-phase-relaunch.test.sh family=unclassified expected_gate_skip=none
+ok - fm-control relaunch: malformed worker settings refuse retirement and stay untouched
+FM_TEST_END 2026-10-11T15:27:31Z tests/.settings-phase-relaunch.test.sh exit=0 duration_ms=1226 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=1292
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=1226 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-relaunch.test.sh duration_ms=1226
+EXIT: 0
+
+POST-FIX EVIDENCE CHECK: test_failed_worker_settings_publication_refuses_relaunch_untouched
+FM_TEST_BEGIN 2026-10-11T15:27:31Z tests/.settings-phase-relaunch.test.sh family=unclassified expected_gate_skip=none
+ok - fm-control relaunch: a failed worker settings publication refuses and leaves the settings untouched
+FM_TEST_END 2026-10-11T15:27:37Z tests/.settings-phase-relaunch.test.sh exit=0 duration_ms=5698 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=5764
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=5698 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-relaunch.test.sh duration_ms=5698
+EXIT: 0
+
+POST-FIX EVIDENCE CHECK: test_prepublication_abort_keeps_worker_local_settings
+FM_TEST_BEGIN 2026-10-11T15:27:37Z tests/.settings-phase-relaunch.test.sh family=unclassified expected_gate_skip=none
+ok - fm-spawn relaunch: prepublication abort keeps worker-local settings
+FM_TEST_END 2026-10-11T15:27:41Z tests/.settings-phase-relaunch.test.sh exit=0 duration_ms=4070 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=4136
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=4070 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-relaunch.test.sh duration_ms=4070
+EXIT: 0
+
+POST-FIX EVIDENCE CHECK: test_secondmate_claude_relaunch_keeps_local_settings
+FM_TEST_BEGIN 2026-10-11T15:27:41Z tests/.settings-phase-relaunch.test.sh family=unclassified expected_gate_skip=none
+ok - fm-control relaunch: a claude secondmate keeps settings.local.json and retires the state settings file and the Stop pointer
+FM_TEST_END 2026-10-11T15:27:43Z tests/.settings-phase-relaunch.test.sh exit=0 duration_ms=1905 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=1971
+FM_TEST_SUMMARY_FAMILY family=unclassified count=1 duration_ms=1905 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/.settings-phase-relaunch.test.sh duration_ms=1905
+EXIT: 0
