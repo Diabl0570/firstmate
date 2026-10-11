@@ -544,8 +544,9 @@ fm_control_harness_wiring_dirs() {  # <harness> <state-dir> <id>
 
 # The firstmate-owned global turn-end registry entry a harness mints per task.
 # grok and kimi are the two adapters whose turn-end hook is global and gated by
-# a private token file; every other adapter's wiring is fully covered by
-# fm_control_harness_wiring_paths. Prints the registry path or nothing.
+# a private token file; other adapters have no global registry entry. Claude
+# worker-hook retirement is owned by bin/fm-spawn.sh rather than the path list.
+# Prints the registry path or nothing.
 fm_control_harness_turnend_token_path() {  # <harness> <state-dir> <id>
   local harness=${1-} state=${2-} id=${3-}
   [ -n "$state" ] && [ -n "$id" ] || return 1

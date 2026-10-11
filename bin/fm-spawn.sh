@@ -505,9 +505,7 @@
 #     __POLYTOKENFACETS__ the worktree's `.polytoken/facets` dir carrying the
 #                  generated firstmate-worker facet (the project facet layer)
 # Verified per-harness turn-end hooks are installed automatically where enabled; some live outside the worktree.
-# Claude worker hooks are merged into .claude/settings.local.json, preserving
-# unrelated settings and hooks while replacing earlier generated busy commands;
-# a relaunch retires only those generated commands from that file.
+# docs/configuration.md "Installed hooks and launch details" owns Claude worker-settings preservation.
 # A --secondmate launch arms the same semantic busy contract (bin/fm-busy-lib.sh) in THIS
 # parent home for claude, opencode, pi, pi-signed, and omp, so the parent's active-turn
 # gate can read a busy verdict. Those hooks do not touch the parent's turn-ended marker:
@@ -1824,12 +1822,9 @@ EOF
   fi
 }
 
-# A crewmate's .claude/settings.local.json also holds the worker's own saved
-# rules and ordinary hooks, so firstmate owns only its generated busy-event
-# commands there. Remove those (and any hook group or event they alone made
-# up), then append the <generated> hooks when given. A file left empty is
-# removed and an unchanged one is not rewritten. Malformed settings are refused
-# and left untouched.
+# Worker-saved rules and hooks share this file: ownership is limited to commands
+# invoking this code root's fm-busy-event.sh with the Claude-hook source.
+# A group containing a generated command is not necessarily wholly owned.
 claude_worker_settings_update() {  # <settings-file> [generated-settings-json]
   local settings=$1 generated=${2-} current='{}' updated staged
   if [ -e "$settings" ]; then
@@ -5644,10 +5639,8 @@ BUSY_GEN=
     # the ordinary Stop idle hook, without the parent turn-ended touch. Every
     # hook command tolerates a refused event (|| true) so a stale-gen writer
     # can never break Claude's own lifecycle.
-    # A crewmate writes those hooks into the disposable worktree's
-    # .claude/settings.local.json. A secondmate does not: that file in a
-    # persistent home is where Claude Code stores the captain's "don't ask
-    # again" rules, and rewriting it drops them. The secondmate hooks go in
+    # Worker-settings ownership is documented in docs/configuration.md under
+    # "Installed hooks and launch details". The secondmate hooks go in
     # a firstmate-owned state/<id>.claude-settings.json passed through
     # --settings. Claude Code merges hook entries across settings files
     # (https://code.claude.com/docs/en/hooks) and keeps any key
