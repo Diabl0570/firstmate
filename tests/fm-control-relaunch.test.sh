@@ -500,6 +500,45 @@ test_malformed_worker_settings_refuse_relaunch_untouched() {
   pass "fm-control relaunch: malformed worker settings refuse retirement and stay untouched"
 }
 
+test_failed_worker_settings_publication_refuses_relaunch_untouched() {
+  local dir out rc settings expected real_mv gen
+  dir=$(new_case worker-settings-publish rl47)
+  add_ship_task "$dir" rl47 claude
+  arm_claude_worker_wiring "$dir" rl47
+  settings="$dir/wt/.claude/settings.local.json"
+  expected="$dir/expected.json"
+  printf '%s\n' '{"permissions": {"allow": ["Read(./docs/**)"]}, "hooks": {"PreToolUse": [{"matcher": "Read", "hooks": [{"type": "command", "command": "printf fixture-read"}]}]}}' \
+    > "$expected"
+  jq --slurpfile expected "$expected" '.permissions = $expected[0].permissions |
+    .hooks.PreToolUse = $expected[0].hooks.PreToolUse' "$settings" > "$dir/prior.json"
+  cp "$dir/prior.json" "$settings"
+  chmod 600 "$settings"
+  real_mv=$(command -v mv)
+  make_mv_failure_stub "$dir"
+  out=$(FM_REAL_MV="$real_mv" FM_FAKE_META_PUBLISH_MV_FAIL="$settings" \
+    run_control "$dir" rl47 relaunch --note "retry after settings publication"); rc=$?
+  expect_code 1 "$rc" "a failed settings publication should refuse the relaunch"$'\n'"$out"
+  assert_contains "$out" "could not publish refreshed Claude worker hooks" \
+    "the refusal should name the failed settings publication"
+  assert_contains "$out" "could not retire claude wiring" \
+    "the refusal should come from prior wiring retirement"
+  cmp -s "$dir/prior.json" "$settings" || fail "a failed settings publication changed the worker settings"
+  [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
+    || fail "a failed settings publication left staged settings behind: $(ls -A "${settings%/*}")"
+  assert_no_grep "Firstmate operational input waiting: read" "$dir/fake/literal" \
+    "replacement launch must not be armed after a failed settings publication"
+
+  out=$(FM_REAL_MV="$real_mv" run_control "$dir" rl47 relaunch --note "settings publication works"); rc=$?
+  expect_code 0 "$rc" "the relaunch should succeed once settings publication works"$'\n'"$out"
+  gen=$(meta_field "$dir" rl47 busy_gen)
+  worker_settings_match "$settings" "$expected" "$gen" \
+    || fail "the relaunch after a failed publication did not refresh only the generated hooks"
+  [ -n "$(find "$settings" -prune -perm 600)" ] || fail "the refreshed worker settings lost their mode"
+  [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
+    || fail "the refreshed worker settings left staged settings behind"
+  pass "fm-control relaunch: a failed worker settings publication refuses and leaves the settings untouched"
+}
+
 test_relaunch_refuses_before_exit_when_the_composer_holds_pending_text() {
   local dir out rc
   dir=$(new_case pending-exit rl43)
@@ -3108,6 +3147,7 @@ test_exit_removes_the_dialog_file_before_releasing_the_lock
 test_same_harness_relaunch_keeps_identity_and_reuses_the_endpoint
 test_relaunch_keeps_worker_local_settings_and_refreshes_only_firstmate_hooks
 test_malformed_worker_settings_refuse_relaunch_untouched
+test_failed_worker_settings_publication_refuses_relaunch_untouched
 test_relaunch_refuses_before_exit_when_the_composer_holds_pending_text
 test_relaunch_refuses_before_exit_when_the_composer_state_is_unproven
 test_relaunch_from_linked_home_preserves_recorded_worktree

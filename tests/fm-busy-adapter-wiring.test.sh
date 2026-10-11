@@ -490,6 +490,83 @@ test_claude_worker_invalid_settings_untouched() {
   pass "Claude worker refuses malformed settings without overwriting the existing file"
 }
 
+# Stubs that fail one step of a settings publication: staging beside <settings>
+# (mktemp), the staged write (cp leaves the staged copy read-only, so the
+# complete write into it fails), or the replacement (mv onto <settings>).
+make_settings_publish_failure_stubs() {  # <fakebin>
+  local fakebin=$1 tool real
+  for tool in mktemp cp mv; do
+    real=$(command -v "$tool")
+    cat > "$fakebin/$tool" <<SH
+#!/usr/bin/env bash
+dir=\${FM_FAKE_SETTINGS_PATH%/*}
+last=
+for arg in "\$@"; do last=\$arg; done
+case "\${FM_FAKE_SETTINGS_FAIL:-}:$tool:\$last" in
+  "stage:mktemp:\$dir/"*) exit 1 ;;
+  "write:cp:\$dir/"*) "$real" "\$@" || exit; chmod 400 "\$last"; exit 0 ;;
+  "publish:mv:\$FM_FAKE_SETTINGS_PATH") exit 1 ;;
+esac
+exec "$real" "\$@"
+SH
+    chmod +x "$fakebin/$tool"
+  done
+}
+
+test_claude_worker_settings_publish_failures_keep_original() {
+  local mode rec id out settings prior
+  for mode in stage write publish; do
+    if [ "$mode" = write ] && [ "$(id -u)" = 0 ]; then
+      continue
+    fi
+    id="worker-publish-$mode"
+    rec=$(make_spawn_case "$id" claude "$id")
+    read_case_record "$rec"
+    settings="$WT_DIR/.claude/settings.local.json"
+    prior="$CASE_DIR/prior.json"
+    printf '.claude/settings.local.json\n' >> "$PROJ_DIR/.git/info/exclude"
+    out=$(umask 022; run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+    expect_code 0 $? "claude spawn creating worker settings should succeed: $out"
+    [ -n "$(find "$settings" -prune -perm 644)" ] \
+      || fail "new worker settings did not get the creating umask's mode"
+    jq '.permissions = {"allow": ["Read(./docs/**)"]} |
+      .hooks.PreToolUse = [{"matcher": "Read", "hooks": [{"type": "command", "command": "printf fixture-read"}]}]' \
+      "$settings" > "$prior"
+    cp "$prior" "$settings"
+    chmod 640 "$settings"
+    make_settings_publish_failure_stubs "$FAKEBIN_DIR"
+    id="$id-refresh"
+    fm_test_spawn_brief "$HOME_DIR" "$id"
+    out=$(FM_FAKE_SETTINGS_FAIL=$mode FM_FAKE_SETTINGS_PATH=$settings \
+      run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+    expect_code 1 $? "a failed $mode of refreshed worker settings should refuse the spawn: $out"
+    if [ "$mode" = stage ]; then
+      assert_contains "$out" "could not stage refreshed Claude worker hooks" \
+        "the $mode failure was not reported by the settings writer"
+    else
+      assert_contains "$out" "could not publish refreshed Claude worker hooks" \
+        "the $mode failure was not reported by the settings writer"
+    fi
+    cmp -s "$prior" "$settings" || fail "a failed $mode changed the existing worker settings"
+    [ -n "$(find "$settings" -prune -perm 640)" ] || fail "a failed $mode changed the settings mode"
+    [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
+      || fail "a failed $mode left staged settings behind: $(ls -A "${settings%/*}")"
+    id="$id-retry"
+    fm_test_spawn_brief "$HOME_DIR" "$id"
+    out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+    expect_code 0 $? "the refresh should succeed once publication works: $out"
+    jq -e --slurpfile prior "$prior" --arg id "$id" '
+      del(.hooks) == ($prior[0] | del(.hooks)) and
+      .hooks.PreToolUse == $prior[0].hooks.PreToolUse and
+      (.hooks.Stop | length == 1) and (.hooks.Stop[0].hooks[0].command | contains($id))
+    ' "$settings" >/dev/null || fail "the refresh after a failed $mode did not replace only the generated hooks"
+    [ -n "$(find "$settings" -prune -perm 640)" ] || fail "a refresh after a failed $mode changed the settings mode"
+    [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
+      || fail "a refresh after a failed $mode left staged settings behind"
+  done
+  pass "Claude worker settings stay intact through failed staging, writes, and replacement"
+}
+
 test_claude_hooks_stale_incarnation_harmless() {
   local rec id=busy-cl-2 out state settings
   rec=$(make_spawn_case claude-stale claude "$id")
@@ -1081,6 +1158,7 @@ test_opencode_plugin_v2_execution_lifecycle
 test_claude_hooks_semantic_lifecycle
 test_claude_worker_settings_preserved
 test_claude_worker_invalid_settings_untouched
+test_claude_worker_settings_publish_failures_keep_original
 test_claude_hooks_stale_incarnation_harmless
 test_gemini_hooks_semantic_lifecycle
 test_gemini_hooks_stale_incarnation_harmless
