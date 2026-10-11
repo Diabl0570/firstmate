@@ -1280,6 +1280,44 @@ SH
     .valid and (.active_children | any(.id == "predecessor" and .source == "claude-hook"))
     and (.retained_attempts | any(.id == "predecessor" and .state == "failed" and .runtime_activity.state == "busy"))
   ' >/dev/null || fail "terminal validation suppressed its worker continuing: $out"
+
+  # A busy record outliving its endpoint is not current work. Only the
+  # recovery-grade verdict proves death; an unreadable probe stays unknown.
+  cp "$fakebin/tmux" "$fakebin/tmux-live"
+  cat > "$fakebin/tmux" <<'SH'
+#!/usr/bin/env bash
+live="$(dirname "$0")/tmux-live"
+fault=$(cat "${FM_HOME:?}/endpoint-fault" 2>/dev/null) || exec "$live" "$@"
+case "$fault:$*" in
+  unreadable:list-windows*) printf 'server not answering\n' >&2; exit 1 ;;
+  missing:list-windows*) "$live" "$@" | grep -vFx fm-predecessor; exit 0 ;;
+  *fm-predecessor*) printf "can't find window: fm-predecessor\n" >&2; exit 1 ;;
+esac
+exec "$live" "$@"
+SH
+  chmod +x "$fakebin/tmux"
+  printf missing > "$home/endpoint-fault"
+  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
+  printf '%s' "$out" | jq -e '
+    .valid and .state == "captain_decision"
+    and [.active_children[].id] == ["continuation"]
+    and (.retained_attempts | any(.id == "predecessor" and .state == "failed"
+          and .runtime_activity.state == "dead" and .runtime_activity.source == "endpoint-gone"))
+    and (.holds | any(.id == "predecessor" and .source == "backlog"))
+    and (.decisions_open | any(.id == "delivered" and .verb == "captain-hold"))
+    and .counts.landed == 0
+  ' >/dev/null || fail "busy record behind a lost endpoint was reported as current work: $out"
+  printf unreadable > "$home/endpoint-fault"
+  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
+  printf '%s' "$out" | jq -e '
+    .valid == false and .state == "unknown"
+    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor"]}
+    and [.active_children[].id] == ["continuation"]
+    and (.retained_attempts | any(.id == "predecessor" and .state == "failed"
+          and .runtime_activity.state == "unknown" and .runtime_activity.source == "endpoint-unverified"))
+    and (.decisions_open | any(.id == "delivered"))
+  ' >/dev/null || fail "unreadable endpoint evidence became current or inactive execution: $out"
+  rm "$home/endpoint-fault"
   rm "$home/state/predecessor.busy-state"
   out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
   printf '%s' "$out" | jq -e '
@@ -1296,6 +1334,17 @@ SH
     and (.decisions_open | any(.id == "predecessor" and .key == "current-choice"))
     and (.retained_attempts | any(.id == "predecessor" and .state == "failed"))
   ' >/dev/null || fail "terminal native attempt answered an unresolved current call: $out"
+  wt="$home/projects/predecessor"
+  cp "$wt/.fixture-overview" "$home/predecessor-overview"
+  printf 'count: 2 of 2 total\nruns[2]{id,branch,status,head,pr}:\n' > "$wt/.fixture-overview"
+  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
+  printf '%s' "$out" | jq -e '
+    .valid == false and .state == "unknown"
+    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor"]}
+    and (.decisions_open | any(.id == "predecessor" and .key == "current-choice"
+          and .verb == "needs-decision"))
+  ' >/dev/null || fail "unknown native coverage closed an unresolved current call: $out"
+  cp "$home/predecessor-overview" "$wt/.fixture-overview"
   printf 'resolved [key=current-choice]: synthetic choice recorded\n' >> "$home/state/predecessor.status"
   out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
   printf '%s' "$out" | jq -e '
@@ -1349,6 +1398,14 @@ SH
     .state == "unknown" and (.invalidity.ids | index("review") != null)
     and (.retained_attempts | all(.id != "review"))
   ' >/dev/null || fail "missing lifecycle evidence was treated as inactive: $out"
+  cp "$home/state/review.status" "$home/review-status"
+  printf 'needs-decision [key=review-choice]: choose the report follow-up\n' >> "$home/state/review.status"
+  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
+  printf '%s' "$out" | jq -e '
+    .state == "unknown" and (.invalidity.ids | index("review") != null)
+    and (.decisions_open | any(.id == "review" and .key == "review-choice"))
+  ' >/dev/null || fail "unknown pane activity closed an unresolved call: $out"
+  cp "$home/review-status" "$home/state/review.status"
 
   # A rendered idle fallback plus a report and terminal declaration is still
   # not structured activity coverage for this reporting distinction.
