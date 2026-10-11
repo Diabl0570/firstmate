@@ -1055,8 +1055,12 @@ test_secondmate_codex_and_grok_do_not_arm_a_parent_turnend() {
 }
 
 if [ -n "${FM_TEST_ONLY:-}" ]; then
+  case "$FM_TEST_ONLY" in
+    test_*) declare -F "$FM_TEST_ONLY" >/dev/null || fail "unknown FM_TEST_ONLY test: $FM_TEST_ONLY" ;;
+    *) fail "FM_TEST_ONLY must name a test_ function: $FM_TEST_ONLY" ;;
+  esac
   "$FM_TEST_ONLY"
-  exit 0
+  exit
 fi
 
 test_secondmate_claude_spawn_arms_busy_for_the_stall_gate

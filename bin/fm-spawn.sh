@@ -506,7 +506,8 @@
 #                  generated firstmate-worker facet (the project facet layer)
 # Verified per-harness turn-end hooks are installed automatically where enabled; some live outside the worktree.
 # Claude worker hooks are merged into .claude/settings.local.json, preserving
-# unrelated settings and hooks while replacing earlier generated busy commands.
+# unrelated settings and hooks while replacing earlier generated busy commands;
+# a relaunch retires only those generated commands from that file.
 # A --secondmate launch arms the same semantic busy contract (bin/fm-busy-lib.sh) in THIS
 # parent home for claude, opencode, pi, pi-signed, and omp, so the parent's active-turn
 # gate can read a busy verdict. Those hooks do not touch the parent's turn-ended marker:
@@ -1818,6 +1819,71 @@ EOF
   done <<EOF
 $(fm_control_harness_wiring_dirs "$harness" "$state" "$id")
 EOF
+  if [ "$harness" = claude ] && [ "$kind" != secondmate ]; then
+    claude_worker_settings_update "$wt/.claude/settings.local.json" || return 1
+  fi
+}
+
+# A crewmate's .claude/settings.local.json also holds the worker's own saved
+# rules and ordinary hooks, so firstmate owns only its generated busy-event
+# commands there. Remove those (and any hook group or event they alone made
+# up), then append the <generated> hooks when given. A file left empty is
+# removed and an unchanged one is not rewritten. Malformed settings are refused
+# and left untouched.
+claude_worker_settings_update() {  # <settings-file> [generated-settings-json]
+  local settings=$1 generated=${2-} current='{}' updated
+  if [ -e "$settings" ]; then
+    current=$(cat "$settings") || current=
+  elif [ -z "$generated" ]; then
+    return 0
+  fi
+  [ -n "$generated" ] || generated='{"hooks":{}}'
+  if ! updated=$(printf '%s\n' "$current" | jq -s \
+    --argjson generated "$generated" \
+    --arg prefix "$(shell_quote "$FM_ROOT/bin/fm-busy-event.sh") apply " '
+      def firstmate_hook:
+        .type == "command" and
+        ((.command // "") | startswith($prefix) or contains("; " + $prefix)) and
+        ((.command // "") | contains(" --source claude-hook --event "));
+      def owned_group: any(.hooks[]?; firstmate_hook);
+      if length != 1 or (.[0] | type) != "object" then
+        error("worker settings must contain one JSON object")
+      else .[0] end |
+      if has("hooks") and (.hooks | type) != "object" then
+        error("worker hooks must be an object")
+      else . end |
+      . as $current |
+      reduce ((.hooks // {}) | keys_unsorted[]) as $event (.;
+        if (.hooks[$event] | type) == "array" and any(.hooks[$event][]; owned_group) then
+          .hooks[$event] |= map(
+            if owned_group then
+              .hooks |= map(select(firstmate_hook | not)) |
+              select(.hooks | length > 0)
+            else . end
+          ) |
+          if .hooks[$event] == [] then del(.hooks[$event]) else . end
+        else . end
+      ) |
+      if . != $current and .hooks == {} then del(.hooks) else . end |
+      reduce ($generated.hooks | keys_unsorted[]) as $event (.;
+        if (.hooks // {} | has($event)) and (.hooks[$event] | type) != "array" then
+          error("worker hook event must be an array")
+        else
+          .hooks[$event] = (.hooks[$event] // []) + $generated.hooks[$event]
+        end
+      ) |
+      if . == $current then empty else . end
+    '); then
+    echo "error: could not refresh Claude worker hooks without losing existing settings in $settings" >&2
+    return 1
+  fi
+  if [ -z "$updated" ]; then
+    return 0
+  elif [ "$updated" = '{}' ]; then
+    rm -f -- "$settings"
+  else
+    printf '%s\n' "$updated" >"$settings"
+  fi
 }
 
 spawn_herdr_presentation_order_lock_release() {
@@ -5607,43 +5673,7 @@ BUSY_GEN=
       printf '{%s%s}\n' "$session_keys" "$hooks_json" >"$STATE_REAL/$ID.claude-settings.json"
     else
       mkdir -p "$WT/.claude"
-      # Worker-local settings may already contain saved rules and ordinary
-      # hooks. Refresh only our generated commands, retaining other keys and
-      # hook groups (including custom hooks sharing a group with our command).
-      settings_json='{}'
-      if [ -e "$WT/.claude/settings.local.json" ]; then
-        settings_json=$(cat "$WT/.claude/settings.local.json") || exit 1
-      fi
-      if ! settings_json=$(printf '%s\n' "$settings_json" | jq -es \
-        --argjson generated "{$hooks_json}" \
-        --arg prefix "$(shell_quote "$FM_ROOT/bin/fm-busy-event.sh") apply " '
-          def firstmate_hook:
-            .type == "command" and
-            ((.command // "") | startswith($prefix) or contains("; " + $prefix)) and
-            ((.command // "") | contains(" --source claude-hook --event "));
-          if length != 1 or (.[0] | type) != "object" then
-            error("worker settings must contain one JSON object")
-          else .[0] end |
-          if has("hooks") and (.hooks | type) != "object" then
-            error("worker hooks must be an object")
-          else .hooks //= {} end |
-          reduce ($generated.hooks | keys_unsorted[]) as $event (.;
-            if (.hooks | has($event)) and (.hooks[$event] | type) != "array" then
-              error("worker hook event must be an array")
-            else
-              .hooks[$event] = ((.hooks[$event] // [] | map(
-                if any(.hooks[]?; firstmate_hook) then
-                  .hooks |= map(select(firstmate_hook | not)) |
-                  select(.hooks | length > 0)
-                else . end
-              )) + $generated.hooks[$event])
-            end
-          )
-        '); then
-        echo "error: could not refresh Claude worker hooks without losing existing settings" >&2
-        exit 1
-      fi
-      printf '%s\n' "$settings_json" >"$WT/.claude/settings.local.json"
+      claude_worker_settings_update "$WT/.claude/settings.local.json" "{$hooks_json}" || exit 1
       exclude_path '.claude/settings.local.json'
     fi
     ;;
