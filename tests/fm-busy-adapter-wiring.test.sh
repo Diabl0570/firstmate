@@ -458,6 +458,40 @@ test_claude_worker_settings_publish_failures_keep_original() {
   pass "Claude worker settings stay intact through failed staging, writes, and replacement"
 }
 
+# A real file-size limit interrupts the staged printf with SIGXFSZ after a
+# partial write. The writer must contain that signal, refuse publication, and
+# remove the incomplete staging file without touching the saved settings.
+test_claude_worker_partial_settings_write_keeps_original() {
+  local rec id=worker-partial-write out settings prior rc
+  rec=$(make_spawn_case worker-partial-write claude "$id")
+  read_case_record "$rec"
+  settings="$WT_DIR/.claude/settings.local.json"
+  prior="$CASE_DIR/prior.json"
+  mkdir -p "${settings%/*}"
+  printf '.claude/settings.local.json\n' >> "$PROJ_DIR/.git/info/exclude"
+  jq -n '{permissions: {allow: ["Read(./docs/**)"]},
+    env: {FIXTURE_FLAG: "preserve"}, savedFixture: ("x" * 3800)}' > "$prior"
+  [ "$(wc -c < "$prior")" -lt 4096 ] || fail "partial-write fixture exceeds its output limit"
+  cp "$prior" "$settings"
+  chmod 640 "$settings"
+  out=$(ulimit -f 4; run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR"); rc=$?
+  expect_code 1 "$rc" "a partial staged write must refuse the spawn rather than kill its writer: $out"
+  assert_contains "$out" 'could not publish refreshed Claude worker hooks' \
+    "a partial staged write did not surface the settings publication refusal"
+  cmp -s "$prior" "$settings" || fail "a partial staged write changed the saved settings"
+  [ -n "$(find "$settings" -prune -perm 640)" ] || fail "a partial staged write changed the saved settings mode"
+  [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
+    || fail "a partial staged write left incomplete settings output behind"
+  out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+  expect_code 0 $? "installation should succeed once the output limit is removed: $out"
+  jq -e --slurpfile prior "$prior" 'del(.hooks) == $prior[0]' "$settings" >/dev/null \
+    || fail "retry after a partial staged write changed unrelated saved settings"
+  [ -n "$(find "$settings" -prune -perm 640)" ] || fail "retry after a partial write changed the saved settings mode"
+  [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
+    || fail "retry after a partial write left staged settings behind"
+  pass "Claude worker settings survive a real partial staged write with no incomplete output left behind"
+}
+
 test_claude_hooks_stale_incarnation_harmless() {
   local rec id=busy-cl-2 out state settings
   rec=$(make_spawn_case claude-stale claude "$id")
@@ -1058,6 +1092,7 @@ test_claude_hooks_semantic_lifecycle
 test_claude_worker_settings_preserved
 test_claude_worker_invalid_settings_untouched
 test_claude_worker_settings_publish_failures_keep_original
+test_claude_worker_partial_settings_write_keeps_original
 test_claude_hooks_stale_incarnation_harmless
 test_gemini_hooks_semantic_lifecycle
 test_gemini_hooks_stale_incarnation_harmless
