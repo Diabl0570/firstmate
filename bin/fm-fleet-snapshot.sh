@@ -53,11 +53,17 @@
 #     rather than attributed to the replacement generation.
 #     Local current_state is parsed from bin/fm-crew-state.sh <id> and preserves
 #     state, source, detail, and raw line separately. runtime_activity separately
-#     carries state/source/provenance from a captured, generation-bound semantic
-#     record, with unknown for an unavailable/untrusted record or launch seed.
+#     carries state/source/provenance with observation-time observed_at/freshness.
+#     Its captured semantic record is validated by bin/fm-busy-lib.sh's generation
+#     and source rules, with unknown for an unavailable/untrusted record or launch seed.
 #     fm_backend_agent_alive's recovery-grade verdict is its one endpoint
 #     override: positive death reads dead/endpoint-gone, and a busy record whose
 #     agent is not proven alive reads unknown/endpoint-unverified, never idle.
+#     Failed, unreadable, or timed-out probes cannot prove death; endpoint.exists
+#     and an absent target never establish inactive execution. A trusted idle
+#     record stays idle unless positive endpoint death overrides it.
+#     provenance is recovery-grade-endpoint for those endpoint overrides and
+#     semantic-record otherwise; no pull or rendered fallback is sampled here.
 #     Remote secondmate rows use
 #     an explicit unknown value because their endpoint liveness belongs to
 #     supervision rather than this snapshot path.
@@ -69,8 +75,12 @@
 #     hints.open_decisions is the keyed open-decision set returned by
 #     fm-classify-lib.sh's authoritative status_open_decisions fold and reconciled
 #     against current_state; hints.pending_decision and hints.blocked_event are
-#     booleans derived from that set. A native terminal attempt under a structured
-#     hold does not itself clear that logical work's unresolved keyed calls.
+#     booleans derived from that set. For ordinary ship/scout rows, lifecycle
+#     reconciliation clears folded calls only on working run-step/pane evidence
+#     or done/failed current_state, except a native run-step terminal attempt under
+#     a structured hold. Parked, blocked, or unknown reads never lifecycle-clear
+#     calls, nor does persistent secondmate activity. Explicit resolutions and
+#     worker terminal declarations still close calls through the fold's own rules.
 #     endpoint.exists is the cheap local backend endpoint-presence read.
 #     endpoint.agent_alive is populated for local secondmates only, where it is
 #     useful return-channel supervision data; remote secondmates use "unknown"
@@ -96,19 +106,19 @@
 #     retained_attempts is a bounded projection of structured in-flight holds
 #     whose canonical child read is done/failed from native run-step evidence,
 #     or a done scout with its report present and a corroborating idle record.
-#     Each retained attempt carries independently sampled runtime_activity from
-#     the generation-bound, source-trusted semantic record. Positive busy
-#     evidence over a proven-live agent also projects current work; positive
-#     endpoint death reads dead; missing/unverified records or endpoints
-#     preserve unknown coverage even when the native attempt is provably terminal.
-#     The launch seed alone is not proof of current execution. Pull-only or
-#     rendered lifecycle sources remain unmeasured on this retained-attempt path.
+#     Each retained attempt carries runtime_activity as defined for tasks above.
+#     A busy retained attempt also appears in active_children as working, with
+#     its activity source; attempt finality never suppresses a live continuation.
+#     Unknown activity on a retained native terminal attempt makes an otherwise
+#     consistent home unknown with invalidity child_current_unavailable, retaining
+#     the attempt and independently trustworthy surfaces as partial-structured.
 #     It describes the attempt only, never closes its logical backlog work or
 #     grants cleanup authority. Its hold and any captain call remain visible.
 #     Unknown reads and terminal declarations without that evidence stay invalid;
 #     terminal children without a structured hold remain terminal_in_flight.
 #     Older v1 ledgers lacking retained_attempts remain readable; the parent
 #     projects that unavailable retained-attempt coverage as null, not empty.
+#     tests/fm-fleet-snapshot-view.test.sh covers these retention boundaries.
 #     provenance.summary_source distinguishes "local-ledger", "remote-ledger", and "remote-ledger-cache";
 #     freshness is "cached" only for the cache source, and observed_at/age_seconds
 #     come from the selected summary's generation. Every successfully sampled home also carries
@@ -846,12 +856,9 @@ task_json_lines() {
       snapshot_task_cleanup
       return 1
     }
-    # Native outcomes describe an attempt, not whether its worker is currently
-    # continuing. Read only captured structured lifecycle evidence through its
-    # existing owner; no terminal text, cheap endpoint absence, age, or idle
-    # heuristic. The recovery-grade agent-state read is the contract's one
-    # process-level override: positive death is dead, never busy, and a busy
-    # record without a live agent behind it remains unknown.
+    # Native outcomes cannot prove whether a worker continues. Sample captured
+    # structured evidence, not terminal text or heuristics; the header owns the
+    # activity projection.
     activity_state=unknown
     activity_source=unavailable
     if [ -z "$remote_host" ] && activity_record=$(fm_busy_record_read "$SNAPSHOT_TASK_DIR" "$id"); then
@@ -880,29 +887,11 @@ task_json_lines() {
       printf '%s' "$current_json" | jq -r '[.state // "", .source // ""] | @tsv'
     )
 
-    # Durable keyed open-decision set: fold the WHOLE status stream
-    # (fm-classify-lib.sh's status_open_decisions) so a later unrelated event can
-    # never mask a still-open captain decision. The set is derived purely from the
-    # keyed fold - never from report bodies or decision-like prose - and then
-    # reconciled against the crew LIFECYCLE, which only clears a stale decision the
-    # crew has provably moved past. Two lifecycle signals clear it, neither of which
-    # reads any report content:
-    #   - a live activity read (run-step or busy pane) that is working, so a
-    #     crew that resumed past a gate is not still reported as parked; and
-    #   - a TERMINAL done/failed state on a single-owner task (scout or ship),
-    #     except a native terminal attempt under a structured hold, whose
-    #     deliverable is its report or PR, so a COMPLETED scout surfaces only as a
-    #     report POINTER, never as a reopened pending decision.
-    # Secondmates are excluded from lifecycle clearing: they are persistent and
-    # multiplex many concerns onto one stream, so activity on one concern must
-    # never clear another concern's keyed decision. A parked/blocked/unknown state,
-    # including incomplete or contradictory native coverage, or a non-authoritative
-    # status-log/none read on a still-live task, keeps the fold's open decision
-    # surfacing.
+    # Lifecycle clearing must not answer held logical work's calls from attempt
+    # finality or unknown coverage. Persistent secondmates multiplex concerns,
+    # so activity on one concern cannot answer another's call. The header owns
+    # reconciliation; status_open_decisions owns explicit and declared closes.
     open_decisions_tsv=$(status_open_decisions "$status_log" "$kind")
-    # A native terminal attempt under an independently structured hold cannot
-    # answer the logical work's still-open keyed calls. Keep the existing fold;
-    # explicit resolutions and worker terminal declarations still own its closes.
     held_terminal=0
     if [ "$current_source" = run-step ] \
       && { [ "$current_state" = "done" ] || [ "$current_state" = failed ]; } \
