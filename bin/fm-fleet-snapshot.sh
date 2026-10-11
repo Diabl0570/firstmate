@@ -872,10 +872,10 @@ task_json_lines() {
     fi
     if [ "$activity_endpoint" = dead ]; then
       activity_state=dead
-      activity_source=endpoint-gone
+      activity_source='endpoint-gone'
     elif [ "$activity_state" = busy ] && [ "$activity_endpoint" != alive ]; then
       activity_state=unknown
-      activity_source=endpoint-unverified
+      activity_source='endpoint-unverified'
     fi
     activity_json=$(jq -n --arg state "$activity_state" --arg source "$activity_source" \
       '{state:$state,source:$source,
