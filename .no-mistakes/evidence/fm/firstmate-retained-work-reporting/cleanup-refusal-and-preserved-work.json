@@ -1,0 +1,10 @@
+{
+  "cleanup_exit": "nonzero (asserted by executable scenario)",
+  "diagnostic": "●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n●  WATCHER DOWN - SUPERVISION IS OFF\n●  4 task(s) in flight, but no live watcher process holds this home lock (last beat: 1s ago).\n●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.\n●  This is a supervision warning only; the guarded operation WILL still run.\n●  repair a missing or failed watcher cycle with the Pi tool fm_watch_arm_pi, or restart Pi with -e <validation-runtime>/.pi/extensions/fm-primary-turnend-guard.ts -e <validation-runtime>/.pi/extensions/fm-primary-pi-watch.ts if the extensions are not loaded.\n●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nREFUSED: worktree <disposable-fixtures>/retained-attempts/projects/predecessor has work not on any remote and not landed.\nunpushed commits:\n9129127 retained change\nPush the branch, land its PR, or get the captain's explicit OK to discard, then --force.\n",
+  "protected_head": "91291278a2d28cb69fd927eb98622686964e080e",
+  "protected_code": "protected change\n",
+  "metadata_present": true,
+  "report_present": true,
+  "no_lifecycle_mutation_attempted": true,
+  "logical_work_still_in_flight": "## In flight\n- [ ] predecessor - Retained failed attempt (repo: sample) (kind: ship) (hold: source retention) (hold-kind: external)\n- [ ] delivered - Delivered attempt awaiting approval (repo: sample) (kind: ship) (hold: review delivery) (hold-kind: captain)\n- [ ] continuation - Current continuation (repo: sample) (kind: ship)\n- [ ] review - Completed review evidence (repo: sample) (kind: scout) (hold: retain report) (hold-kind: external)\n\n## Queued\n\n## Done\n"
+}
