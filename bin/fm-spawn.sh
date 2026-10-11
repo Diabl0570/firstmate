@@ -422,6 +422,8 @@
 #     __DEVINCONFIG__ private per-task Devin config with lifecycle hooks
 #     __AGYBIN__    resolved, agy-verified executable for an agy launch
 # Verified per-harness turn-end hooks are installed automatically where enabled; some live outside the worktree.
+# Claude worker hooks are merged into .claude/settings.local.json, preserving
+# unrelated settings and hooks while replacing earlier generated busy commands.
 # A --secondmate launch arms the same semantic busy contract (bin/fm-busy-lib.sh) in THIS
 # parent home for claude, opencode, pi, pi-signed, and omp, so the parent's active-turn
 # gate can read a busy verdict. Those hooks do not touch the parent's turn-ended marker:
@@ -4769,7 +4771,43 @@ BUSY_GEN=
       printf '{%s%s}\n' "$session_keys" "$hooks_json" >"$STATE_REAL/$ID.claude-settings.json"
     else
       mkdir -p "$WT/.claude"
-      printf '{%s}\n' "$hooks_json" >"$WT/.claude/settings.local.json"
+      # Worker-local settings may already contain saved rules and ordinary
+      # hooks. Refresh only our generated commands, retaining other keys and
+      # hook groups (including custom hooks sharing a group with our command).
+      settings_json='{}'
+      if [ -e "$WT/.claude/settings.local.json" ]; then
+        settings_json=$(cat "$WT/.claude/settings.local.json") || exit 1
+      fi
+      if ! settings_json=$(printf '%s\n' "$settings_json" | jq -es \
+        --argjson generated "{$hooks_json}" \
+        --arg prefix "$(shell_quote "$FM_ROOT/bin/fm-busy-event.sh") apply " '
+          def firstmate_hook:
+            .type == "command" and
+            ((.command // "") | startswith($prefix) or contains("; " + $prefix)) and
+            ((.command // "") | contains(" --source claude-hook --event "));
+          if length != 1 or (.[0] | type) != "object" then
+            error("worker settings must contain one JSON object")
+          else .[0] end |
+          if has("hooks") and (.hooks | type) != "object" then
+            error("worker hooks must be an object")
+          else .hooks //= {} end |
+          reduce ($generated.hooks | keys_unsorted[]) as $event (.;
+            if (.hooks | has($event)) and (.hooks[$event] | type) != "array" then
+              error("worker hook event must be an array")
+            else
+              .hooks[$event] = ((.hooks[$event] // [] | map(
+                if any(.hooks[]?; firstmate_hook) then
+                  .hooks |= map(select(firstmate_hook | not)) |
+                  select(.hooks | length > 0)
+                else . end
+              )) + $generated.hooks[$event])
+            end
+          )
+        '); then
+        echo "error: could not refresh Claude worker hooks without losing existing settings" >&2
+        exit 1
+      fi
+      printf '%s\n' "$settings_json" >"$WT/.claude/settings.local.json"
       exclude_path '.claude/settings.local.json'
     fi
     ;;

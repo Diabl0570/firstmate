@@ -7,6 +7,7 @@
 # the OpenCode plugin) in a plain Node host, so the artifact, the real
 # bin/fm-busy-event.sh writer, and the real classifier are exercised together
 # with no live harness session.
+# Set FM_TEST_ONLY to a test function name for a focused executable regression.
 set -u
 
 # shellcheck source=tests/fixtures.sh
@@ -270,6 +271,114 @@ test_claude_hooks_semantic_lifecycle() {
   out=$(classify claude "$id" "$state")
   [ "$out" = "idle claude-hook" ] || fail "SessionEnd must classify idle, got '$out'"
   pass "claude hooks open on UserPromptSubmit and close on Stop, StopFailure, and SessionEnd"
+}
+
+test_claude_worker_settings_preserved() {
+  local rec id=worker-settings-1 out settings prior event cmd
+  rec=$(make_spawn_case worker-settings claude "$id")
+  read_case_record "$rec"
+  settings="$WT_DIR/.claude/settings.local.json"
+  prior="$CASE_DIR/prior.json"
+  mkdir -p "$WT_DIR/.claude"
+  printf '.claude/settings.local.json\n' >> "$PROJ_DIR/.git/info/exclude"
+  cat > "$prior" <<'JSON'
+{
+  "permissions": {"allow": ["Read(./docs/**)"], "deny": ["Bash(rm *)"], "defaultMode": "default"},
+  "env": {"FIXTURE_FLAG": "enabled"},
+  "model": "fixture-model",
+  "accountFixture": {"provider": "fixture", "nested": {"keep": [true, null, 7]}},
+  "feedbackDrafts": "on",
+  "attribution": {"commit": "fixture attribution", "pr": "fixture PR", "sessionUrl": true}
+}
+JSON
+  cp "$prior" "$settings"
+  out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+  expect_code 0 $? "claude spawn with existing settings should succeed: $out"
+  jq -e --slurpfile prior "$prior" 'del(.hooks) == $prior[0]' "$settings" >/dev/null \
+    || fail "initial hook installation changed unrelated worker settings"
+  for event in UserPromptSubmit Stop StopFailure SessionEnd; do
+    jq -e --arg event "$event" '.hooks[$event] | length == 1' "$settings" >/dev/null \
+      || fail "initial hook installation did not create exactly one $event entry"
+  done
+
+  # Seed ordinary hooks, including matcher/timeout/async and prompt semantics.
+  # These entries must remain structurally identical on refresh.
+  jq '.hooks = {
+    "UserPromptSubmit": [{"matcher": "", "hooks": [{"type": "command", "command": "printf fixture-submit", "timeout": 17}]}],
+    "Stop": [{"hooks": [{"type": "prompt", "prompt": "Fixture stop check", "timeout": 23}]}],
+    "StopFailure": [{"hooks": [{"type": "command", "command": "printf fixture-failure", "async": true}]}],
+    "SessionEnd": [{"matcher": "logout", "hooks": [{"type": "command", "command": "printf fixture-end"}]}],
+    "PreToolUse": [{"matcher": "Read", "hooks": [{"type": "command", "command": "printf fixture-read"}]}]
+  }' "$prior" > "$settings"
+  cp "$settings" "$prior"
+  id=worker-settings-2
+  fm_test_spawn_brief "$HOME_DIR" "$id"
+  out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+  expect_code 0 $? "claude spawn with existing hooks should succeed: $out"
+  for event in UserPromptSubmit Stop StopFailure SessionEnd; do
+    jq -e --arg event "$event" --slurpfile prior "$prior" '
+      .hooks[$event][:-1] == $prior[0].hooks[$event] and (.hooks[$event] | length == 2)
+    ' "$settings" >/dev/null || fail "adding Firstmate hooks changed existing $event semantics"
+  done
+  jq -e --slurpfile prior "$prior" '
+    del(.hooks) == ($prior[0] | del(.hooks)) and .hooks.PreToolUse == $prior[0].hooks.PreToolUse
+  ' "$settings" >/dev/null || fail "adding hooks changed unrelated settings or hook events"
+
+  # A user hook can share a group with the old Firstmate hook; refresh must
+  # remove only the old generated command, retaining the group and its matcher.
+  jq '.hooks.Stop[-1].matcher = "fixture-matcher" |
+    .hooks.Stop[-1].hooks += [{"type": "command", "command": "printf fixture-mixed"}]' \
+    "$settings" > "$CASE_DIR/mixed.json"
+  cp "$CASE_DIR/mixed.json" "$settings"
+  id=worker-settings-3
+  fm_test_spawn_brief "$HOME_DIR" "$id"
+  out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+  expect_code 0 $? "claude hook refresh should succeed: $out"
+  jq -e --slurpfile prior "$prior" '
+    del(.hooks) == ($prior[0] | del(.hooks)) and
+    .hooks.PreToolUse == $prior[0].hooks.PreToolUse and
+    .hooks.Stop[-2] == {"matcher": "fixture-matcher", "hooks": [{"type": "command", "command": "printf fixture-mixed"}]}
+  ' "$settings" >/dev/null || fail "refresh lost unrelated settings, hook events, or a mixed hook group"
+  for event in UserPromptSubmit Stop StopFailure SessionEnd; do
+    jq -e --arg event "$event" --arg id "$id" --slurpfile prior "$prior" '
+      .hooks[$event][0] == $prior[0].hooks[$event][0] and
+      (.hooks[$event] | length == (if $event == "Stop" then 3 else 2 end)) and
+      (.hooks[$event][-1].hooks | length == 1) and
+      (.hooks[$event][-1].hooks[0].command | contains($id))
+    ' "$settings" >/dev/null || fail "refresh duplicated stale Firstmate hooks or changed existing $event semantics"
+    cmd=$(jq -r --arg event "$event" '.hooks[$event][-1].hooks[0].command' "$settings")
+    sh -c "$cmd" || fail "refreshed $event command failed"
+    out=$(classify claude "$id" "$HOME_DIR/state")
+    if [ "$event" = UserPromptSubmit ]; then
+      [ "$out" = "busy claude-hook" ] || fail "refreshed submit hook did not open busy: $out"
+    else
+      [ "$out" = "idle claude-hook" ] || fail "refreshed $event hook did not close busy: $out"
+    fi
+  done
+  [ -f "$HOME_DIR/state/$id.turn-ended" ] || fail "refreshed Stop lost its notification"
+  pass "Claude worker hook creation and refresh preserve settings, nested fields, and ordinary hook semantics"
+}
+
+test_claude_worker_invalid_settings_untouched() {
+  local fixture rec id out settings prior index=0
+  for fixture in '' 'not-json' '[]' '{} {}' '{"hooks":null}' '{"hooks":{"Stop":{}}}'; do
+    index=$((index + 1))
+    id="worker-invalid-$index"
+    rec=$(make_spawn_case "$id" claude "$id")
+    read_case_record "$rec"
+    settings="$WT_DIR/.claude/settings.local.json"
+    prior="$CASE_DIR/prior.json"
+    mkdir -p "$WT_DIR/.claude"
+    printf '.claude/settings.local.json\n' >> "$PROJ_DIR/.git/info/exclude"
+    printf '%s\n' "$fixture" > "$prior"
+    cp "$prior" "$settings"
+    out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
+    expect_code 1 $? "claude spawn should refuse invalid existing settings: $out"
+    assert_contains "$out" 'could not refresh Claude worker hooks without losing existing settings' \
+      "invalid fixture was not refused by the settings writer"
+    cmp -s "$prior" "$settings" || fail "invalid existing settings were overwritten"
+  done
+  pass "Claude worker refuses malformed settings without overwriting the existing file"
 }
 
 test_claude_hooks_stale_incarnation_harmless() {
@@ -834,6 +943,11 @@ test_secondmate_codex_and_grok_do_not_arm_a_parent_turnend() {
   pass "codex and grok secondmates stay on their existing verdicts and do not emit a parent turn-end"
 }
 
+if [ -n "${FM_TEST_ONLY:-}" ]; then
+  "$FM_TEST_ONLY"
+  exit 0
+fi
+
 test_secondmate_claude_spawn_arms_busy_for_the_stall_gate
 test_raw_secondmate_launch_writes_no_busy_wiring
 test_secondmate_claude_stop_guard_owns_the_stop_verdict
@@ -849,6 +963,8 @@ test_pi_extension_stale_incarnation_rejected
 test_kimi_and_grok_install_no_unverified_wiring
 test_opencode_plugin_semantic_lifecycle
 test_claude_hooks_semantic_lifecycle
+test_claude_worker_settings_preserved
+test_claude_worker_invalid_settings_untouched
 test_claude_hooks_stale_incarnation_harmless
 test_gemini_hooks_semantic_lifecycle
 test_gemini_hooks_stale_incarnation_harmless
