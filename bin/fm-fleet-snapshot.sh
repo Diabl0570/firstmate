@@ -55,6 +55,9 @@
 #     state, source, detail, and raw line separately. runtime_activity separately
 #     carries state/source/provenance from a captured, generation-bound semantic
 #     record, with unknown for an unavailable/untrusted record or launch seed.
+#     fm_backend_agent_alive's recovery-grade verdict is its one endpoint
+#     override: positive death reads dead/endpoint-gone, and a busy record whose
+#     agent is not proven alive reads unknown/endpoint-unverified, never idle.
 #     Remote secondmate rows use
 #     an explicit unknown value because their endpoint liveness belongs to
 #     supervision rather than this snapshot path.
@@ -95,8 +98,9 @@
 #     or a done scout with its report present and a corroborating idle record.
 #     Each retained attempt carries independently sampled runtime_activity from
 #     the generation-bound, source-trusted semantic record. Positive busy
-#     evidence also projects current work; missing/unverified records preserve
-#     unknown coverage even when the native attempt is provably terminal.
+#     evidence over a proven-live agent also projects current work; positive
+#     endpoint death reads dead; missing/unverified records or endpoints
+#     preserve unknown coverage even when the native attempt is provably terminal.
 #     The launch seed alone is not proof of current execution. Pull-only or
 #     rendered lifecycle sources remain unmeasured on this retained-attempt path.
 #     It describes the attempt only, never closes its logical backlog work or
@@ -657,7 +661,7 @@ snapshot_task_generation_is_current() {  # <captured-meta> <id>
 prefetch_task_observations() {  # <meta> <id>
   local meta=$1 id=$2 remote_host current_file endpoint_file current_pid='' current_rc=0
   local status_log status_capture report_path report_capture
-  local kind backend target endpoint_exists=null agent_alive=not_checked generation_current=1
+  local kind backend target endpoint_exists=null agent_alive=not_checked activity_endpoint=not_checked generation_current=1
   remote_host=$(meta_value "$meta" remote_host)
   current_file="$SNAPSHOT_TASK_DIR/$id.json"
   endpoint_file="$SNAPSHOT_TASK_DIR/$id.endpoint"
@@ -692,6 +696,9 @@ prefetch_task_observations() {  # <meta> <id>
       fi
       if [ "$kind" = secondmate ]; then
         agent_alive=$(fm_backend_agent_alive "$backend" "$target" 2>/dev/null || printf unknown)
+        activity_endpoint=$agent_alive
+      elif [ -f "$SNAPSHOT_TASK_DIR/$id.busy-state" ]; then
+        activity_endpoint=$(fm_backend_agent_alive "$backend" "$target" 2>/dev/null || printf unknown)
       fi
     fi
   else
@@ -710,8 +717,10 @@ prefetch_task_observations() {  # <meta> <id>
       > "$current_file" || current_rc=1
     endpoint_exists=null
     agent_alive=unknown
+    activity_endpoint=unknown
   fi
-  printf 'endpoint_exists=%s\nagent_alive=%s\n' "$endpoint_exists" "$agent_alive" > "$endpoint_file" || current_rc=1
+  printf 'endpoint_exists=%s\nagent_alive=%s\nactivity_endpoint=%s\n' \
+    "$endpoint_exists" "$agent_alive" "$activity_endpoint" > "$endpoint_file" || current_rc=1
   return "$current_rc"
 }
 
@@ -774,7 +783,7 @@ task_json_lines() {
   local remote_host remote_root current_file endpoint_file observation_line index=0
   local pr pr_source event_json current_json endpoint_exists agent_alive meta_json status_json report_json worktree_json home_json
   local last_event_raw current_state current_source pending_decision blocked_event report_present=0 pr_from_status
-  local open_decisions_tsv open_decisions_json activity_json activity_record activity_state activity_source held_terminal
+  local open_decisions_tsv open_decisions_json activity_json activity_record activity_state activity_source activity_endpoint held_terminal
 
   while [ "$index" -lt "$SNAPSHOT_TASK_META_COUNT" ]; do
     meta=${SNAPSHOT_TASK_METAS[index]}
@@ -820,9 +829,26 @@ task_json_lines() {
       snapshot_task_cleanup
       return 1
     }
+    endpoint_exists=null
+    agent_alive=not_checked
+    activity_endpoint=not_checked
+    endpoint_file="$SNAPSHOT_TASK_DIR/$id.endpoint"
+    while IFS= read -r observation_line || [ -n "$observation_line" ]; do
+      case "$observation_line" in
+        endpoint_exists=*) endpoint_exists=${observation_line#*=} ;;
+        agent_alive=*) agent_alive=${observation_line#*=} ;;
+        activity_endpoint=*) activity_endpoint=${observation_line#*=} ;;
+      esac
+    done < "$endpoint_file" || {
+      snapshot_task_cleanup
+      return 1
+    }
     # Native outcomes describe an attempt, not whether its worker is currently
     # continuing. Read only captured structured lifecycle evidence through its
-    # existing owner; no terminal text, endpoint absence, age, or idle heuristic.
+    # existing owner; no terminal text, cheap endpoint absence, age, or idle
+    # heuristic. The recovery-grade agent-state read is the contract's one
+    # process-level override: positive death is dead, never busy, and a busy
+    # record without a live agent behind it remains unknown.
     activity_state=unknown
     activity_source=unavailable
     if [ -z "$remote_host" ] && activity_record=$(fm_busy_record_read "$SNAPSHOT_TASK_DIR" "$id"); then
@@ -834,8 +860,17 @@ task_json_lines() {
         activity_state=unknown
       fi
     fi
+    if [ "$activity_endpoint" = dead ]; then
+      activity_state=dead
+      activity_source=endpoint-gone
+    elif [ "$activity_state" = busy ] && [ "$activity_endpoint" != alive ]; then
+      activity_state=unknown
+      activity_source=endpoint-unverified
+    fi
     activity_json=$(jq -n --arg state "$activity_state" --arg source "$activity_source" \
-      '{state:$state,source:$source,provenance:"semantic-record"}')
+      '{state:$state,source:$source,
+        provenance:(if $source == "endpoint-gone" or $source == "endpoint-unverified"
+                    then "recovery-grade-endpoint" else "semantic-record" end)}')
     event_json=$(status_event_json "$status_log" "$STATE/$id.status")
     last_event_raw=$(printf '%s' "$event_json" | jq -r '.last_event.raw // ""')
     read -r current_state current_source < <(
@@ -849,7 +884,7 @@ task_json_lines() {
     # reconciled against the crew LIFECYCLE, which only clears a stale decision the
     # crew has provably moved past. Two lifecycle signals clear it, neither of which
     # reads any report content:
-    #   - a live activity read (run-step or busy pane) that is working/done, so a
+    #   - a live activity read (run-step or busy pane) that is working, so a
     #     crew that resumed past a gate is not still reported as parked; and
     #   - a TERMINAL done/failed state on a single-owner task (scout or ship),
     #     except a native terminal attempt under a structured hold, whose
@@ -857,9 +892,10 @@ task_json_lines() {
     #     report POINTER, never as a reopened pending decision.
     # Secondmates are excluded from lifecycle clearing: they are persistent and
     # multiplex many concerns onto one stream, so activity on one concern must
-    # never clear another concern's keyed decision. A parked/blocked state, or a
-    # non-authoritative status-log/none read on a still-live task, keeps the fold's
-    # open decision surfacing.
+    # never clear another concern's keyed decision. A parked/blocked/unknown state,
+    # including incomplete or contradictory native coverage, or a non-authoritative
+    # status-log/none read on a still-live task, keeps the fold's open decision
+    # surfacing.
     open_decisions_tsv=$(status_open_decisions "$status_log" "$kind")
     # A native terminal attempt under an independently structured hold cannot
     # answer the logical work's still-open keyed calls. Keep the existing fold;
@@ -873,7 +909,7 @@ task_json_lines() {
     fi
     if [ "$kind" != secondmate ] && [ "$held_terminal" != 1 ] && \
        { { { [ "$current_source" = run-step ] || [ "$current_source" = pane ]; } \
-           && [ "$current_state" != parked ] && [ "$current_state" != blocked ]; } \
+           && [ "$current_state" = working ]; } \
          || { [ "$current_state" = "done" ] || [ "$current_state" = "failed" ]; }; }; then
       open_decisions_tsv=""
     fi
@@ -884,18 +920,6 @@ task_json_lines() {
     pending_decision=$(printf '%s' "$open_decisions_json" | jq 'if any(.[]; .verb == "needs-decision") then 1 else 0 end')
     blocked_event=$(printf '%s' "$open_decisions_json" | jq 'if any(.[]; .verb == "blocked") then 1 else 0 end')
 
-    endpoint_exists=null
-    agent_alive=not_checked
-    endpoint_file="$SNAPSHOT_TASK_DIR/$id.endpoint"
-    while IFS= read -r observation_line || [ -n "$observation_line" ]; do
-      case "$observation_line" in
-        endpoint_exists=*) endpoint_exists=${observation_line#*=} ;;
-        agent_alive=*) agent_alive=${observation_line#*=} ;;
-      esac
-    done < "$endpoint_file" || {
-      snapshot_task_cleanup
-      return 1
-    }
     [ -f "$report_path" ] && report_present=1 || report_present=0
     meta_json=$(path_present_json "$original_meta" "$meta")
     status_json=$event_json
