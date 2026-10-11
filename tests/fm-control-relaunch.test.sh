@@ -27,6 +27,8 @@ set -u
 . "$ROOT/bin/fm-trace-context-lib.sh"
 # shellcheck source=/dev/null
 . "$ROOT/bin/fm-tasks-axi-lib.sh"
+# shellcheck source=/dev/null
+. "$ROOT/bin/fm-busy-lib.sh"
 
 CONTROL="$ROOT/bin/fm-control.sh"
 SPAWN="$ROOT/bin/fm-spawn.sh"
@@ -464,7 +466,7 @@ JSON
   for event in UserPromptSubmit Stop; do
     cmd=$(jq -r --arg event "$event" '.hooks[$event][-1].hooks[0].command' "$settings")
     sh -c "$cmd"
-    record=$(. "$ROOT/bin/fm-busy-lib.sh" && fm_busy_record_read "$dir/home/state" rl44)
+    record=$(fm_busy_record_read "$dir/home/state" rl44)
     case "$event:$record" in
       "UserPromptSubmit:busy claude-hook user-prompt-submit "*|"Stop:idle claude-hook stop "*) ;;
       *) fail "the refreshed $event hook did not drive the current record: $record" ;;
