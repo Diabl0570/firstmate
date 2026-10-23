@@ -2125,9 +2125,10 @@ fm_backend_herdr_explicit_close_pane_confirmed() {  # <session> <pane_id>
 #                stranger's process. Not a shell-only pane. An idle shell
 #                transiently hosts prompt helpers such as starship in its
 #                foreground group (the same shape the idle-shell proof settles
-#                on), so this verdict alone is resampled for the same bounded
-#                settle window and the first agent or shell reading wins; only
-#                an exhausted window keeps `other`.
+#                on), so this verdict and `unreadable` (a helper exiting
+#                mid-read) are resampled for the same bounded settle window and
+#                the first agent or shell reading wins; only an exhausted
+#                window keeps `other` or `unreadable`.
 #   unreadable - process-info failed, described a different pane, named no
 #                shell pid, or the process table could not be read or does not
 #                contain the shell pid. An empty foreground-process list is NOT
@@ -2146,7 +2147,7 @@ fm_backend_herdr_pane_process_state() {  # <session> <pane_id>
   local attempt=0 max_attempts=${FM_BACKEND_HERDR_IDLE_SHELL_PROOF_POLLS:-10} verdict
   while :; do
     verdict=$(fm_backend_herdr_pane_process_state_sample "$1" "$2")
-    [ "$verdict" = other ] || break
+    case "$verdict" in other|unreadable) ;; *) break ;; esac
     attempt=$((attempt + 1))
     [ "$attempt" -lt "$max_attempts" ] || break
     sleep 0.1
@@ -2262,7 +2263,22 @@ fm_backend_herdr_process_subtree_rows() { # <shell-pid> <ps rows>
 # cannot prove an agent present or absent. Any unreadable descendant or a
 # contradictory foreground identity refuses rather than manufacturing death.
 # This also captures background/suspended agents below nested worker shells.
+# Each complete strict sample is independent; a transient prompt helper that
+# reads `other` or `unreadable` is resampled within the same bounded settle
+# window, and only a complete agent or shell-only sample ends it early.
 fm_backend_herdr_pane_process_snapshot() {  # <session> <pane_id>
+  local attempt=0 max_attempts=${FM_BACKEND_HERDR_IDLE_SHELL_PROOF_POLLS:-10} snapshot
+  while :; do
+    snapshot=$(fm_backend_herdr_pane_process_snapshot_sample "$1" "$2")
+    case "${snapshot%%$'\n'*}" in other|unreadable) ;; *) break ;; esac
+    attempt=$((attempt + 1))
+    [ "$attempt" -lt "$max_attempts" ] || break
+    sleep 0.1
+  done
+  printf '%s\n' "$snapshot"
+}
+
+fm_backend_herdr_pane_process_snapshot_sample() {  # <session> <pane_id>
   local session=$1 pane_id=$2 info shell_pid rows owned foreground pid name args argv0
   local ps_bin=${FM_HERDR_PS_BIN:-ps} start after verdict api_verdict api_name api_argv0 api_args
   local agents='' others=0 shell_start

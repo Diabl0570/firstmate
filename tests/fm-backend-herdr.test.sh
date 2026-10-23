@@ -727,9 +727,65 @@ test_strict_missing_registration_process_snapshots() {
   printf '4200 1 bash\n4201 4200 bash\n4202 4201 pi\n' > "$dir/rows-after"
   printf bash > "$dir/args-4201"
   printf '{"result":{"type":"pane_process_info","process_info":{"pane_id":"w1:p2","shell_pid":4200,"foreground_processes":[]}}}' > "$dir/info"
-  out=$(strict_snapshot_case "$dir")
+  out=$(FM_BACKEND_HERDR_IDLE_SHELL_PROOF_POLLS=1 strict_snapshot_case "$dir")
   [ "$out" = unreadable ] || fail "a new child during the snapshot must not license a stale shell-only proof: $out"
+  rm -f "$dir/reads"
+  out=$(strict_snapshot_case "$dir")
+  [ "$out" = $'agent\n4202\tstart-agent' ] || fail "a resample after a changing tree must report the new child, never a stale shell-only proof: $out"
   pass "herdr strict process snapshots: Claude/Pi foreground and nested incarnations, shell-only, foreign, unreadable and contradictory evidence"
+}
+
+# A zsh prompt helper (starship) briefly owns the foreground between typed
+# relaunch commands and may exit mid-read. Complete strict samples settle it;
+# a helper that never leaves, or a pane that stays unreadable, still refuses.
+prompt_helper_snapshot_case() { # <dir> <transient-samples> -> snapshot
+  local dir=$1
+  printf '%s' "$2" > "$dir/transient"
+  rm -f "$dir/samples"
+  cat > "$dir/ps" <<'SH'
+#!/usr/bin/env bash
+phase=shell
+[ "$(cat "$FIXTURE/samples")" -gt "$(cat "$FIXTURE/transient")" ] || phase=$(cat "$FIXTURE/mode")
+case "$phase:$*" in
+  helper:'-axo pid=,ppid=,comm='|vanishing:'-axo pid=,ppid=,comm=') printf '4200 1 zsh\n4203 4200 starship\n' ;;
+  *:'-axo pid=,ppid=,comm=') printf '4200 1 zsh\n' ;;
+  helper:'-p 4203 -o args=') printf 'starship prompt\n' ;;
+  vanishing:'-p 4203 -o args=') exit 1 ;;
+  *:'-p 4200 -o args=') printf 'zsh\n' ;;
+  *) exit 1 ;;
+esac
+SH
+  chmod +x "$dir/ps"
+  FIXTURE="$dir" FM_HERDR_PS_BIN="$dir/ps" FM_BACKEND_HERDR_IDLE_SHELL_PROOF_POLLS=4 bash -c '
+    . "$0/bin/backends/herdr.sh"
+    fm_backend_herdr_cli() {
+      local n
+      n=$(( $(cat "$FIXTURE/samples" 2>/dev/null || echo 0) + 1 ))
+      printf "%s" "$n" > "$FIXTURE/samples"
+      if [ "$n" -gt "$(cat "$FIXTURE/transient")" ]; then
+        printf "{\"result\":{\"type\":\"pane_process_info\",\"process_info\":{\"pane_id\":\"w1:p2\",\"shell_pid\":4200,\"foreground_processes\":[{\"pid\":4200,\"name\":\"zsh\"}]}}}"
+      else
+        printf "{\"result\":{\"type\":\"pane_process_info\",\"process_info\":{\"pane_id\":\"w1:p2\",\"shell_pid\":4200,\"foreground_processes\":[{\"pid\":4203,\"name\":\"starship\"}]}}}"
+      fi
+    }
+    fm_agent_process_start() { printf "start-%s" "$1"; }
+    fm_backend_herdr_pane_process_snapshot lab w1:p2
+  ' "$ROOT"
+}
+
+test_strict_snapshot_settles_transient_prompt_helper() {
+  local dir mode out
+  dir=$(mktemp -d "$TMP_ROOT/prompt-helper.XXXXXX")
+  for mode in helper vanishing; do
+    printf '%s' "$mode" > "$dir/mode"
+    out=$(prompt_helper_snapshot_case "$dir" 2)
+    [ "$out" = shell ] || fail "a transient $mode prompt helper must settle to positive shell-only proof: $out"
+    [ "$(cat "$dir/samples")" = 3 ] || fail "$mode settle must stop at the first complete shell-only sample: $(cat "$dir/samples")"
+    out=$(prompt_helper_snapshot_case "$dir" 99)
+    case "$mode:$out" in helper:other|vanishing:unreadable) ;; *) fail "a persistent $mode pane must still refuse shell-only proof: $out" ;; esac
+    [ "$(cat "$dir/samples")" = 4 ] || fail "$mode settle must stay bounded: $(cat "$dir/samples")"
+  done
+  pass "herdr strict process snapshots: transient prompt helpers settle to shell-only; persistent foreign or unreadable panes refuse"
 }
 
 test_original_process_incarnation_stop_proof() {
@@ -6146,6 +6202,7 @@ test_registered_agent_with_a_live_foreground_process_stays_alive
 test_missing_registration_requires_process_evidence
 test_registration_parser_preserves_unknown_and_business_errors
 test_strict_missing_registration_process_snapshots
+test_strict_snapshot_settles_transient_prompt_helper
 test_original_process_incarnation_stop_proof
 test_registered_agent_with_a_non_shell_foreground_process_stays_alive
 test_transient_prompt_helper_settles_into_stale_agent
