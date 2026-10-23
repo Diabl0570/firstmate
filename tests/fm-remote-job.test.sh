@@ -1585,8 +1585,8 @@ dup_worker_groups() {
 # Pause the real worker at a publication rename after it has published lock
 # ownership: its code identity rename, or its public PID rename after the
 # identity. A concurrent start must accept that owner even when its identity is
-# unpublished or worker.pid is absent or still contains an unclean
-# predecessor's PID.
+# unpublished or worker.pid and worker.identity are absent or still contain an
+# unclean predecessor's PID and stale code identity.
 DUP_INIT_SHIM="$TMP_ROOT/dup-init-shim"
 DUP_INIT_GATE="$TMP_ROOT/dup-init-gate"
 DUP_INIT_REAL_MV=$(command -v mv)
@@ -1611,6 +1611,7 @@ dup_initialization_case() { # <public-pid-state> [barrier-file]
   dup_lib fm_remote_job_prepare_state "$DUP_HOME" || fail "cannot prepare initialization fixture"
   if [ "$public_pid_state" = stale ]; then
     printf '%s\n' "$$" > "$DUP_STATE/worker.pid"
+    printf '0:0:0\n' > "$DUP_STATE/worker.identity"
   fi
   (
     # shellcheck disable=SC2030,SC2031 # This PATH override is confined to the initializing worker fixture.
@@ -1660,7 +1661,7 @@ dup_initialization_case() { # <public-pid-state> [barrier-file]
   DUP_OWNER=
   DUP_GROUP=
   if [ "$barrier" = worker.identity ]; then
-    pass "a live lock owner is neither stopped nor duplicated before it publishes its code identity"
+    pass "a live lock owner is neither stopped nor duplicated before it publishes its code identity over $public_pid_state predecessor state"
   else
     pass "a live lock owner is never duplicated before $public_pid_state public PID publication"
   fi
@@ -1668,6 +1669,7 @@ dup_initialization_case() { # <public-pid-state> [barrier-file]
 dup_initialization_case absent
 dup_initialization_case stale
 dup_initialization_case absent worker.identity
+dup_initialization_case stale worker.identity
 
 dup_lib fm_remote_job_start_linux_worker "$DUP_ROOT" "$DUP_HOME" \
   || fail "the duplicate-owner fixture worker did not start"

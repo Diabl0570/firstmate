@@ -240,9 +240,9 @@ worker_acquire_lock() { # <account-home> <identity>
   while [ "$attempt" -lt 150 ]; do
     if (umask 077; mkdir "$WORKER_LOCK") 2>/dev/null; then
       WORKER_LOCK_HELD=1
-      # Discard the predecessor's heartbeat before publishing our identity:
-      # readiness must come from this owner after lock publication succeeds.
-      rm -f -- "$(fm_remote_job_worker_ready_path)" || return 1
+      # Discard the predecessor's heartbeat and code identity before publishing
+      # ownership: both must come from this owner after lock publication.
+      rm -f -- "$(fm_remote_job_worker_ready_path)" "$(fm_remote_job_worker_identity_path)" || return 1
       worker_publish_lock_owner || return 1
       worker_publish_identity "$identity" || return 4
       return 0
