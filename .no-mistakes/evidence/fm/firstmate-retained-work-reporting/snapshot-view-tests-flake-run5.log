@@ -1,0 +1,208 @@
+not ok - stalled endpoint probe became inactive or answered an open call: {
+  "schema": "fm-secondmate-home-summary.v1",
+  "hold_classifier_schema": "fm-captain-hold-buckets.v1",
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": true,
+    "proven_clear": true,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 0,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "generated": "2026-10-23T15:21:00Z",
+  "generated_epoch": 1792768860,
+  "home": "/private/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T/fm-fleet-snapshot.2JToJu/retained-attempts",
+  "valid": false,
+  "reason": "child current state unavailable: continuation, delivered, predecessor, review",
+  "invalidity": {
+    "kind": "child_current_unavailable",
+    "ids": [
+      "continuation",
+      "delivered",
+      "predecessor",
+      "review"
+    ]
+  },
+  "state": "unknown",
+  "active_children": [],
+  "retained_attempts": [],
+  "decisions_open": [
+    {
+      "id": "delivered",
+      "key": "delivered",
+      "verb": "captain-hold",
+      "summary": "Delivered attempt awaiting approval",
+      "reason": "review delivery",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    },
+    {
+      "id": "predecessor",
+      "key": "current-choice",
+      "verb": "needs-decision",
+      "summary": "choose the next action",
+      "reason": null,
+      "source": "status"
+    }
+  ],
+  "holds": [
+    {
+      "id": "predecessor",
+      "title": "Retained failed attempt",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "source retention",
+      "source": "backlog"
+    },
+    {
+      "id": "delivered",
+      "title": "Delivered attempt awaiting approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "review delivery",
+      "source": "backlog"
+    },
+    {
+      "id": "review",
+      "title": "Completed review evidence",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "retain report",
+      "source": "backlog"
+    }
+  ],
+  "queued": [
+    {
+      "id": "predecessor",
+      "title": "Retained failed attempt",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "source retention",
+      "hold_kind": "external",
+      "hold_until": null,
+      "hold_bucket": null,
+      "hold_age_days": null,
+      "captain_actionable": false,
+      "repo": "sample",
+      "kind": "ship",
+      "since": null
+    },
+    {
+      "id": "review",
+      "title": "Completed review evidence",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "retain report",
+      "hold_kind": "external",
+      "hold_until": null,
+      "hold_bucket": null,
+      "hold_age_days": null,
+      "captain_actionable": false,
+      "repo": "sample",
+      "kind": "scout",
+      "since": null
+    },
+    {
+      "id": "delivered",
+      "title": "Delivered attempt awaiting approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "review delivery",
+      "hold_kind": "captain",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "captain_actionable": true,
+      "repo": "sample",
+      "kind": "ship",
+      "since": null
+    }
+  ],
+  "landed": [],
+  "endpoints": [
+    {
+      "id": "continuation",
+      "state": "unknown",
+      "source": "none",
+      "endpoint": {
+        "target": "firstmate:fm-continuation",
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-23T15:21:00Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "delivered",
+      "state": "unknown",
+      "source": "none",
+      "endpoint": {
+        "target": "firstmate:fm-delivered",
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-23T15:21:00Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "predecessor",
+      "state": "unknown",
+      "source": "none",
+      "endpoint": {
+        "target": "firstmate:fm-predecessor",
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-23T15:21:00Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "review",
+      "state": "unknown",
+      "source": "none",
+      "endpoint": {
+        "target": "firstmate:fm-review",
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-23T15:21:00Z",
+        "freshness": "fresh"
+      }
+    }
+  ],
+  "counts": {
+    "active_children": 0,
+    "retained_attempts": 0,
+    "decisions_open": 2,
+    "holds": 3,
+    "queued": 3,
+    "landed": 0,
+    "endpoints": 4
+  },
+  "omitted": []
+}

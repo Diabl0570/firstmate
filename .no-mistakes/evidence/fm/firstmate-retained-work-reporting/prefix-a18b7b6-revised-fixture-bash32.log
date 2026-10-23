@@ -1,0 +1,2 @@
+not ok - stalled endpoint probe held the snapshot for 64s
+rc=1 elapsed=78s (pre-fix a18b7b6 source + revised test fixture, bash 3.2)

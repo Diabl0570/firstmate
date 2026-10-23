@@ -1,0 +1,12 @@
+tmux server: tmux 3.7c, socket dir private to lab, pid 98096
+fm-predecessor
+fm-continuation
+== A live endpoints busy workers (elapsed 2s)
+{"valid":false,"state":"unknown","invalidity":{"kind":"child_current_unavailable","ids":["predecessor"]},"active":[{"id":"continuation","source":"run-step"}],"retained":[{"id":"predecessor","state":"failed","source":"run-step","activity":"unknown","activity_source":"endpoint-unverified","provenance":"recovery-grade-endpoint"}],"decisions":[{"id":"predecessor","key":"current-choice","verb":"needs-decision"}],"endpoints":[{"id":"continuation","exists":true,"status":"unknown"},{"id":"predecessor","exists":true,"status":"unknown"}]}
+-- SIGSTOP lab tmux server (real stall)
+== B stalled tmux server timeout 3 (elapsed 9s)
+{"valid":false,"state":"unknown","invalidity":{"kind":"child_current_unavailable","ids":["predecessor"]},"active":[{"id":"continuation","source":"run-step"}],"retained":[{"id":"predecessor","state":"failed","source":"run-step","activity":"unknown","activity_source":"endpoint-unverified","provenance":"recovery-grade-endpoint"}],"decisions":[{"id":"predecessor","key":"current-choice","verb":"needs-decision"}],"endpoints":[{"id":"continuation","exists":null,"status":"unknown"},{"id":"predecessor","exists":null,"status":"unknown"}]}
+-- SIGCONT lab tmux server
+-- killed fm-predecessor window
+== C predecessor endpoint gone (elapsed 3s)
+{"valid":true,"state":"captain_decision","invalidity":{"kind":null,"ids":[]},"active":[{"id":"continuation","source":"run-step"}],"retained":[{"id":"predecessor","state":"failed","source":"run-step","activity":"dead","activity_source":"endpoint-gone","provenance":"recovery-grade-endpoint"}],"decisions":[{"id":"predecessor","key":"current-choice","verb":"needs-decision"}],"endpoints":[{"id":"continuation","exists":true,"status":"unknown"},{"id":"predecessor","exists":false,"status":"absent"}]}

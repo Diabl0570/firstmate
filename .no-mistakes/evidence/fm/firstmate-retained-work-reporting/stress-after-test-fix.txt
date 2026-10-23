@@ -1,0 +1,6 @@
+round 1 copy 2 rc=0 19 ok 
+round 1 copy 1 rc=0 19 ok 
+round 1 copy 3 rc=0 19 ok 
+round 2 copy 2 rc=1 0 ok not ok - stalled endpoint probe became inactive or answered an open call: {
+round 2 copy 3 rc=0 19 ok 
+round 2 copy 1 rc=0 19 ok 

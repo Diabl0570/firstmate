@@ -1,0 +1,10 @@
+tmux server: tmux 3.7c, socket dir private to lab, pid 29498
+fm-predecessor
+fm-continuation
+-- SIGSTOP lab tmux server (real stall)
+/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-old.94Mc0S/bin/fm-fleet-snapshot.sh: line 667: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-fleet-tasks.q27RaT/continuation.meta: No such file or directory
+/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-old.94Mc0S/bin/fm-fleet-snapshot.sh: line 730: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-fleet-tasks.q27RaT/continuation.json: No such file or directory
+/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-old.94Mc0S/bin/fm-fleet-snapshot.sh: line 667: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-fleet-tasks.q27RaT/predecessor.meta: No such file or directory
+/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-old.94Mc0S/bin/fm-fleet-snapshot.sh: line 736: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-fleet-tasks.q27RaT/continuation.endpoint: No such file or directory
+/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-old.94Mc0S/bin/fm-fleet-snapshot.sh: line 730: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-fleet-tasks.q27RaT/predecessor.json: No such file or directory
+/var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-old.94Mc0S/bin/fm-fleet-snapshot.sh: line 736: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-fleet-tasks.q27RaT/predecessor.endpoint: No such file or directory
