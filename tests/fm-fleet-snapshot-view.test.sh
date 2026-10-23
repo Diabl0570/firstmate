@@ -1313,7 +1313,7 @@ SH
   out=$(PATH="$fakebin:$PATH" FM_HOME="$home" "$SNAPSHOT" --secondmate-home-summary)
   printf '%s' "$out" | jq -e '
     .valid == false and .state == "unknown"
-    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor"]}
+    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor","review"]}
     and [.active_children[].id] == ["continuation"]
     and (.retained_attempts | any(.id == "predecessor" and .state == "failed"
           and .runtime_activity.state == "unknown" and .runtime_activity.source == "endpoint-unverified"))
@@ -1348,7 +1348,7 @@ SH
   [ "$elapsed" -lt 10 ] || fail "stalled endpoint probe held the snapshot for ${elapsed}s"
   printf '%s' "$out" | jq -e '
     .valid == false and .state == "unknown"
-    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor"]}
+    and .invalidity == {kind:"child_current_unavailable",ids:["predecessor","review"]}
     and [.active_children[].id] == ["continuation"]
     and (.retained_attempts | any(.id == "predecessor" and .state == "failed" and .source == "run-step"
           and .runtime_activity.state == "unknown" and .runtime_activity.source == "endpoint-unverified"))
