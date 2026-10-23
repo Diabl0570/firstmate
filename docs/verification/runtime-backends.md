@@ -2020,7 +2020,7 @@ The strict missing-registration and lifecycle-incarnation checks have focused po
 No real Herdr session or installed Claude/Pi runtime was exercised for this addition, so the earlier live observations above do not verify the new stricter lifecycle path.
 The current behavior and proof owners are [Restart and liveness behavior](../herdr-backend.md#restart-and-liveness-behavior) and [`bin/fm-control.sh`](../../bin/fm-control.sh).
 
-`tests/fm-backend-herdr.test.sh` adds the registration/process counterfactual, Claude/Pi foreground and nested process snapshots, malformed or contradictory responses, and exact PID/start-incarnation survival and reuse checks.
+`tests/fm-backend-herdr.test.sh` adds the registration/process counterfactual, Claude/Pi foreground and nested process snapshots, transient prompt-helper settling within the bounded window, malformed or contradictory responses, and exact PID/start-incarnation survival and reuse checks.
 `tests/fm-control-relaunch.test.sh` drives real fixture-owned renamed Bash processes through fake Herdr reads, ordinary durable delivery, and the standalone/control relaunch interfaces.
 It distinguishes a genuine stopped original plus new replacement from a surviving original, a false pane-death read, a registration-only replacement, and a process appearing after the initial shell-only read.
 The portable regression refresh entry point is:

@@ -813,10 +813,11 @@ It uses the shared harness-process classifier in `bin/fm-agent-process-lib.sh`, 
 | A harness in the foreground process group, or still a descendant of the pane shell | The registration stays live. |
 | A foreground that is nothing but shells, with no harness descendant | A `stale-agent` pane: agent-free, with that explicit reason. |
 | A foreground holding anything else | The registration stays live, but only after the same bounded settle window the idle-shell proof uses. |
-| An unreadable process view | The pane is `unknown`, trusting neither the registration nor its absence. |
+| An unreadable process view | The pane is `unknown`, trusting neither the registration nor its absence, but only after the same bounded settle window. |
 
-The settle window exists because an idle shell transiently hosts prompt helpers such as starship in its foreground group.
+The settle window exists because an idle shell transiently hosts prompt helpers such as starship in its foreground group, and a helper exiting mid-read leaves an unreadable sample.
 The first agent or shell sample in that window decides.
+The strict snapshot behind the missing-registration and lifecycle checks settles the same way, resampling complete strict snapshots rather than relaxing any single one.
 
 No registered status outranks the process view, because an agent killed mid-turn leaves `working` behind just as a quit one leaves `idle`.
 The native busy verdict is verified the same way, so a shell-only pane never reads busy.
