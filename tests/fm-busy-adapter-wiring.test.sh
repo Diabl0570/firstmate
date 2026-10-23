@@ -570,6 +570,10 @@ test_claude_worker_settings_publish_failures_keep_original() {
 # A real file-size limit interrupts the staged printf with SIGXFSZ after a
 # partial write. The writer must contain that signal, refuse publication, and
 # remove the incomplete staging file without touching the saved settings.
+# The limit is 1 MiB, not a few KiB: every other spawn write must fit under it,
+# including bash 3.2's here-document temp files and the first-run cache of the
+# macOS /usr/bin/git xcrun shim. The saved settings sit just below the limit,
+# so only the merged settings, with the generated hooks added, cross it.
 test_claude_worker_partial_settings_write_keeps_original() {
   local rec id=worker-partial-write out settings prior rc
   rec=$(make_spawn_case worker-partial-write claude "$id")
@@ -579,11 +583,11 @@ test_claude_worker_partial_settings_write_keeps_original() {
   mkdir -p "${settings%/*}"
   printf '.claude/settings.local.json\n' >> "$PROJ_DIR/.git/info/exclude"
   jq -n '{permissions: {allow: ["Read(./docs/**)"]},
-    env: {FIXTURE_FLAG: "preserve"}, savedFixture: ("x" * 3800)}' > "$prior"
-  [ "$(wc -c < "$prior")" -lt 4096 ] || fail "partial-write fixture exceeds its output limit"
+    env: {FIXTURE_FLAG: "preserve"}, savedFixture: ("x" * 1047552)}' > "$prior"
+  [ "$(wc -c < "$prior")" -lt 1048576 ] || fail "partial-write fixture exceeds its output limit"
   cp "$prior" "$settings"
   chmod 640 "$settings"
-  out=$(ulimit -f 4; run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR"); rc=$?
+  out=$(ulimit -f 1024; run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR"); rc=$?
   expect_code 1 "$rc" "a partial staged write must refuse the spawn rather than kill its writer: $out"
   assert_contains "$out" 'could not publish refreshed Claude worker hooks' \
     "a partial staged write did not surface the settings publication refusal"
@@ -591,6 +595,8 @@ test_claude_worker_partial_settings_write_keeps_original() {
   [ -n "$(find "$settings" -prune -perm 640)" ] || fail "a partial staged write changed the saved settings mode"
   [ "$(ls -A "${settings%/*}")" = settings.local.json ] \
     || fail "a partial staged write left incomplete settings output behind"
+  id="$id-retry"
+  fm_test_spawn_brief "$HOME_DIR" "$id"
   out=$(run_spawn "$HOME_DIR" "$WT_DIR" "$FAKEBIN_DIR" "$id" "$PROJ_DIR")
   expect_code 0 $? "installation should succeed once the output limit is removed: $out"
   jq -e --slurpfile prior "$prior" 'del(.hooks) == $prior[0]' "$settings" >/dev/null \

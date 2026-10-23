@@ -17,6 +17,7 @@
 #   6. fm-spawn --relaunch refuses on its own: a live agent, a contradicting
 #      flag, an extra positional, or a backend that cannot prove the previous
 #      agent exited.
+# Set FM_TEST_ONLY to a test function name for a focused executable regression.
 set -u
 
 # shellcheck source=tests/lib.sh
@@ -3142,6 +3143,15 @@ SH
     || fail "the dialog file must be gone when the control lock is released, got: $(cat "$trace" 2>/dev/null)"
   pass "fm-control exit removes the dialog file before it releases the control lock"
 }
+
+if [ -n "${FM_TEST_ONLY:-}" ]; then
+  case "$FM_TEST_ONLY" in
+    test_*) declare -F "$FM_TEST_ONLY" >/dev/null || fail "unknown FM_TEST_ONLY test: $FM_TEST_ONLY" ;;
+    *) fail "FM_TEST_ONLY must name a test_ function: $FM_TEST_ONLY" ;;
+  esac
+  "$FM_TEST_ONLY"
+  exit
+fi
 
 test_relaunch_off_opencode_removes_tracked_wiring
 test_exit_and_relaunch_remove_the_dialog_file
