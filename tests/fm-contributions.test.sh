@@ -104,7 +104,7 @@ test_newest_check_has_no_verdict() {
 
 
 # Budget seconds left depend on the wall clock unless a test freezes it.
-mask_budget() { sed -E 's/ with -?[0-9]+s of budget left: / with Ns of budget left: /'; }
+mask_budget() { sed -E 's/ with -?[0-9]+s of budget left: / with Ns of budget left: /g'; }
 
 forge_home() {
   local home=$1
