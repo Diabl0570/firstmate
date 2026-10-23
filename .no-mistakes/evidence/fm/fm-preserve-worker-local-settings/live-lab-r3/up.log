@@ -1,0 +1,15 @@
+cmd: bin/fm-live-lab.sh up --harness claude --worker --effort low --supervision-host off --expect-host no --source /Users/kaspersprengers/.no-mistakes/worktrees/7a1ad251bbbd/01M5MKT15MMD5VESQGZT19ZATF --ref 9c134651d00c0d6d64e4d5fb6fbcba9399f261e8 --timeout 300 /tmp/fmlab-r3-1792771677
+lab: /private/tmp/fmlab-r3-1792771677 (tear down with: bin/fm-live-lab.sh down /private/tmp/fmlab-r3-1792771677)
+tree: 9c134651d00c0d6d64e4d5fb6fbcba9399f261e8 from /Users/kaspersprengers/.no-mistakes/worktrees/7a1ad251bbbd/01M5MKT15MMD5VESQGZT19ZATF
+spawned lab49c35c0f5751-worker harness=claude kind=ship mode=local-only yolo=on window=firstmate:fm-lab49c35c0f5751-worker worktree=/private/tmp/fmlab-r3-1792771677/treehouse/.treehouse/notes-87831a/1/notes
+gate: /private/tmp/fmlab-r3-1792771677/home/data/lab49c35c0f5751-worker/gate (touch, then message the worker to resume)
+primary: claude --setting-sources project,local --model sonnet --effort low --permission-mode auto
+ok primary: claude pid 82926 in /private/tmp/fmlab-r3-1792771677/home
+ok probe: the primary answered LABREADY-49c35c0f5751
+ok trust: /private/tmp/fmlab-r3-1792771677/home is trusted in the Claude store
+ok host: none running, as expected
+ok watcher: live watcher with a fresh beacon
+ok worker: lab49c35c0f5751-worker parked on /private/tmp/fmlab-r3-1792771677/home/data/lab49c35c0f5751-worker/gate
+ok treehouse: ~/.treehouse unchanged
+ready: /private/tmp/fmlab-r3-1792771677
+exit=0

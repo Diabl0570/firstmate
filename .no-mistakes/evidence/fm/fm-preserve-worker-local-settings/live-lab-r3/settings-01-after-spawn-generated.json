@@ -1,0 +1,44 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/private/tmp/fmlab-r3-1792771677/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-r3-1792771677/home/state' 'lab49c35c0f5751-worker' busy --gen 'g1792771706.81872.24331' --source claude-hook --event user-prompt-submit 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "touch '/private/tmp/fmlab-r3-1792771677/home/state/lab49c35c0f5751-worker.turn-ended'; '/private/tmp/fmlab-r3-1792771677/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-r3-1792771677/home/state' 'lab49c35c0f5751-worker' idle --gen 'g1792771706.81872.24331' --source claude-hook --event stop 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/private/tmp/fmlab-r3-1792771677/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-r3-1792771677/home/state' 'lab49c35c0f5751-worker' idle --gen 'g1792771706.81872.24331' --source claude-hook --event stop-failure 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/private/tmp/fmlab-r3-1792771677/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-r3-1792771677/home/state' 'lab49c35c0f5751-worker' idle --gen 'g1792771706.81872.24331' --source claude-hook --event session-end 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}

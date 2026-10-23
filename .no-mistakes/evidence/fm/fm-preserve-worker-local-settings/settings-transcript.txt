@@ -1,0 +1,57 @@
+=== BEFORE spawn (worker-saved settings, mode 640) ===
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test:*)",
+      "Read(./docs/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./my-guard.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+=== fm-spawn.sh claude crewmate (1st) ===
+exit=0
+=== AFTER 1st spawn (mode 640) ===
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test:*)",
+      "Read(./docs/**)"
+    ]
+  },
+  "hook_events": [
+    "PreToolUse",
+    "SessionEnd",
+    "Stop",
+    "StopFailure",
+    "UserPromptSubmit"
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "./my-guard.sh"
+        }
+      ]
+    }
+  ],
+  "generated_cmd_count": 4
+}
+=== ADVERSARIAL: malformed settings (fresh task) ===
+exit=1
+jq: parse error: Unfinished JSON term at EOF at line 2, column 0
+error: could not refresh Claude worker hooks without losing existing settings in /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T//fm-transcript.546DSl/bad/wt/.claude/settings.local.json
+malformed file left byte-identical: yes

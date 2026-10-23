@@ -1,0 +1,9 @@
+head=9c134651d00c0d6d64e4d5fb6fbcba9399f261e8 bash=/tmp/fm-testbin.d1VZHs/bash GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+FM_TEST_ONLY=test_claude_worker_settings_publish_failures_keep_original TMPDIR=/tmp/fm-case.zYHHob
+FM_TEST_BEGIN 2026-10-23T15:55:03Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - Claude worker settings stay intact through failed staging, writes, and replacement
+FM_TEST_END 2026-10-23T15:55:53Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=49936 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=50019
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=49936 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=49936
+exit=0 elapsed=50s

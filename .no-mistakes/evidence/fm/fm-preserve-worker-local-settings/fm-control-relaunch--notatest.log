@@ -1,0 +1,9 @@
+head=9c134651d00c0d6d64e4d5fb6fbcba9399f261e8 bash=/tmp/fm-testbin.d1VZHs/bash GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+FM_TEST_ONLY=notatest TMPDIR=/tmp/fm-case.aFxYkU
+FM_TEST_BEGIN 2026-10-23T15:57:21Z tests/fm-control-relaunch.test.sh family=backend-dispatch expected_gate_skip=none
+not ok - FM_TEST_ONLY must name a test_ function: notatest
+FM_TEST_END 2026-10-23T15:57:21Z tests/fm-control-relaunch.test.sh exit=1 duration_ms=245 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=1 skipped_gate=0 duration_ms=321
+FM_TEST_SUMMARY_FAMILY family=backend-dispatch count=1 duration_ms=245 failed=1
+FM_TEST_SLOWEST rank=1 script=tests/fm-control-relaunch.test.sh duration_ms=245
+exit=1 elapsed=0s

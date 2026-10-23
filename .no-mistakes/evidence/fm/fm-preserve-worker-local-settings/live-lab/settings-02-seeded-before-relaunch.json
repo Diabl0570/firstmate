@@ -1,0 +1,65 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/private/tmp/fmlab-pr7074-1792771524/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-pr7074-1792771524/home/state' 'lab20b90f3e6a9e-worker' busy --gen 'g1792771538.67119.28057' --source claude-hook --event user-prompt-submit 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "touch '/private/tmp/fmlab-pr7074-1792771524/home/state/lab20b90f3e6a9e-worker.turn-ended'; '/private/tmp/fmlab-pr7074-1792771524/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-pr7074-1792771524/home/state' 'lab20b90f3e6a9e-worker' idle --gen 'g1792771538.67119.28057' --source claude-hook --event stop 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/private/tmp/fmlab-pr7074-1792771524/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-pr7074-1792771524/home/state' 'lab20b90f3e6a9e-worker' idle --gen 'g1792771538.67119.28057' --source claude-hook --event stop-failure 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/private/tmp/fmlab-pr7074-1792771524/home/bin/fm-busy-event.sh' apply '/private/tmp/fmlab-pr7074-1792771524/home/state' 'lab20b90f3e6a9e-worker' idle --gen 'g1792771538.67119.28057' --source claude-hook --event session-end 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "true # pr7074-worker-own-hook"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read(./README.md)"
+    ]
+  },
+  "fmLabSentinel": {
+    "nested": {
+      "keep": "pr7074-sentinel"
+    }
+  }
+}

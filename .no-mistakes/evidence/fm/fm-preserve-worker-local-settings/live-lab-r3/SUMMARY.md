@@ -1,0 +1,8 @@
+# PR #7074 live Claude spawn/relaunch evidence, Test round 3 (head 9c134651d00c0d6d64e4d5fb6fbcba9399f261e8)
+Claude Code 2.1.309, tmux 3.7c, and the machine's existing CLAUDE_CONFIG_DIR login (left unchanged). Lab: `bin/fm-live-lab.sh up --harness claude --worker --effort low --supervision-host off --expect-host no --ref 9c13465` on a private tmux socket. Every readiness check passed (up.log).
+No "Allow external CLAUDE.md file imports?" prompt or any other consent prompt appeared (worker-pane-incarnation*.txt).
+1. A real fm-spawn worker started with gen g1792771706.81872.24331. Its generated settings.local.json carries only the firstmate hooks (settings-01). Claude's own Stop hook wrote idle seq3.
+2. The worker's settings.local.json was then seeded with permissions.allow Read(./README.md), the sentinel fmLabSentinel.nested.keep, and the worker's own PostToolUse hook (settings-02).
+3. The worker was relaunched through the real fm-control.sh relaunch (relaunch.log, exit 0). The old incarnation emitted session-end (seq4). The new gen g1792771792.92722.28309 started with launch-brief busy, then Claude's own hooks wrote user-prompt-submit busy and stop idle (busy-transitions.log).
+4. settings-03 still holds the permission rule, the sentinel and the worker's own hook. The firstmate hooks reference only the new gen (settings-summary.txt).
+Cleanup: down exited 0. The lab root, tmux dir and task temp dirs are gone, 0 lab trust entries remain, and the Claude store's project keys match the pre-run snapshot. Two lab watcher processes re-armed during teardown and exited on their own about 2 seconds later (cleanup-verify.txt).

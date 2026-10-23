@@ -1,0 +1,9 @@
+head=9c134651d00c0d6d64e4d5fb6fbcba9399f261e8 bash=/tmp/fm-testbin.d1VZHs/bash GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+FM_TEST_ONLY=test_relaunch_keeps_worker_local_settings_and_refreshes_only_firstmate_hooks TMPDIR=/tmp/fm-case.03gXPk
+FM_TEST_BEGIN 2026-10-23T15:56:25Z tests/fm-control-relaunch.test.sh family=backend-dispatch expected_gate_skip=none
+ok - fm-control relaunch: worker-local settings survive same-task refreshes and a harness switch
+FM_TEST_END 2026-10-23T15:56:38Z tests/fm-control-relaunch.test.sh exit=0 duration_ms=12965 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=13260
+FM_TEST_SUMMARY_FAMILY family=backend-dispatch count=1 duration_ms=12965 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-control-relaunch.test.sh duration_ms=12965
+exit=0 elapsed=13s

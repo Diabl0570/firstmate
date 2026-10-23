@@ -1,0 +1,3 @@
+01-after-spawn-generated: {"perm":null,"sentinel":null,"ownhook":[],"hookevents":["SessionEnd","Stop","StopFailure","UserPromptSubmit"],"gens":["g1792771706.81872.24331"]}
+02-seeded-before-relaunch: {"perm":["Read(./README.md)"],"sentinel":{"nested":{"keep":"pr7074-r3-sentinel"}},"ownhook":["true # pr7074-r3-worker-own-hook"],"hookevents":["PostToolUse","SessionEnd","Stop","StopFailure","UserPromptSubmit"],"gens":["g1792771706.81872.24331"]}
+03-after-relaunch: {"perm":["Read(./README.md)"],"sentinel":{"nested":{"keep":"pr7074-r3-sentinel"}},"ownhook":["true # pr7074-r3-worker-own-hook"],"hookevents":["PostToolUse","SessionEnd","Stop","StopFailure","UserPromptSubmit"],"gens":["g1792771792.92722.28309"]}

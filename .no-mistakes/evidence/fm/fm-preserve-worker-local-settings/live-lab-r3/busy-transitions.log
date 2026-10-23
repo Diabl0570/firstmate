@@ -1,0 +1,7 @@
+18:09:29 pre-seed record: v1 gen=g1792771706.81872.24331 seq=3 state=idle source=claude-hook event=stop ts=1792771728
+18:09:29 gen|record: g1792771706.81872.24331 | v1 gen=g1792771706.81872.24331 seq=3 state=idle source=claude-hook event=stop ts=1792771728
+18:09:48 gen|record: g1792771706.81872.24331 | v1 gen=g1792771706.81872.24331 seq=4 state=idle source=claude-hook event=session-end ts=1792771788
+18:09:49 gen|record:  | 
+18:09:52 gen|record: g1792771792.92722.28309 | v1 gen=g1792771792.92722.28309 seq=1 state=busy source=fm-spawn event=launch-brief ts=1792771792
+18:09:56 gen|record: g1792771792.92722.28309 | v1 gen=g1792771792.92722.28309 seq=2 state=busy source=claude-hook event=user-prompt-submit ts=1792771795
+18:10:12 gen|record: g1792771792.92722.28309 | v1 gen=g1792771792.92722.28309 seq=3 state=idle source=claude-hook event=stop ts=1792771812

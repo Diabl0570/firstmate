@@ -1,0 +1,8 @@
+lab root exists: no
+tmux dir exists: no
+lab trust entries left: 0
+project keys identical to before
+lab processes:        2
+task tmp dirs:        0
+post-down: 2 orphaned lab watcher processes (fm-watch-arm.sh pid 98036, fm-watch.sh pid 98055) started 18:10:54 during teardown, reparented to launchd; verified lab-owned by path, both had already exited on their own before kill was sent (kill reported no such process)
+lab processes after kill:        0

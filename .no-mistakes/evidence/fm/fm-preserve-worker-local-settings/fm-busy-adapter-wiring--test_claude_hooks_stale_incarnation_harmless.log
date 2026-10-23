@@ -1,0 +1,9 @@
+head=9c134651d00c0d6d64e4d5fb6fbcba9399f261e8 bash=/tmp/fm-testbin.d1VZHs/bash GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+FM_TEST_ONLY=test_claude_hooks_stale_incarnation_harmless TMPDIR=/tmp/fm-case.8uNtuN
+FM_TEST_BEGIN 2026-10-23T15:56:12Z tests/fm-busy-adapter-wiring.test.sh family=standalone expected_gate_skip=none
+ok - claude hook events from a superseded incarnation are rejected without breaking the hook
+FM_TEST_END 2026-10-23T15:56:18Z tests/fm-busy-adapter-wiring.test.sh exit=0 duration_ms=6279 gate_skip=false
+FM_TEST_SUMMARY total=1 failed=0 skipped_gate=0 duration_ms=6362
+FM_TEST_SUMMARY_FAMILY family=standalone count=1 duration_ms=6279 failed=0
+FM_TEST_SLOWEST rank=1 script=tests/fm-busy-adapter-wiring.test.sh duration_ms=6279
+exit=0 elapsed=7s
