@@ -305,9 +305,10 @@ schema, even when it contains no captain holds; older summaries are rejected. A
 home with neither a valid current ledger nor a valid current cached copy is
 reported unreadable with the reason; collection never computes a summary in
 that home.
-Each local per-task current-state read and recovery-grade endpoint probe is bounded
-by FM_SNAPSHOT_CREW_STATE_TIMEOUT (default 10 seconds); a read that hits the bound
-reports state unknown, and a probe that hits it reports the endpoint unknown. Local task
+Each local per-task current-state read, endpoint-presence read, and recovery-grade
+endpoint probe is bounded by FM_SNAPSHOT_CREW_STATE_TIMEOUT (default 10 seconds); a
+read that hits the bound reports state unknown, a presence read reports
+endpoint.exists null, and a probe reports the endpoint unknown. Local task
 observations run concurrently, up to FM_SNAPSHOT_LOCAL_READ_CONCURRENCY (default 8).
 Remote secondmate endpoint liveness is not probed by this command.
 Terminal contradiction evidence uses

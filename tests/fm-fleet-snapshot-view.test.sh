@@ -1291,7 +1291,7 @@ fault=$(cat "${FM_HOME:?}/endpoint-fault" 2>/dev/null) || exec "$live" "$@"
 case "$fault:$*" in
   unreadable:list-windows*) printf 'server not answering\n' >&2; exit 1 ;;
   missing:list-windows*) "$live" "$@" | grep -vFx fm-predecessor; exit 0 ;;
-  stalled:list-windows*) sleep 20; exec "$live" "$@" ;;
+  stalled:list-windows*) sleep 60; exec "$live" "$@" ;;
   stalled:*) exec "$live" "$@" ;;
   *fm-predecessor*) printf "can't find window: fm-predecessor\n" >&2; exit 1 ;;
 esac
@@ -1341,11 +1341,11 @@ SH
     --source claude-hook --event user-prompt-submit
   printf stalled > "$home/endpoint-fault"
   started=$SECONDS
-  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" FM_SNAPSHOT_CREW_STATE_TIMEOUT=1 \
+  out=$(PATH="$fakebin:$PATH" FM_HOME="$home" FM_SNAPSHOT_CREW_STATE_TIMEOUT=3 \
     "$SNAPSHOT" --secondmate-home-summary)
   elapsed=$((SECONDS - started))
   rm "$home/endpoint-fault"
-  [ "$elapsed" -lt 10 ] || fail "stalled endpoint probe held the snapshot for ${elapsed}s"
+  [ "$elapsed" -lt 30 ] || fail "stalled endpoint probe held the snapshot for ${elapsed}s"
   printf '%s' "$out" | jq -e '
     .valid == false and .state == "unknown"
     and .invalidity == {kind:"child_current_unavailable",ids:["predecessor","review"]}
