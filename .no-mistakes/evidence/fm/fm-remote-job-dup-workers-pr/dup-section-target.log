@@ -1,0 +1,7 @@
+ok - a live lock owner is never duplicated before absent public PID publication
+ok - a live lock owner is never duplicated before stale public PID publication
+ok - a live lock owner is neither stopped nor duplicated before it publishes its code identity over absent predecessor state
+ok - a live lock owner is neither stopped nor duplicated before it publishes its code identity over stale predecessor state
+ok - a live lock owner with an aged heartbeat is never duplicated
+ALL TESTS PASSED
+bash $S/dup.sh  0.94s user 2.39s system 19% cpu 17.027 total
