@@ -696,7 +696,7 @@ The portable tests use these pieces:
 - A controlled account fixture for the readiness gate.
 
 [`fm-remote-job-launchagent.test.sh`](../tests/fm-remote-job-launchagent.test.sh) exercises the real worker with stubbed asynchronous `launchctl`, covering slow claim sweeps, missing readiness recovery during a sweep, stale readiness without reload, concurrent repair, untracked owners, interrupted repairs, and asynchronous service removal before bootstrap.
-[`fm-remote-job.test.sh`](../tests/fm-remote-job.test.sh) covers Linux live-owner reuse with aged readiness, absent or stale public PID records, and unpublished code identity, plus readiness-object binding where Linux fd paths are available.
+[`fm-remote-job.test.sh`](../tests/fm-remote-job.test.sh) covers Linux live-owner reuse with aged readiness, absent or stale public PID records, and unpublished code identity over an absent or stale predecessor identity, plus readiness-object binding where Linux fd paths are available.
 The lifecycle test covers seeding a registered project that this machine has never cloned.
 It asserts that the local project tree is unchanged afterwards.
 It carries Bitbucket, self-hosted, and scp-like origins through to the remote clone.
