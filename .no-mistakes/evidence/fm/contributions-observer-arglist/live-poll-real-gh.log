@@ -1,0 +1,29 @@
+### gh direct (raw stderr, for comparison):
+gh: Not Found (HTTP 404)
+{"message":"Not Found","documentation_url":"https://docs.github.com/rest/pulls/pulls#get-a-pull-request","status":"404"}### poll #1 (live gh, real GitHub)
+contributions: observation unavailable for https://github.com/Diabl0570/fm-nonexistent-repo-zz9/pull/1 - core read exited 1 with 17s of budget left: HTTP 404
+exit=0
+--- stderr:
+### poll #2 (live gh, real GitHub)
+exit=0
+--- stderr:
+### records
+== gone
+{
+  "url": "https://github.com/Diabl0570/fm-nonexistent-repo-zz9/pull/1",
+  "error": "forge observation unavailable: core read exited 1 with 20s of budget left: HTTP 404",
+  "checked_at": "2026-10-23T15:46:46Z",
+  "state": null,
+  "head": null
+}
+== real
+{
+  "url": "https://github.com/cli/cli/pull/1",
+  "error": null,
+  "checked_at": "2026-10-23T15:46:43Z",
+  "state": "merged",
+  "head": "e9a3253762e768badaa1d4a5b3d267416d1e42f4"
+}
+### wake queue
+### leak check (endpoint/raw gh text in persisted state)
+no raw stderr/endpoints persisted

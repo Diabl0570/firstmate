@@ -1,0 +1,20 @@
+### gh direct through dead proxy (raw stderr):
+Get "https://api.github.com/repos/cli/cli/pulls/3": proxyconnect tcp: dial tcp 127.0.0.1:9: connect: connection refused
+### poll through dead proxy (live gh)
+contributions: observation unavailable for https://github.com/cli/cli/pull/3 - core read exited 1 with 20s of budget left: connection error
+exit=0 elapsed=1s
+--- stderr:
+### netfail record
+{
+  "url": "https://github.com/cli/cli/pull/3",
+  "error": "forge observation unavailable: core read exited 1 with 20s of budget left: connection error"
+}
+### recovery poll (network restored)
+exit=0
+{
+  "url": "https://github.com/cli/cli/pull/3",
+  "error": null,
+  "state": "merged"
+}
+### leak check
+no raw stderr/proxy/endpoint persisted

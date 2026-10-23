@@ -1,0 +1,173 @@
+===== scenario: private-both (gh fault: private-500-both) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500
+[exit 0]
+--- persisted record error:
+forge observation unavailable: checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  2 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  2 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+
+===== scenario: private-checks (gh fault: private-500-checks) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - checks read exited 1 with 19s of budget left: HTTP 500
+[exit 0]
+--- persisted record error:
+forge observation unavailable: checks read exited 1 with 19s of budget left: HTTP 500
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  2 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+
+===== scenario: oversized (gh fault: oversized-error) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - reviews read exited 1 with 19s of budget left: request failed
+[exit 0]
+--- persisted record error:
+forge observation unavailable: reviews read exited 1 with 19s of budget left: request failed
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+
+===== scenario: boundary (gh fault: boundary-http) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - reviews read exited 1 with 20s of budget left: request failed
+[exit 0]
+--- persisted record error:
+forge observation unavailable: reviews read exited 1 with 20s of budget left: request failed
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+
+===== scenario: invalid-status (gh fault: invalid-http) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - reviews read exited 1 with 19s of budget left: request failed
+[exit 0]
+--- persisted record error:
+forge observation unavailable: reviews read exited 1 with 19s of budget left: request failed
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+
+===== scenario: silent (gh fault: silent-failure) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - head read exited 3 with 18s of budget left: request failed
+[exit 0]
+--- persisted record error:
+forge observation unavailable: head read exited 3 with 18s of budget left: request failed
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+  1 pr view https://github.com/o/r/pull/8 --json headRefOid,reviewDecision
+
+===== scenario: head-drift (gh fault: head) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - head changed during observation
+[exit 0]
+--- persisted record error:
+forge observation unavailable: head changed during observation
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+  1 pr view https://github.com/o/r/pull/8 --json headRefOid,reviewDecision
+
+===== scenario: transient-once (gh fault: fail-once) =====
+$ fm-contributions.sh poll
+[exit 0]
+--- persisted record error:
+null
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  2 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+  1 pr view https://github.com/o/r/pull/8 --json headRefOid,reviewDecision
+
+===== scenario: dns (gh fault: real-reviews) =====
+$ fm-contributions.sh poll
+contributions: observation unavailable for https://github.com/o/r/pull/8 - reviews read exited 1 with 19s of budget left: connection error
+[exit 0]
+--- persisted record error:
+forge observation unavailable: reviews read exited 1 with 19s of budget left: connection error
+--- persisted record pending count:
+0
+--- sentinel/raw-stderr leak check across home (data+state):
+no PRIVATE_DIAGNOSTIC_SENTINEL / raw stderr in persisted state
+--- gh calls for failing stage(s):
+  1 api repos/o/r
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100 --paginate --slurp
+  1 api repos/o/r/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100 --paginate --slurp
+  1 api repos/o/r/issues/8/comments?per_page=100 --paginate --slurp
+  1 api repos/o/r/pulls/8
+  1 api repos/o/r/pulls/8/comments?per_page=100 --paginate --slurp
+  2 api repos/o/r/pulls/8/reviews?per_page=100 --paginate --slurp
+
