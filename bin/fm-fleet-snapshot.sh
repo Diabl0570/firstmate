@@ -700,8 +700,13 @@ prefetch_task_observations() {  # <meta> <id>
     backend=$(fm_backend_of_meta "$meta")
     target=$(fm_backend_target_of_meta "$meta")
     if [ -n "$target" ]; then
-      if fm_backend_target_exists "$backend" "$target" "fm-$id" >/dev/null 2>&1; then
+      # shellcheck disable=SC2016 # Positional parameters expand inside the child bash, not here.
+      if fm_run_timed "$FM_SNAPSHOT_CREW_STATE_TIMEOUT" bash -c \
+        '. "$1"; fm_backend_target_exists "$2" "$3" "$4"' \
+        fm-target-exists "$SCRIPT_DIR/fm-backend.sh" "$backend" "$target" "fm-$id" >/dev/null 2>&1; then
         endpoint_exists=true
+      elif fm_timed_out "$?"; then
+        endpoint_exists=null
       else
         endpoint_exists=false
       fi
