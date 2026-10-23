@@ -1,0 +1,12 @@
+ok - real herdr: exit on a pane with no registered agent is idempotent success
+ok - real herdr 0.9.3: a gone session reads recoverable while a live pane and a malformed target do not
+herdr herdr 0.9.3 session=fm-lab-adv-relaunch-88595
+A: pane process state=other agent_state=unreadable
+A: relaunch refused (exit nonzero): error: task hsmoke's endpoint reads 'unreadable'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh hsmoke exit)
+ok - live herdr adversarial: relaunch refuses a busy non-shell pane, launches nothing, types nothing
+B: agent_state=alive
+B: relaunch refused (exit nonzero): error: task hsmoke's endpoint reads 'alive'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh hsmoke exit)
+ok - live herdr adversarial: relaunch over a surviving agent fails closed, original agent survives, metadata unchanged
+C: registered= pane_agent_state=unknown agent_state=unreadable
+C: relaunch refused (exit nonzero): error: task hsmoke's endpoint reads 'unreadable'; a relaunch requires a positively agent-free endpoint (stop the agent first with bin/fm-control.sh hsmoke exit)
+ok - live herdr adversarial: a registration over a busy non-agent pane never yields relaunch success

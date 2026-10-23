@@ -1,0 +1,15 @@
+ok - real herdr: exit on a pane with no registered agent is idempotent success
+ok - real herdr 0.9.3: a gone session reads recoverable while a live pane and a malformed target do not
+warning: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T/fm-control-herdr.tiiPZi/home/data/hsmoke/launch-brief.md records no ship branch; defaulting to legacy branch fm/hsmoke
+warning: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T/fm-control-herdr.tiiPZi/home/data/hsmoke/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+ok - real herdr: a drifted agent-free shell returns to its worktree and reuses the same endpoint
+ok - real herdr: interrupt refuses when herdr's own agent registry reports no agent
+ok - real herdr: interrupt delivers the harness's key and proves the agent survived it
+ok - real herdr: no control verb removed the endpoint or the task's local copy
+ok - real herdr 0.9.3: a registration Herdr keeps after its agent exits reads stale-agent and recovers as dead
+ok - real herdr: exit on a pane with a stale registration is idempotent success
+warning: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T/fm-control-herdr.tiiPZi/home/data/hsmoke/launch-brief.md records no ship branch; defaulting to legacy branch fm/hsmoke
+warning: /var/folders/q5/gckn8n5x2gdfrpgd5w73xvt40000gn/T/fm-control-herdr.tiiPZi/home/data/hsmoke/launch-brief.md records no delivery contract line (scaffolded before ship briefs recorded one); launching on the explicit --mode no-mistakes - confirm its definition of done matches
+ok - real herdr: a stale registration no longer blocks relaunch, and the endpoint and local copy survive
+ok - real herdr: exit refuses an unproven or pending composer without typing an exit command
+bash tests/fm-control-herdr-smoke.test.sh  5.12s user 10.89s system 30% cpu 52.740 total
