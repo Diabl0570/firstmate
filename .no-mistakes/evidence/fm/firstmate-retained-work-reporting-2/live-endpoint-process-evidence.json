@@ -1,0 +1,164 @@
+[
+  {
+    "mechanism": "native",
+    "snapshot_returncode": 0,
+    "elapsed_seconds": 2.309,
+    "observed_blocked_tmux_clients": [
+      {
+        "pid": 3822363,
+        "ppid": 3822362,
+        "pgid": 3822343,
+        "state": "S",
+        "args": "tmux list-windows -t =primary -F #{window_name}"
+      },
+      {
+        "pid": 3822452,
+        "ppid": 3822451,
+        "pgid": 3822335,
+        "state": "S",
+        "args": "tmux list-windows -t =primary -F #{window_name}"
+      },
+      {
+        "pid": 3822539,
+        "ppid": 3822538,
+        "pgid": 3822525,
+        "state": "S",
+        "args": "tmux list-windows -t primary -F #{window_name}"
+      }
+    ],
+    "remaining_live_descendants": [],
+    "current_state": {
+      "state": "unknown",
+      "source": "none",
+      "detail": "",
+      "raw": "",
+      "observed_at": "2026-10-24T06:30:30Z",
+      "freshness": "fresh"
+    },
+    "runtime_activity": {
+      "state": "unknown",
+      "source": "endpoint-unverified",
+      "provenance": "recovery-grade-endpoint",
+      "observed_at": "2026-10-24T06:30:30Z",
+      "freshness": "fresh"
+    },
+    "endpoint": {
+      "target": "primary:fm-review",
+      "exists": null,
+      "agent_alive": "not_checked",
+      "status": "unknown",
+      "observed_at": "2026-10-24T06:30:30Z",
+      "freshness": "fresh"
+    },
+    "pending_decision": true,
+    "stderr": ""
+  },
+  {
+    "mechanism": "perl",
+    "snapshot_returncode": 0,
+    "elapsed_seconds": 2.696,
+    "observed_blocked_tmux_clients": [
+      {
+        "pid": 3823008,
+        "ppid": 3823007,
+        "pgid": 3822986,
+        "state": "S",
+        "args": "tmux list-windows -t =primary -F #{window_name}"
+      },
+      {
+        "pid": 3823087,
+        "ppid": 3823085,
+        "pgid": 3822980,
+        "state": "S",
+        "args": "tmux list-windows -t =primary -F #{window_name}"
+      },
+      {
+        "pid": 3823234,
+        "ppid": 3823233,
+        "pgid": 3823221,
+        "state": "S",
+        "args": "tmux list-windows -t primary -F #{window_name}"
+      }
+    ],
+    "remaining_live_descendants": [],
+    "current_state": {
+      "state": "unknown",
+      "source": "none",
+      "detail": "",
+      "raw": "",
+      "observed_at": "2026-10-24T06:30:33Z",
+      "freshness": "fresh"
+    },
+    "runtime_activity": {
+      "state": "unknown",
+      "source": "endpoint-unverified",
+      "provenance": "recovery-grade-endpoint",
+      "observed_at": "2026-10-24T06:30:33Z",
+      "freshness": "fresh"
+    },
+    "endpoint": {
+      "target": "primary:fm-review",
+      "exists": null,
+      "agent_alive": "not_checked",
+      "status": "unknown",
+      "observed_at": "2026-10-24T06:30:33Z",
+      "freshness": "fresh"
+    },
+    "pending_decision": true,
+    "stderr": ""
+  },
+  {
+    "mechanism": "bash",
+    "snapshot_returncode": 0,
+    "elapsed_seconds": 2.729,
+    "observed_blocked_tmux_clients": [
+      {
+        "pid": 3823553,
+        "ppid": 3823552,
+        "pgid": 3823532,
+        "state": "S",
+        "args": "tmux list-windows -t =primary -F #{window_name}"
+      },
+      {
+        "pid": 3823606,
+        "ppid": 3823605,
+        "pgid": 3823524,
+        "state": "S",
+        "args": "tmux list-windows -t =primary -F #{window_name}"
+      },
+      {
+        "pid": 3824009,
+        "ppid": 3824008,
+        "pgid": 3823988,
+        "state": "S",
+        "args": "tmux list-windows -t primary -F #{window_name}"
+      }
+    ],
+    "remaining_live_descendants": [],
+    "current_state": {
+      "state": "unknown",
+      "source": "none",
+      "detail": "",
+      "raw": "",
+      "observed_at": "2026-10-24T06:30:35Z",
+      "freshness": "fresh"
+    },
+    "runtime_activity": {
+      "state": "unknown",
+      "source": "endpoint-unverified",
+      "provenance": "recovery-grade-endpoint",
+      "observed_at": "2026-10-24T06:30:35Z",
+      "freshness": "fresh"
+    },
+    "endpoint": {
+      "target": "primary:fm-review",
+      "exists": null,
+      "agent_alive": "not_checked",
+      "status": "unknown",
+      "observed_at": "2026-10-24T06:30:35Z",
+      "freshness": "fresh"
+    },
+    "pending_decision": true,
+    "stderr": ""
+  }
+]

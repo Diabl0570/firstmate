@@ -1,0 +1,349 @@
+{
+  "schema": "fm-fleet-snapshot.v1",
+  "generated": "2026-10-24T06:31:35Z",
+  "fm_home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent",
+  "roots": {
+    "fm_root": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/deployment",
+    "state": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent/state",
+    "data": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent/data",
+    "config": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent/config",
+    "projects": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent/projects"
+  },
+  "backlog": {
+    "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent/data/backlog.md",
+    "present": false,
+    "records": []
+  },
+  "tasks": [],
+  "main_inventory": {
+    "valid": true,
+    "reason": null,
+    "orphan_in_flight": [],
+    "unstructured_current_count": 0
+  },
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": false,
+    "proven_clear": false,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 1,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "scout_reports": [],
+  "secondmate_current": {
+    "registry": {
+      "present": true,
+      "available": true,
+      "reason": null,
+      "provenance": "registered-table",
+      "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-parent/data/secondmates.md",
+      "freshness": {
+        "status": "fresh",
+        "observed_at": "2026-10-24T06:31:35Z"
+      },
+      "records": [
+        {
+          "id": "mate",
+          "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-attempts",
+          "host": null,
+          "root": null,
+          "remote": false,
+          "registered": true,
+          "registry_error": null
+        }
+      ],
+      "input_truncated": false,
+      "records_truncated": false,
+      "complete": true,
+      "reasons": [],
+      "lines_in_window": 1,
+      "records_in_window": 1
+    },
+    "records": [
+      {
+        "id": "mate",
+        "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-attempts",
+        "host": null,
+        "remote": false,
+        "registered": true,
+        "spawn_gen": null,
+        "current": {
+          "state": "captain_decision",
+          "reason": null
+        },
+        "invalidity": {
+          "kind": null,
+          "ids": []
+        },
+        "reconcile_inventory": {
+          "kind": null,
+          "ids": []
+        },
+        "provenance": {
+          "selected": "structured-home",
+          "structured_home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fixtures/fm-fleet-snapshot.Vdx0ze/retained-attempts",
+          "summary_source": "local-ledger",
+          "summary_valid": true,
+          "trust": "complete",
+          "parent_event_role": "historical-only"
+        },
+        "freshness": {
+          "status": "fresh",
+          "observed_at": "2026-10-24T06:31:34Z",
+          "age_seconds": 1
+        },
+        "active_children": [
+          {
+            "id": "continuation",
+            "kind": "ship",
+            "state": "working",
+            "repo": "sample",
+            "name": "Current continuation",
+            "source": "run-step",
+            "doing": "validating (running) · run: fixture-run"
+          }
+        ],
+        "retained_attempts": null,
+        "decisions_open": [
+          {
+            "id": "delivered",
+            "key": "delivered",
+            "verb": "captain-hold",
+            "summary": "Delivered attempt awaiting approval",
+            "reason": "review delivery",
+            "hold_until": null,
+            "hold_bucket": "live",
+            "hold_age_days": null,
+            "source": "backlog"
+          }
+        ],
+        "holds": [
+          {
+            "id": "predecessor",
+            "title": "Retained failed attempt",
+            "blocked_by": null,
+            "blocked_by_ids": [],
+            "unresolved_blocker_ids": [],
+            "reason": "source retention",
+            "source": "backlog"
+          },
+          {
+            "id": "delivered",
+            "title": "Delivered attempt awaiting approval",
+            "blocked_by": null,
+            "blocked_by_ids": [],
+            "unresolved_blocker_ids": [],
+            "reason": "review delivery",
+            "source": "backlog"
+          },
+          {
+            "id": "review",
+            "title": "Completed review evidence",
+            "blocked_by": null,
+            "blocked_by_ids": [],
+            "unresolved_blocker_ids": [],
+            "reason": "retain report",
+            "source": "backlog"
+          }
+        ],
+        "queued": [
+          {
+            "id": "predecessor",
+            "title": "Retained failed attempt",
+            "blocked_by": null,
+            "blocked_by_ids": [],
+            "unresolved_blocker_ids": [],
+            "blocked_reason": null,
+            "hold_reason": "source retention",
+            "hold_kind": "external",
+            "hold_until": null,
+            "hold_bucket": null,
+            "hold_age_days": null,
+            "captain_actionable": false,
+            "repo": "sample",
+            "kind": "ship",
+            "since": null
+          },
+          {
+            "id": "review",
+            "title": "Completed review evidence",
+            "blocked_by": null,
+            "blocked_by_ids": [],
+            "unresolved_blocker_ids": [],
+            "blocked_reason": null,
+            "hold_reason": "retain report",
+            "hold_kind": "external",
+            "hold_until": null,
+            "hold_bucket": null,
+            "hold_age_days": null,
+            "captain_actionable": false,
+            "repo": "sample",
+            "kind": "scout",
+            "since": null
+          },
+          {
+            "id": "delivered",
+            "title": "Delivered attempt awaiting approval",
+            "blocked_by": null,
+            "blocked_by_ids": [],
+            "unresolved_blocker_ids": [],
+            "blocked_reason": null,
+            "hold_reason": "review delivery",
+            "hold_kind": "captain",
+            "hold_until": null,
+            "hold_bucket": "live",
+            "hold_age_days": null,
+            "captain_actionable": true,
+            "repo": "sample",
+            "kind": "ship",
+            "since": null
+          }
+        ],
+        "contributions": {
+          "known": 0,
+          "checked": 0,
+          "counts": {
+            "captain": 0,
+            "fleet": 0,
+            "maintainer": 0,
+            "nobody": 0
+          },
+          "unmeasured": 0,
+          "complete": true,
+          "proven_clear": true,
+          "stale_verdicts": 0,
+          "missing_verdicts": 0,
+          "unreadable_records": 0,
+          "valid_until": 900,
+          "captain": [],
+          "captain_omitted": 0
+        },
+        "landed": [],
+        "endpoints": [
+          {
+            "id": "continuation",
+            "state": "working",
+            "source": "run-step",
+            "endpoint": {
+              "target": "firstmate:fm-continuation",
+              "exists": true,
+              "agent_alive": "not_checked",
+              "status": "unknown",
+              "observed_at": "2026-10-24T06:31:34Z",
+              "freshness": "fresh"
+            }
+          },
+          {
+            "id": "delivered",
+            "state": "done",
+            "source": "run-step",
+            "endpoint": {
+              "target": "firstmate:fm-delivered",
+              "exists": true,
+              "agent_alive": "not_checked",
+              "status": "unknown",
+              "observed_at": "2026-10-24T06:31:34Z",
+              "freshness": "fresh"
+            }
+          },
+          {
+            "id": "predecessor",
+            "state": "failed",
+            "source": "run-step",
+            "endpoint": {
+              "target": "firstmate:fm-predecessor",
+              "exists": true,
+              "agent_alive": "not_checked",
+              "status": "unknown",
+              "observed_at": "2026-10-24T06:31:34Z",
+              "freshness": "fresh"
+            }
+          },
+          {
+            "id": "review",
+            "state": "done",
+            "source": "status-log",
+            "endpoint": {
+              "target": "firstmate:fm-review",
+              "exists": true,
+              "agent_alive": "not_checked",
+              "status": "unknown",
+              "observed_at": "2026-10-24T06:31:34Z",
+              "freshness": "fresh"
+            }
+          }
+        ],
+        "counts": {
+          "active_children": 1,
+          "decisions_open": 1,
+          "holds": 3,
+          "queued": 3,
+          "landed": 0,
+          "endpoints": 4
+        },
+        "omitted": [],
+        "parent_event": {
+          "raw": "",
+          "note": "",
+          "age_seconds": null,
+          "open_activities": [],
+          "open_decisions": [],
+          "activity_scan": {
+            "records": [],
+            "available": true,
+            "input_truncated": false,
+            "retained_truncated": false,
+            "reasons": [],
+            "lines_in_window": 0,
+            "records_in_window": 0
+          },
+          "reconciliation": {
+            "provenance": "parent-status-keyed-fold",
+            "trust": "untrusted-supplement",
+            "activities": [],
+            "decisions": [],
+            "contradiction": false,
+            "inconclusive": false
+          }
+        },
+        "terminal_evidence": {
+          "provenance": "parent-direct-report-terminal",
+          "trust": "untrusted-supplement",
+          "captured": false,
+          "observed_at": "2026-10-24T06:31:35Z",
+          "freshness": "not-collected",
+          "reason": "no useful contradiction check",
+          "lines": 0,
+          "bytes": 0,
+          "event_note_seen": false,
+          "contradiction": false
+        },
+        "contradiction": false
+      }
+    ],
+    "total_registered": 1,
+    "total": 1,
+    "shown": 1,
+    "truncated": 0
+  },
+  "secondmate_landed": {
+    "records": [],
+    "truncated": [],
+    "unreadable": [],
+    "partial": []
+  },
+  "secondmate_guidance": {
+    "note": "For kind=secondmate, bearings selects validated structured state from that registered home; parent events and bounded terminal evidence are fallback-only supplements and never current-state authority."
+  }
+}

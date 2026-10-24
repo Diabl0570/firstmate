@@ -1,0 +1,121 @@
+{
+  "schema": "fm-secondmate-home-summary.v1",
+  "hold_classifier_schema": "fm-captain-hold-buckets.v1",
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": true,
+    "proven_clear": true,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 0,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "generated": "2026-10-24T06:30:28Z",
+  "generated_epoch": 1792823428,
+  "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6",
+  "valid": true,
+  "reason": null,
+  "invalidity": {
+    "kind": null,
+    "ids": []
+  },
+  "state": "captain_decision",
+  "active_children": [],
+  "retained_attempts": [
+    {
+      "id": "review",
+      "kind": "scout",
+      "state": "done",
+      "source": "status-log",
+      "logical_state": "in_flight",
+      "runtime_activity": {
+        "state": "idle",
+        "source": "claude-hook",
+        "provenance": "semantic-record",
+        "observed_at": "2026-10-24T06:30:28Z",
+        "freshness": "fresh"
+      },
+      "hold_kind": "captain",
+      "reason": "retain report"
+    }
+  ],
+  "decisions_open": [
+    {
+      "id": "review",
+      "key": "review",
+      "verb": "captain-hold",
+      "summary": "Completed evidence retained for approval",
+      "reason": "retain report",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    }
+  ],
+  "holds": [
+    {
+      "id": "review",
+      "title": "Completed evidence retained for approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "retain report",
+      "source": "backlog"
+    }
+  ],
+  "queued": [
+    {
+      "id": "review",
+      "title": "Completed evidence retained for approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "retain report",
+      "hold_kind": "captain",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "captain_actionable": true,
+      "repo": "sample",
+      "kind": "scout",
+      "since": null
+    }
+  ],
+  "landed": [],
+  "endpoints": [
+    {
+      "id": "review",
+      "state": "done",
+      "source": "status-log",
+      "endpoint": {
+        "target": "primary:fm-review",
+        "exists": true,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-24T06:30:28Z",
+        "freshness": "fresh"
+      }
+    }
+  ],
+  "counts": {
+    "active_children": 0,
+    "retained_attempts": 1,
+    "decisions_open": 1,
+    "holds": 1,
+    "queued": 1,
+    "landed": 0,
+    "endpoints": 1
+  },
+  "omitted": []
+}

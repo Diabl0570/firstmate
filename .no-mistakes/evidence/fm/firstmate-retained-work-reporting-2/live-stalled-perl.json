@@ -1,0 +1,252 @@
+{
+  "schema": "fm-fleet-snapshot.v1",
+  "generated": "2026-10-24T06:30:33Z",
+  "fm_home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6",
+  "roots": {
+    "fm_root": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3",
+    "state": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/state",
+    "data": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/data",
+    "config": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/config",
+    "projects": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/projects"
+  },
+  "backlog": {
+    "records": [
+      {
+        "body_excerpt": null,
+        "hold_reason": "retain report",
+        "done": null,
+        "unresolved_blocker_ids": [],
+        "captain_actionable": true,
+        "priority": null,
+        "since": null,
+        "id": "review",
+        "checked": false,
+        "body_lines": [],
+        "hold_age_days": null,
+        "state": "in_flight",
+        "hold_until": null,
+        "structured": true,
+        "title": "Completed evidence retained for approval",
+        "current_role": "held",
+        "pr_url": null,
+        "merged": null,
+        "reported": null,
+        "blocked_by_ids": [],
+        "blocked_reason": null,
+        "hold_kind": "captain",
+        "blocked_by": null,
+        "completion": {
+          "verb": null,
+          "date": null
+        },
+        "local_note": null,
+        "order": 1,
+        "repo": "sample",
+        "links": [],
+        "hold_bucket": "live",
+        "report_path": null,
+        "requires_child_metadata": false,
+        "hold_set": null,
+        "raw": "- [ ] review - Completed evidence retained for approval (repo: sample) (kind: scout) (hold: retain report) (hold-kind: captain)",
+        "kind": "scout"
+      }
+    ],
+    "present": true,
+    "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/data/backlog.md"
+  },
+  "tasks": [
+    {
+      "id": "review",
+      "kind": "scout",
+      "harness": "claude",
+      "mode": "scout",
+      "yolo": "",
+      "branch": null,
+      "project": "sample",
+      "spawn_gen": null,
+      "backend": "tmux",
+      "remote": null,
+      "paths": {
+        "meta": {
+          "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/state/review.meta",
+          "present": true
+        },
+        "status_log": {
+          "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/state/review.status",
+          "present": true,
+          "kind": "event_history",
+          "last_event": {
+            "state": "needs-decision",
+            "note": "select the follow-up",
+            "raw": "needs-decision [key=follow-up]: select the follow-up",
+            "age_seconds": null
+          }
+        },
+        "worktree": {
+          "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/projects/review",
+          "present": true
+        },
+        "home": {
+          "path": null,
+          "present": false
+        },
+        "report": {
+          "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/data/review/report.md",
+          "present": true
+        }
+      },
+      "secondmate_projects": [],
+      "current_state": {
+        "state": "unknown",
+        "source": "none",
+        "detail": "",
+        "raw": "",
+        "observed_at": "2026-10-24T06:30:33Z",
+        "freshness": "fresh"
+      },
+      "runtime_activity": {
+        "state": "unknown",
+        "source": "endpoint-unverified",
+        "provenance": "recovery-grade-endpoint",
+        "observed_at": "2026-10-24T06:30:33Z",
+        "freshness": "fresh"
+      },
+      "endpoint": {
+        "target": "primary:fm-review",
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-24T06:30:33Z",
+        "freshness": "fresh"
+      },
+      "pr": {
+        "url": null,
+        "source": "absent",
+        "head": null
+      },
+      "hints": {
+        "pending_decision": true,
+        "blocked_event": false,
+        "open_decisions": [
+          {
+            "key": "follow-up",
+            "verb": "needs-decision",
+            "summary": "select the follow-up"
+          }
+        ],
+        "scout_report_present": true,
+        "last_event_text": "needs-decision [key=follow-up]: select the follow-up"
+      },
+      "actions": {
+        "watch": "bin/fm-peek.sh fm-review",
+        "steer": "bin/fm-send.sh fm-review '<instruction>'",
+        "return_channel_note": null
+      },
+      "backlog": {
+        "body_excerpt": null,
+        "hold_reason": "retain report",
+        "done": null,
+        "unresolved_blocker_ids": [],
+        "captain_actionable": true,
+        "priority": null,
+        "since": null,
+        "id": "review",
+        "checked": false,
+        "body_lines": [],
+        "hold_age_days": null,
+        "state": "in_flight",
+        "hold_until": null,
+        "structured": true,
+        "title": "Completed evidence retained for approval",
+        "current_role": "held",
+        "pr_url": null,
+        "merged": null,
+        "reported": null,
+        "blocked_by_ids": [],
+        "blocked_reason": null,
+        "hold_kind": "captain",
+        "blocked_by": null,
+        "completion": {
+          "verb": null,
+          "date": null
+        },
+        "local_note": null,
+        "order": 1,
+        "repo": "sample",
+        "links": [],
+        "hold_bucket": "live",
+        "report_path": null,
+        "requires_child_metadata": false,
+        "hold_set": null,
+        "raw": "- [ ] review - Completed evidence retained for approval (repo: sample) (kind: scout) (hold: retain report) (hold-kind: captain)",
+        "kind": "scout"
+      }
+    }
+  ],
+  "main_inventory": {
+    "valid": true,
+    "reason": null,
+    "orphan_in_flight": [],
+    "unstructured_current_count": 0
+  },
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": true,
+    "proven_clear": true,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 0,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "scout_reports": [
+    {
+      "id": "review",
+      "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/data/review/report.md",
+      "kind": "scout"
+    }
+  ],
+  "secondmate_current": {
+    "registry": {
+      "present": false,
+      "available": true,
+      "complete": true,
+      "reason": null,
+      "provenance": "registered-table",
+      "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6/data/secondmates.md",
+      "freshness": {
+        "status": "fresh",
+        "observed_at": "2026-10-24T06:30:33Z"
+      },
+      "records": [],
+      "input_truncated": false,
+      "records_truncated": false,
+      "reasons": [],
+      "lines_in_window": 0,
+      "records_in_window": 0
+    },
+    "records": [],
+    "total_registered": 0,
+    "total": 0,
+    "shown": 0,
+    "truncated": 0
+  },
+  "secondmate_landed": {
+    "records": [],
+    "truncated": [],
+    "unreadable": [],
+    "partial": []
+  },
+  "secondmate_guidance": {
+    "note": "For kind=secondmate, bearings selects validated structured state from that registered home; parent events and bounded terminal evidence are fallback-only supplements and never current-state authority."
+  }
+}

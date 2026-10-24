@@ -1,0 +1,440 @@
+/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/l.gP99a6
+
+--- actual lab harness pane ---
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Accessing workspace:
+
+ /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3
+
+ Quick safety check: Is this a project you created or one you trust? (Like your own code, a well-known open source
+ project, or work from your team). If not, take a moment to review what's in this folder first.
+
+ Claude Code'll be able to read, edit, and execute files here.
+
+ Security guide
+
+ ❯ No, exit
+   Yes, I trust this folder
+
+ Enter to confirm · Esc to cancel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- real endpoint recovery verdict ---
+alive
+true
+
+--- retained scout with captain hold (actual CLI output) ---
+{
+  "valid": true,
+  "state": "captain_decision",
+  "retained_attempts": [
+    {
+      "id": "review",
+      "kind": "scout",
+      "state": "done",
+      "source": "status-log",
+      "logical_state": "in_flight",
+      "runtime_activity": {
+        "state": "idle",
+        "source": "claude-hook",
+        "provenance": "semantic-record",
+        "observed_at": "2026-10-24T06:30:28Z",
+        "freshness": "fresh"
+      },
+      "hold_kind": "captain",
+      "reason": "retain report"
+    }
+  ],
+  "active_children": [],
+  "decisions_open": [
+    {
+      "id": "review",
+      "key": "review",
+      "verb": "captain-hold",
+      "summary": "Completed evidence retained for approval",
+      "reason": "retain report",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    }
+  ],
+  "holds": [
+    {
+      "id": "review",
+      "title": "Completed evidence retained for approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "retain report",
+      "source": "backlog"
+    }
+  ],
+  "landed": [],
+  "counts": {
+    "active_children": 0,
+    "retained_attempts": 1,
+    "decisions_open": 1,
+    "holds": 1,
+    "queued": 1,
+    "landed": 0,
+    "endpoints": 1
+  }
+}
+true
+
+--- terminal evidence without a hold remains contradictory ---
+{
+  "valid": false,
+  "state": "no_active_work",
+  "invalidity": {
+    "kind": "terminal_in_flight",
+    "ids": [
+      "review"
+    ]
+  },
+  "retained_attempts": []
+}
+true
+
+--- semantic busy event remains current work despite an existing report ---
+{
+  "valid": true,
+  "state": "captain_decision",
+  "active_children": [
+    {
+      "id": "review",
+      "kind": "scout",
+      "state": "working",
+      "repo": "sample",
+      "name": "Completed evidence retained for approval",
+      "source": "pane",
+      "doing": "harness busy (claude-hook)"
+    }
+  ],
+  "retained_attempts": [],
+  "decisions_open": [
+    {
+      "id": "review",
+      "key": "review",
+      "verb": "captain-hold",
+      "summary": "Completed evidence retained for approval",
+      "reason": "retain report",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    }
+  ],
+  "landed": []
+}
+true
+
+--- missing semantic evidence keeps the call open ---
+{
+  "valid": false,
+  "state": "unknown",
+  "invalidity": {
+    "kind": "child_current_unavailable",
+    "ids": [
+      "review"
+    ]
+  },
+  "retained_attempts": [],
+  "decisions_open": [
+    {
+      "id": "review",
+      "key": "review",
+      "verb": "captain-hold",
+      "summary": "Completed evidence retained for approval",
+      "reason": "retain report",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    },
+    {
+      "id": "review",
+      "key": "follow-up",
+      "verb": "needs-decision",
+      "summary": "select the follow-up",
+      "reason": null,
+      "source": "status"
+    }
+  ],
+  "holds": [
+    {
+      "id": "review",
+      "title": "Completed evidence retained for approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "retain report",
+      "source": "backlog"
+    }
+  ],
+  "landed": []
+}
+true
+
+--- stale generation is not idle or completed ---
+{
+  "id": "review",
+  "current_state": {
+    "state": "unknown",
+    "source": "pane",
+    "detail": "harness state unavailable (unknown gen-mismatch)",
+    "raw": "state: unknown · source: pane · harness state unavailable (unknown gen-mismatch)",
+    "observed_at": "2026-10-24T06:30:30Z",
+    "freshness": "fresh"
+  },
+  "runtime_activity": {
+    "state": "unknown",
+    "source": "unavailable",
+    "provenance": "semantic-record",
+    "observed_at": "2026-10-24T06:30:30Z",
+    "freshness": "fresh"
+  },
+  "hints": {
+    "pending_decision": true,
+    "blocked_event": false,
+    "open_decisions": [
+      {
+        "key": "follow-up",
+        "verb": "needs-decision",
+        "summary": "select the follow-up"
+      }
+    ],
+    "scout_report_present": true,
+    "last_event_text": "needs-decision [key=follow-up]: select the follow-up"
+  }
+}
+
+--- suspend owned lab server; bound real endpoint clients across all mechanisms ---
+{
+  "mechanism": "native",
+  "snapshot_returncode": 0,
+  "elapsed_seconds": 2.309,
+  "observed_blocked_tmux_clients": [
+    {
+      "pid": 3822363,
+      "ppid": 3822362,
+      "pgid": 3822343,
+      "state": "S",
+      "args": "tmux list-windows -t =primary -F #{window_name}"
+    },
+    {
+      "pid": 3822452,
+      "ppid": 3822451,
+      "pgid": 3822335,
+      "state": "S",
+      "args": "tmux list-windows -t =primary -F #{window_name}"
+    },
+    {
+      "pid": 3822539,
+      "ppid": 3822538,
+      "pgid": 3822525,
+      "state": "S",
+      "args": "tmux list-windows -t primary -F #{window_name}"
+    }
+  ],
+  "remaining_live_descendants": [],
+  "current_state": {
+    "state": "unknown",
+    "source": "none",
+    "detail": "",
+    "raw": "",
+    "observed_at": "2026-10-24T06:30:30Z",
+    "freshness": "fresh"
+  },
+  "runtime_activity": {
+    "state": "unknown",
+    "source": "endpoint-unverified",
+    "provenance": "recovery-grade-endpoint",
+    "observed_at": "2026-10-24T06:30:30Z",
+    "freshness": "fresh"
+  },
+  "endpoint": {
+    "target": "primary:fm-review",
+    "exists": null,
+    "agent_alive": "not_checked",
+    "status": "unknown",
+    "observed_at": "2026-10-24T06:30:30Z",
+    "freshness": "fresh"
+  },
+  "pending_decision": true,
+  "stderr": ""
+}
+{
+  "mechanism": "perl",
+  "snapshot_returncode": 0,
+  "elapsed_seconds": 2.696,
+  "observed_blocked_tmux_clients": [
+    {
+      "pid": 3823008,
+      "ppid": 3823007,
+      "pgid": 3822986,
+      "state": "S",
+      "args": "tmux list-windows -t =primary -F #{window_name}"
+    },
+    {
+      "pid": 3823087,
+      "ppid": 3823085,
+      "pgid": 3822980,
+      "state": "S",
+      "args": "tmux list-windows -t =primary -F #{window_name}"
+    },
+    {
+      "pid": 3823234,
+      "ppid": 3823233,
+      "pgid": 3823221,
+      "state": "S",
+      "args": "tmux list-windows -t primary -F #{window_name}"
+    }
+  ],
+  "remaining_live_descendants": [],
+  "current_state": {
+    "state": "unknown",
+    "source": "none",
+    "detail": "",
+    "raw": "",
+    "observed_at": "2026-10-24T06:30:33Z",
+    "freshness": "fresh"
+  },
+  "runtime_activity": {
+    "state": "unknown",
+    "source": "endpoint-unverified",
+    "provenance": "recovery-grade-endpoint",
+    "observed_at": "2026-10-24T06:30:33Z",
+    "freshness": "fresh"
+  },
+  "endpoint": {
+    "target": "primary:fm-review",
+    "exists": null,
+    "agent_alive": "not_checked",
+    "status": "unknown",
+    "observed_at": "2026-10-24T06:30:33Z",
+    "freshness": "fresh"
+  },
+  "pending_decision": true,
+  "stderr": ""
+}
+{
+  "mechanism": "bash",
+  "snapshot_returncode": 0,
+  "elapsed_seconds": 2.729,
+  "observed_blocked_tmux_clients": [
+    {
+      "pid": 3823553,
+      "ppid": 3823552,
+      "pgid": 3823532,
+      "state": "S",
+      "args": "tmux list-windows -t =primary -F #{window_name}"
+    },
+    {
+      "pid": 3823606,
+      "ppid": 3823605,
+      "pgid": 3823524,
+      "state": "S",
+      "args": "tmux list-windows -t =primary -F #{window_name}"
+    },
+    {
+      "pid": 3824009,
+      "ppid": 3824008,
+      "pgid": 3823988,
+      "state": "S",
+      "args": "tmux list-windows -t primary -F #{window_name}"
+    }
+  ],
+  "remaining_live_descendants": [],
+  "current_state": {
+    "state": "unknown",
+    "source": "none",
+    "detail": "",
+    "raw": "",
+    "observed_at": "2026-10-24T06:30:35Z",
+    "freshness": "fresh"
+  },
+  "runtime_activity": {
+    "state": "unknown",
+    "source": "endpoint-unverified",
+    "provenance": "recovery-grade-endpoint",
+    "observed_at": "2026-10-24T06:30:35Z",
+    "freshness": "fresh"
+  },
+  "endpoint": {
+    "target": "primary:fm-review",
+    "exists": null,
+    "agent_alive": "not_checked",
+    "status": "unknown",
+    "observed_at": "2026-10-24T06:30:35Z",
+    "freshness": "fresh"
+  },
+  "pending_decision": true,
+  "stderr": ""
+}
+true
+
+--- a stale busy record behind a missing endpoint is dead, not active ---
+{
+  "id": "review",
+  "current_state": {
+    "state": "unknown",
+    "source": "none",
+    "detail": "backend target gone: primary:fm-review",
+    "raw": "state: unknown · source: none · backend target gone: primary:fm-review",
+    "observed_at": "2026-10-24T06:30:38Z",
+    "freshness": "fresh"
+  },
+  "runtime_activity": {
+    "state": "dead",
+    "source": "endpoint-gone",
+    "provenance": "recovery-grade-endpoint",
+    "observed_at": "2026-10-24T06:30:38Z",
+    "freshness": "fresh"
+  },
+  "endpoint": {
+    "target": "primary:fm-review",
+    "exists": false,
+    "agent_alive": "not_checked",
+    "status": "absent",
+    "observed_at": "2026-10-24T06:30:38Z",
+    "freshness": "fresh"
+  },
+  "hints": {
+    "pending_decision": true,
+    "blocked_event": false,
+    "open_decisions": [
+      {
+        "key": "follow-up",
+        "verb": "needs-decision",
+        "summary": "select the follow-up"
+      }
+    ],
+    "scout_report_present": true,
+    "last_event_text": "needs-decision [key=follow-up]: select the follow-up"
+  }
+}
