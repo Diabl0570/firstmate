@@ -121,6 +121,7 @@ fm_run_bash_timeout() (
   trap 'fm_run_bash_timeout_interrupt 143' TERM
   trap 'fm_run_bash_timeout_interrupt 130' INT
   trap 'fm_run_bash_timeout_interrupt 129' HUP
+  # shellcheck disable=SC2329 # Invoked indirectly by the signal traps above.
   fm_run_bash_timeout_interrupt() {
     trap "" TERM INT HUP
     [ -z "$child_pid" ] || kill -KILL -- "-$child_pid" 2>/dev/null || true
@@ -178,6 +179,7 @@ fm_run_external_timeout() (
   trap 'fm_run_external_timeout_interrupt 143' TERM
   trap 'fm_run_external_timeout_interrupt 130' INT
   trap 'fm_run_external_timeout_interrupt 129' HUP
+  # shellcheck disable=SC2329 # Invoked indirectly by the signal traps above.
   fm_run_external_timeout_interrupt() {
     trap "" TERM INT HUP
     if [ -n "$runner_pid" ]; then
