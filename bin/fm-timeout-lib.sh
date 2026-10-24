@@ -76,6 +76,10 @@
 # foreground process group; the perl fallback does it explicitly with setpgrp
 # plus a negative pid, and the bash fallback uses monitor mode to give the
 # bounded child its own process group before signaling its negative pid.
+# Cancellation (TERM, INT, or HUP received while waiting) immediately KILLs
+# the runner's owned group before exiting. Nested bounds create separate
+# groups, and an outer runner may KILL this one as soon as its wrapper exits:
+# cancellation cannot spend a grace period leaving that separate group alive.
 set -u
 
 # Print the PATH path of timeout, else gtimeout, when that path is executable.
@@ -104,11 +108,25 @@ fm_timeout_mechanism() {
   fi
 }
 
-fm_run_bash_timeout() {
+fm_run_bash_timeout() (
   local seconds=$1 command_status deadline_status child_pid watchdog_pid command_rc recorded_rc monitor_was_on=0
   shift
   command_status=$(mktemp "${TMPDIR:-/tmp}/fm-bash-timeout-command.XXXXXX" 2>/dev/null) || return 124
   deadline_status="${command_status}.deadline"
+  child_pid=''
+  watchdog_pid=''
+  trap 'rm -f "$command_status" "$deadline_status" 2>/dev/null || true' EXIT
+  trap 'fm_run_bash_timeout_interrupt 143' TERM
+  trap 'fm_run_bash_timeout_interrupt 130' INT
+  trap 'fm_run_bash_timeout_interrupt 129' HUP
+  fm_run_bash_timeout_interrupt() {
+    trap "" TERM INT HUP
+    [ -z "$child_pid" ] || kill -KILL -- "-$child_pid" 2>/dev/null || true
+    [ -z "$watchdog_pid" ] || kill -KILL -- "-$watchdog_pid" 2>/dev/null || true
+    [ -z "$child_pid" ] || wait "$child_pid" 2>/dev/null || true
+    [ -z "$watchdog_pid" ] || wait "$watchdog_pid" 2>/dev/null || true
+    exit "$1"
+  }
   case $- in *m*) monitor_was_on=1 ;; esac
   set -m
   (
@@ -147,12 +165,25 @@ fm_run_bash_timeout() {
   fi
   rm -f "$command_status" "$deadline_status" 2>/dev/null || true
   return "$command_rc"
-}
+)
 
-fm_run_external_timeout() {
+fm_run_external_timeout() (
   local runner=$1 seconds=$2 status_file runner_pid runner_rc command_rc
   shift 2
   status_file=$(mktemp "${TMPDIR:-/tmp}/fm-timeout-status.XXXXXX" 2>/dev/null) || return 124
+  runner_pid=
+  trap 'rm -f "$status_file" 2>/dev/null || true' EXIT
+  trap 'fm_run_external_timeout_interrupt 143' TERM
+  trap 'fm_run_external_timeout_interrupt 130' INT
+  trap 'fm_run_external_timeout_interrupt 129' HUP
+  fm_run_external_timeout_interrupt() {
+    trap "" TERM INT HUP
+    if [ -n "$runner_pid" ]; then
+      kill -KILL -- "-$runner_pid" 2>/dev/null || true
+      wait "$runner_pid" 2>/dev/null || true
+    fi
+    exit "$1"
+  }
   # Run the executable path asynchronously (never a bare name: that is the omp
   # timeout builtin, and backgrounding it leaves $! empty) so its pid - also
   # the process-group id created by GNU/BSD timeout without --foreground -
@@ -195,7 +226,7 @@ fm_run_external_timeout() {
       ;;
     *) return "$runner_rc" ;;
   esac
-}
+)
 
 fm_run_timed() {  # <seconds> <command...>
   local seconds=$1 timeout_path
@@ -206,7 +237,39 @@ fm_run_timed() {  # <seconds> <command...>
       fm_run_external_timeout "$timeout_path" "$seconds" "$@"
       ;;
     perl)
-      perl -e 'my $t = shift; my $pid = fork; die "fork failed" unless defined $pid; if (!$pid) { setpgrp(0, 0); exec @ARGV } local $SIG{ALRM} = sub { kill "TERM", -$pid; select undef, undef, undef, 0.2; kill "KILL", -$pid; exit 124 }; alarm $t; waitpid $pid, 0; exit(($? & 127) ? 128 + ($? & 127) : $? >> 8)' \
+      perl -MPOSIX=setpgid -e '
+        my $t = shift;
+        my ($pid, $pending) = (0, 0);
+        sub terminate {
+          my $rc = shift;
+          $SIG{$_} = "IGNORE" for qw(ALRM TERM INT HUP);
+          if ($rc == 124) {
+            kill "TERM", -$pid;
+            select undef, undef, undef, 0.2;
+          }
+          kill "KILL", -$pid;
+          waitpid $pid, 0;
+          exit $rc;
+        }
+        for my $pair ([ALRM => 124], [TERM => 143], [INT => 130], [HUP => 129]) {
+          my ($sig, $rc) = @$pair;
+          $SIG{$sig} = sub { $pid ? terminate($rc) : ($pending = $rc) };
+        }
+        my $child = fork;
+        die "fork failed" unless defined $child;
+        if (!$child) {
+          $SIG{$_} = "DEFAULT" for qw(ALRM TERM INT HUP);
+          setpgid(0, 0);
+          exec @ARGV;
+          exit 127;
+        }
+        setpgid($child, $child);
+        $pid = $child;
+        terminate($pending) if $pending;
+        alarm $t;
+        waitpid $pid, 0;
+        exit(($? & 127) ? 128 + ($? & 127) : $? >> 8);
+      ' \
         "$seconds" "$@"
       ;;
     bash) fm_run_bash_timeout "$seconds" "$@" ;;
