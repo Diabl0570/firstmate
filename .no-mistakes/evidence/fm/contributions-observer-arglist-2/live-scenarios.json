@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Shared PR owners receive a coherent paginated observation and durable maintainer signals; acknowledgement is exact",
+    "result": "pass"
+  },
+  {
+    "name": "Transient parallel HTTP 500 reads retry once and recover silently",
+    "result": "pass"
+  },
+  {
+    "name": "Concurrent persistent failures stay stage-sorted, private, episode-deduplicated, and preserve pending/verdict evidence",
+    "result": "pass"
+  },
+  {
+    "name": "Oversized, invalid, and truncated HTTP diagnostics cannot fabricate a status or disclose private text",
+    "result": "pass"
+  },
+  {
+    "name": "Head drift rejects mixed evidence and a deadline-killed core read preserves exact record bytes",
+    "result": "pass"
+  },
+  {
+    "name": "Malformed second URL does not inherit the first URL HTTP failure",
+    "result": "pass"
+  },
+  {
+    "name": "Owned issue still observes comments and ready-for-pr timeline events",
+    "result": "pass"
+  }
+]

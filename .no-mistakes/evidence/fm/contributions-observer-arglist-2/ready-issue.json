@@ -1,0 +1,70 @@
+{
+  "records": {
+    "filed": {
+      "schema": "fm-contributions.v1",
+      "task": "filed",
+      "records": [
+        {
+          "url": "https://github.com/lab/owned/issues/9",
+          "kind": "issue",
+          "checked_at": "2026-09-16T08:00:00Z",
+          "observation": {
+            "state": "open",
+            "head": null,
+            "ready": true,
+            "checks": [],
+            "reviews": [],
+            "events": [
+              {
+                "token": "ready-for-pr:60",
+                "type": "ready-for-pr",
+                "source": null,
+                "head": null,
+                "body": "filed issue reached ready-for-pr"
+              }
+            ],
+            "absent_checks": []
+          },
+          "verdict": null,
+          "seen": [
+            "ready-for-pr:60"
+          ],
+          "pending": [
+            {
+              "token": "ready-for-pr:60",
+              "type": "ready-for-pr",
+              "source": null,
+              "head": null,
+              "body": "filed issue reached ready-for-pr"
+            }
+          ],
+          "notified": [
+            "ready-for-pr:60"
+          ],
+          "error": null
+        }
+      ]
+    }
+  },
+  "requests": [
+    {
+      "stage": "issue-core",
+      "method": "GET",
+      "path": "/repos/lab/owned/issues/9",
+      "attempt": 1
+    },
+    {
+      "stage": "comments",
+      "method": "GET",
+      "path": "/repos/lab/owned/issues/9/comments?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "issue-events",
+      "method": "GET",
+      "path": "/repos/lab/owned/issues/9/events?per_page=100",
+      "attempt": 1
+    }
+  ],
+  "wake_queue": "1792823514\t1\tcheck\tcontribution-218efaba8563d4ba9b1bb46bf46cbeefee2a662af1ae81173e9b9be2c29c9c5d\tcheck: contributions filed 218efaba8563d4ba9b1bb46bf46cbeefee2a662af1ae81173e9b9be2c29c9c5d\n"
+}

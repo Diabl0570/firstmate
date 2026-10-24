@@ -1,0 +1,157 @@
+{
+  "records": {
+    "delivery": {
+      "schema": "fm-contributions.v1",
+      "task": "delivery",
+      "records": [
+        {
+          "url": "https://github.com/lab/owned/pull/8",
+          "kind": "pr",
+          "checked_at": "2026-09-16T08:00:00Z",
+          "error": "forge observation unavailable: checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500",
+          "observation": {
+            "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "state": "open",
+            "draft": false,
+            "mergeable": "mergeable",
+            "can_merge": false,
+            "review_decision": "APPROVED",
+            "reviews": [],
+            "checks": [
+              {
+                "name": "test",
+                "id": 1,
+                "status": "completed",
+                "conclusion": "success",
+                "started_at": "2026-09-16T08:00:00Z"
+              }
+            ],
+            "events": [],
+            "absent_checks": []
+          },
+          "verdict": null,
+          "seen": [
+            "comment:12:2026-09-16T08:00:00Z:"
+          ],
+          "pending": [],
+          "notified": [
+            "comment:12:2026-09-16T08:00:00Z:"
+          ]
+        }
+      ]
+    },
+    "other": {
+      "schema": "fm-contributions.v1",
+      "task": "other",
+      "records": [
+        {
+          "url": "https://github.com/lab/owned/pull/8",
+          "kind": "pr",
+          "checked_at": "2026-09-16T08:00:00Z",
+          "observation": {
+            "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "state": "open",
+            "draft": false,
+            "mergeable": "mergeable",
+            "can_merge": false,
+            "review_decision": "APPROVED",
+            "reviews": [],
+            "checks": [
+              {
+                "name": "test",
+                "id": 1,
+                "status": "completed",
+                "conclusion": "success",
+                "started_at": "2026-09-16T08:00:00Z"
+              }
+            ],
+            "events": [],
+            "absent_checks": []
+          },
+          "verdict": {
+            "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "source": "https://github.com/lab/owned/pull/8#issuecomment-12",
+            "actor": "maintainer",
+            "summary": "awaiting maintainer"
+          },
+          "seen": [
+            "comment:12:2026-09-16T08:00:00Z:"
+          ],
+          "pending": [
+            {
+              "token": "comment:12:2026-09-16T08:00:00Z:",
+              "type": "comment",
+              "source": "https://github.com/lab/owned/pull/8#issuecomment-12",
+              "head": null,
+              "author": "maintainer",
+              "body": "Please clarify the public contract",
+              "at": "2026-09-16T08:00:00Z",
+              "unanswered": false
+            }
+          ],
+          "notified": [
+            "comment:12:2026-09-16T08:00:00Z:"
+          ],
+          "error": "forge observation unavailable: checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500"
+        }
+      ]
+    }
+  },
+  "requests": [
+    {
+      "stage": "core",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/8",
+      "attempt": 1
+    },
+    {
+      "stage": "checks",
+      "method": "GET",
+      "path": "/repos/lab/owned/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "comments",
+      "method": "GET",
+      "path": "/repos/lab/owned/issues/8/comments?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "repo",
+      "method": "GET",
+      "path": "/repos/lab/owned",
+      "attempt": 1
+    },
+    {
+      "stage": "inline",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/8/comments?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "reviews",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/8/reviews?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "statuses",
+      "method": "GET",
+      "path": "/repos/lab/owned/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "checks",
+      "method": "GET",
+      "path": "/repos/lab/owned/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+      "attempt": 2
+    },
+    {
+      "stage": "statuses",
+      "method": "GET",
+      "path": "/repos/lab/owned/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+      "attempt": 2
+    }
+  ],
+  "wake_queue": "1792823501\t1\tcheck\tcontribution-483c4a8092828945cee976e9b87e0fb8942d2595415d5ad3e7cd5092bf3f9647\tcheck: contributions delivery 483c4a8092828945cee976e9b87e0fb8942d2595415d5ad3e7cd5092bf3f9647\n"
+}

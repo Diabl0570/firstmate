@@ -1,0 +1,89 @@
+{
+  "records": {
+    "second": {
+      "schema": "fm-contributions.v1",
+      "task": "second",
+      "records": [
+        {
+          "url": "https://github.com/lab/owned/pull/9",
+          "kind": "pr",
+          "checked_at": "2026-09-16T08:00:00Z",
+          "observation": null,
+          "verdict": null,
+          "seen": [],
+          "pending": [],
+          "notified": [],
+          "error": "forge observation unavailable: core read returned an unexpected shape"
+        }
+      ]
+    },
+    "delivery": {
+      "schema": "fm-contributions.v1",
+      "task": "delivery",
+      "records": [
+        {
+          "url": "https://github.com/lab/owned/pull/8",
+          "kind": "pr",
+          "checked_at": "2026-09-16T08:00:00Z",
+          "observation": null,
+          "verdict": null,
+          "seen": [],
+          "pending": [],
+          "notified": [],
+          "error": "forge observation unavailable: reviews read exited 1 with 19s of budget left: HTTP 404"
+        }
+      ]
+    }
+  },
+  "requests": [
+    {
+      "stage": "core",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/8",
+      "attempt": 1
+    },
+    {
+      "stage": "statuses",
+      "method": "GET",
+      "path": "/repos/lab/owned/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statuses?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "reviews",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/8/reviews?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "comments",
+      "method": "GET",
+      "path": "/repos/lab/owned/issues/8/comments?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "inline",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/8/comments?per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "repo",
+      "method": "GET",
+      "path": "/repos/lab/owned",
+      "attempt": 1
+    },
+    {
+      "stage": "checks",
+      "method": "GET",
+      "path": "/repos/lab/owned/commits/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/check-runs?filter=all&per_page=100",
+      "attempt": 1
+    },
+    {
+      "stage": "core-9",
+      "method": "GET",
+      "path": "/repos/lab/owned/pulls/9",
+      "attempt": 1
+    }
+  ],
+  "wake_queue": ""
+}

@@ -1,0 +1,133 @@
+Actual binaries: gh version 2.101.0 (nixpkgs)
+Isolation: real Firstmate CLI and real gh; disposable home/token/CA; all GitHub HTTPS requests terminated by loopback TLS forge. No real forge or operator credentials used.
+$ bin/fm-contributions.sh enroll delivery https://github.com/lab/owned/pull/8 [home=coherent, budget=20]
+exit=0; elapsed=0.089s
+stdout: (empty)
+stderr: (empty)
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.946s
+stdout: contribution-wake: check: contributions delivery 483c4a8092828945cee976e9b87e0fb8942d2595415d5ad3e7cd5092bf3f9647
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "threads": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "threads": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "other"}}
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.603s
+stdout: (empty)
+stderr: (empty)
+$ bin/fm-contributions.sh pending [home=coherent, budget=20]
+exit=0; elapsed=0.045s
+stdout: [
+  {
+    "token": "comment:12:2026-09-16T08:00:00Z:",
+    "type": "comment",
+    "source": "https://github.com/lab/owned/pull/8#issuecomment-12",
+    "head": null,
+    "author": "maintainer",
+    "body": "Please clarify the public contract",
+    "at": "2026-09-16T08:00:00Z",
+    "unanswered": false,
+    "task": "delivery",
+    "url": "https://github.com/lab/owned/pull/8"
+  },
+  {
+    "token": "comment:12:2026-09-16T08:00:00Z:",
+    "type": "comment",
+    "source": "https://github.com/lab/owned/pull/8#issuecomment-12",
+    "head": null,
+    "author": "maintainer",
+    "body": "Please clarify the public contract",
+    "at": "2026-09-16T08:00:00Z",
+    "unanswered": false,
+    "task": "other",
+    "url": "https://github.com/lab/owned/pull/8"
+  }
+]
+stderr: (empty)
+$ bin/fm-contributions.sh ack delivery https://github.com/lab/owned/pull/8 comment:12:2026-09-16T08:00:00Z: [home=coherent, budget=20]
+exit=0; elapsed=0.214s
+stdout: (empty)
+stderr: (empty)
+$ bin/fm-contributions.sh verdict other https://github.com/lab/owned/pull/8 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa https://github.com/lab/owned/pull/8#issuecomment-12 maintainer awaiting maintainer [home=coherent, budget=20]
+exit=0; elapsed=0.241s
+stdout: (empty)
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "threads": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "threads": [], "url": "https://github.com/lab/owned/pull/8", "verdict": {"actor": "maintainer", "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "summary": "awaiting maintainer"}}], "schema": "fm-contributions.v1", "task": "other"}}
+SCENARIO PASS: Shared PR owners receive a coherent paginated observation and durable maintainer signals; acknowledgement is exact
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.909s
+stdout: (empty)
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": {"actor": "maintainer", "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "summary": "awaiting maintainer"}}], "schema": "fm-contributions.v1", "task": "other"}}
+SCENARIO PASS: Transient parallel HTTP 500 reads retry once and recover silently
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.851s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: checks read exited 1 with 19s of budget left: HTTP 500; statuses read exited 1 with 19s of budget left: HTTP 500", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": {"actor": "maintainer", "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "summary": "awaiting maintainer"}}], "schema": "fm-contributions.v1", "task": "other"}}
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.839s
+stdout: (empty)
+stderr: (empty)
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.609s
+stdout: (empty)
+stderr: (empty)
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.831s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - checks read exited 1 with 20s of budget left: HTTP 500; statuses read exited 1 with 20s of budget left: HTTP 500
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: checks read exited 1 with 20s of budget left: HTTP 500; statuses read exited 1 with 20s of budget left: HTTP 500", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: checks read exited 1 with 20s of budget left: HTTP 500; statuses read exited 1 with 20s of budget left: HTTP 500", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": {"actor": "maintainer", "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "summary": "awaiting maintainer"}}], "schema": "fm-contributions.v1", "task": "other"}}
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.914s
+stdout: (empty)
+stderr: (empty)
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.645s
+stdout: (empty)
+stderr: (empty)
+SCENARIO PASS: Concurrent persistent failures stay stage-sorted, private, episode-deduplicated, and preserve pending/verdict evidence
+$ bin/fm-contributions.sh poll [home=oversized, budget=20]
+exit=0; elapsed=0.528s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - reviews read exited 1 with 20s of budget left: request failed
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: reviews read exited 1 with 20s of budget left: request failed", "kind": "pr", "notified": [], "observation": null, "pending": [], "seen": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}}
+$ bin/fm-contributions.sh poll [home=invalid-http, budget=20]
+exit=0; elapsed=0.434s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - reviews read exited 1 with 20s of budget left: HTTP 422
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: reviews read exited 1 with 20s of budget left: HTTP 422", "kind": "pr", "notified": [], "observation": null, "pending": [], "seen": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}}
+$ bin/fm-contributions.sh poll [home=cut-http, budget=20]
+exit=0; elapsed=0.462s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - reviews read exited 1 with 20s of budget left: request failed
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: reviews read exited 1 with 20s of budget left: request failed", "kind": "pr", "notified": [], "observation": null, "pending": [], "seen": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}}
+SCENARIO PASS: Oversized, invalid, and truncated HTTP diagnostics cannot fabricate a status or disclose private text
+$ bin/fm-contributions.sh poll [home=coherent, budget=20]
+exit=0; elapsed=0.699s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - head changed during observation
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: head changed during observation", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: head changed during observation", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": {"actor": "maintainer", "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "summary": "awaiting maintainer"}}], "schema": "fm-contributions.v1", "task": "other"}}
+$ bin/fm-contributions.sh poll [home=coherent, budget=3]
+exit=0; elapsed=3.210s
+stdout: (empty)
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: head changed during observation", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "other": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: head changed during observation", "kind": "pr", "notified": ["comment:12:2026-09-16T08:00:00Z:"], "observation": {"absent_checks": [], "can_merge": false, "checks": [{"conclusion": "success", "id": 1, "name": "test", "started_at": "2026-09-16T08:00:00Z", "status": "completed"}], "draft": false, "events": [], "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mergeable": "mergeable", "review_decision": "APPROVED", "reviews": [], "state": "open"}, "pending": [{"at": "2026-09-16T08:00:00Z", "author": "maintainer", "body": "Please clarify the public contract", "head": null, "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "token": "comment:12:2026-09-16T08:00:00Z:", "type": "comment", "unanswered": false}], "seen": ["comment:12:2026-09-16T08:00:00Z:"], "url": "https://github.com/lab/owned/pull/8", "verdict": {"actor": "maintainer", "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source": "https://github.com/lab/owned/pull/8#issuecomment-12", "summary": "awaiting maintainer"}}], "schema": "fm-contributions.v1", "task": "other"}}
+SCENARIO PASS: Head drift rejects mixed evidence and a deadline-killed core read preserves exact record bytes
+$ bin/fm-contributions.sh poll [home=schema, budget=20]
+exit=0; elapsed=0.532s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - reviews read exited 1 with 19s of budget left: HTTP 404
+contributions: observation unavailable for https://github.com/lab/owned/pull/9 - core read returned an unexpected shape
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: reviews read exited 1 with 19s of budget left: HTTP 404", "kind": "pr", "notified": [], "observation": null, "pending": [], "seen": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}, "second": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: core read returned an unexpected shape", "kind": "pr", "notified": [], "observation": null, "pending": [], "seen": [], "url": "https://github.com/lab/owned/pull/9", "verdict": null}], "schema": "fm-contributions.v1", "task": "second"}}
+SCENARIO PASS: Malformed second URL does not inherit the first URL HTTP failure
+$ bin/fm-contributions.sh poll [home=issue, budget=20]
+exit=0; elapsed=0.527s
+stdout: contribution-wake: check: contributions filed 218efaba8563d4ba9b1bb46bf46cbeefee2a662af1ae81173e9b9be2c29c9c5d
+stderr: (empty)
+persisted records: {"filed": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": null, "kind": "issue", "notified": ["ready-for-pr:60"], "observation": {"absent_checks": [], "checks": [], "events": [{"body": "filed issue reached ready-for-pr", "head": null, "source": null, "token": "ready-for-pr:60", "type": "ready-for-pr"}], "head": null, "ready": true, "reviews": [], "state": "open"}, "pending": [{"body": "filed issue reached ready-for-pr", "head": null, "source": null, "token": "ready-for-pr:60", "type": "ready-for-pr"}], "seen": ["ready-for-pr:60"], "url": "https://github.com/lab/owned/issues/9", "verdict": null}], "schema": "fm-contributions.v1", "task": "filed"}}
+SCENARIO PASS: Owned issue still observes comments and ready-for-pr timeline events
+$ bin/.fm-contributions-baseline-validation.sh poll [home=baseline, budget=20]
+exit=0; elapsed=0.739s
+stdout: contributions: observation unavailable for https://github.com/lab/owned/pull/8 - checks read exited 1 with 19s of budget left: gh: PRIVATE_DIAGNOSTIC_SENTINEL https://private.invalid/private?token=secret Authorization: bearer secret (HTTP 500)
+stderr: (empty)
+persisted records: {"delivery": {"records": [{"checked_at": "2026-09-16T08:00:00Z", "error": "forge observation unavailable: checks read exited 1 with 19s of budget left: gh: PRIVATE_DIAGNOSTIC_SENTINEL https://private.invalid/private?token=secret Authorization: bearer secret (HTTP 500)", "kind": "pr", "notified": [], "observation": null, "pending": [], "seen": [], "url": "https://github.com/lab/owned/pull/8", "verdict": null}], "schema": "fm-contributions.v1", "task": "delivery"}}
+BASELINE REPRODUCED: raw private forge diagnostic retained, and only one failed parallel read reported; target scenarios reject both behaviors.
