@@ -13,7 +13,7 @@
 #       it. timeout and gtimeout are selected only when type -P yields an
 #       executable path, and that path is what fm_run_timed and fm_exec_timed
 #       invoke, so a builtin or function of the same name cannot shadow the
-#       runner. The perl and bash fallbacks are unchanged.
+#       runner.
 #
 #   fm_run_timed <seconds> <command> [args...]
 #       Runs the command with a hard bound. Exit status is the command's own,
@@ -71,14 +71,16 @@
 #
 # All four fm_run_timed mechanisms terminate the whole process GROUP, not just
 # the direct child, so a hung grandchild (a vendor CLI spawned by a wrapper
-# script, a git fetch spawned by a sweep) cannot outlive the bound. GNU/BSD
-# `timeout` does this by default because it does not run the command in the
-# foreground process group; the perl fallback does it explicitly with setpgrp
-# plus a negative pid, and the bash fallback uses monitor mode to give the
-# bounded child its own process group before signaling its negative pid.
+# script, a git fetch spawned by a sweep) that remains in that group cannot
+# outlive the bound. GNU/BSD `timeout` does this by default because it does not
+# run the command in the foreground process group; the perl fallback does it
+# explicitly with setpgid plus a negative pid, and the bash fallback uses
+# monitor mode to give the bounded child its own process group before signaling
+# its negative pid.
 # Cancellation (TERM, INT, or HUP received while waiting) immediately KILLs
-# the runner's owned group before exiting. Nested bounds create separate
-# groups, and an outer runner may KILL this one as soon as its wrapper exits:
+# the runner's owned group before exiting with 143, 130, or 129 respectively.
+# Nested bounds create separate groups, and an outer runner may KILL this one
+# as soon as its wrapper exits:
 # cancellation cannot spend a grace period leaving that separate group alive.
 set -u
 
