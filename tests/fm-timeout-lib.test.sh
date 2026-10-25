@@ -11,6 +11,8 @@ set -u
 
 # shellcheck source=tests/lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+# shellcheck source=bin/fm-nm-run-lib.sh
+. "$ROOT/bin/fm-nm-run-lib.sh"
 
 TMP_ROOT=$(fm_test_tmproot fm-timeout-lib)
 RUN_TIMED_NATIVE_PATH=$PATH
@@ -461,10 +463,11 @@ test_run_timed_nested_bounds_clean_descendants() {
 # signal/EXIT handlers, change its monitor mode, or swallow ordinary exits.
 test_run_timed_preserves_caller_traps_and_monitor_mode() {
   local mode before after out rc
+  local FM_TIMEOUT_MECHANISM_OVERRIDE=''
   for mode in native bash; do
+    [ "$mode" != bash ] || FM_TIMEOUT_MECHANISM_OVERRIDE=bash
     (
       . "$ROOT/bin/fm-timeout-lib.sh"
-      [ "$mode" != bash ] || FM_TIMEOUT_MECHANISM_OVERRIDE=bash
       trap ': caller-exit' EXIT
       trap ': caller-term' TERM
       set +m
@@ -521,7 +524,6 @@ test_nm_bounded_preserves_stdin() {
     printf 'first line\n\000\001\177\377\r\n last \tline\n\n' > "$dir/stdin.expected"
     rc=0
     (
-      . "$ROOT/bin/fm-nm-run-lib.sh"
       PATH=$path fm_nm_bounded "$dir" 5 bash -c '
         cat > "$1"
         printf "executed\n" > "$2"
@@ -594,7 +596,6 @@ test_nm_bounded_preserves_query_contract() {
     for status in 0 7 124 137 143; do
       rc=0
       out=$(
-        . "$ROOT/bin/fm-nm-run-lib.sh"
         PATH=$path fm_nm_bounded "$dir" 5 bash -c '
           IFS= read -r input
           printf "%s\n%s\n" "$PWD" "$input"
@@ -612,19 +613,16 @@ test_nm_bounded_preserves_query_contract() {
       [ "$mode" != perl ] || expected=0
       rc=0
       (
-        . "$ROOT/bin/fm-nm-run-lib.sh"
         PATH=$path fm_nm_bounded "$dir" 5 bash -c 'kill -"$1" $$' _ "$signal"
       ) >"$dir/signal-output" 2>&1 || rc=$?
       [ "$rc" -eq "$expected" ] || fail "$mode changed legacy $signal status $expected to $rc"
     done
     rc=0
     (
-      . "$ROOT/bin/fm-nm-run-lib.sh"
       PATH=$path fm_nm_bounded "$dir" 1 sleep 300
     ) >"$dir/deadline-output" 2>&1 || rc=$?
     [ "$rc" -eq 124 ] || fail "$mode changed ordinary timeout status to $rc"
     (
-      . "$ROOT/bin/fm-nm-run-lib.sh"
       trap ': caller-exit' EXIT
       trap ': caller-term' TERM
       set +u
@@ -639,7 +637,6 @@ test_nm_bounded_preserves_query_contract() {
   ln -s "$(command -v dirname)" "$TMP_ROOT/nm-no-runner/dirname"
   rc=0
   (
-    . "$ROOT/bin/fm-nm-run-lib.sh"
     PATH=$TMP_ROOT/nm-no-runner fm_nm_bounded "$TMP_ROOT" 5 /bin/bash -c ': > "$1"' _ "$TMP_ROOT/unbounded-query"
   ) || rc=$?
   [ "$rc" -eq 1 ] || fail "missing nm query mechanism changed status from 1 to $rc"
