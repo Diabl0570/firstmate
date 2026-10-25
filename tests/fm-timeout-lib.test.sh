@@ -481,6 +481,119 @@ test_run_timed_preserves_caller_traps_and_monitor_mode() {
   pass "fm_run_timed preserves caller traps, monitor mode, output, and ordinary failure status"
 }
 
+test_nm_bounded_query_cancellation() {
+  local mode dir path tool runner rc pid i state
+  runner=$(type -P timeout || type -P gtimeout || true)
+  for mode in perl timeout gtimeout; do
+    dir="$TMP_ROOT/nm-query-$mode"
+    path="$dir/bin"
+    mkdir -p "$path"
+    for tool in bash perl sleep dirname mktemp cat rm; do
+      ln -s "$(command -v "$tool")" "$path/$tool"
+    done
+    if [ "$mode" != perl ]; then
+      [ -n "$runner" ] || fail "nm query $mode requires an external timeout executable"
+      printf '#!/usr/bin/env bash\nexec %q "$@"\n' "$runner" > "$path/$mode"
+      chmod +x "$path/$mode"
+    fi
+    printf '#!/usr/bin/env bash\ntrap "" TERM\necho $$ > "$FM_QUERY_PID_FILE"\nexec sleep 300\n' > "$path/no-mistakes"
+    chmod +x "$path/no-mistakes"
+    rc=0
+    (
+      . "$ROOT/bin/fm-timeout-lib.sh"
+      PATH=$PERL_ONLY fm_run_timed 2 bash -c '
+        . "$1/bin/fm-nm-run-lib.sh"
+        PATH=$3 NM_HOME=$2 FM_HOME=$2 FM_QUERY_PID_FILE=$2/pid \
+          fm_nm_run_checked "$2" 60 axi status
+      ' _ "$ROOT" "$dir" "$path"
+    ) >"$dir/output" 2>&1 || rc=$?
+    [ "$rc" -eq 124 ] || fail "$mode outer query deadline returned $rc instead of 124"
+    [ -s "$dir/pid" ] || fail "$mode query never started"
+    pid=$(cat "$dir/pid")
+    i=0
+    while kill -0 "$pid" 2>/dev/null && [ "$i" -lt 100 ]; do
+      state=$(ps -o stat= -p "$pid" 2>/dev/null || true)
+      case "$state" in ''|*Z*) break ;; esac
+      sleep 0.02
+      i=$((i + 1))
+    done
+    state=$(ps -o stat= -p "$pid" 2>/dev/null || true)
+    printf 'nm query %s: outer_status=%s pid=%s state=%s\n' "$mode" "$rc" "$pid" "${state:-gone}"
+    case "$state" in
+      ''|*Z*) ;;
+      *)
+        ps -o pid,ppid,pgid,stat,comm -p "$pid"
+        kill -KILL "$pid" 2>/dev/null || true
+        fail "$mode native query survived the completed outer read"
+        ;;
+    esac
+  done
+  pass "native no-mistakes queries leave no running descendant after an outer deadline on perl, timeout, and gtimeout"
+}
+
+test_nm_bounded_preserves_query_contract() {
+  local mode dir path status rc out signal expected before after
+  for mode in perl timeout gtimeout; do
+    dir="$TMP_ROOT/nm-query-$mode"
+    path="$dir/bin"
+    for status in 0 7 124 137 143; do
+      rc=0
+      out=$(
+        . "$ROOT/bin/fm-nm-run-lib.sh"
+        PATH=$path fm_nm_bounded "$dir" 5 bash -c '
+          IFS= read -r input
+          printf "%s\n%s\n" "$PWD" "$input"
+          echo query-stderr >&2
+          exit "$1"
+        ' _ "$status" <<< query-stdin 2>"$dir/stderr"
+      ) || rc=$?
+      [ "$rc" -eq "$status" ] || fail "$mode changed command exit $status to $rc"
+      [ "$out" = "$dir"$'\nquery-stdin' ] || fail "$mode lost cwd, stdin, or stdout: $out"
+      [ "$(cat "$dir/stderr")" = query-stderr ] || fail "$mode lost stderr"
+    done
+    for signal in TERM KILL; do
+      expected=143
+      [ "$signal" != KILL ] || expected=137
+      [ "$mode" != perl ] || expected=0
+      rc=0
+      (
+        . "$ROOT/bin/fm-nm-run-lib.sh"
+        PATH=$path fm_nm_bounded "$dir" 5 bash -c 'kill -"$1" $$' _ "$signal"
+      ) >"$dir/signal-output" 2>&1 || rc=$?
+      [ "$rc" -eq "$expected" ] || fail "$mode changed legacy $signal status $expected to $rc"
+    done
+    rc=0
+    (
+      . "$ROOT/bin/fm-nm-run-lib.sh"
+      PATH=$path fm_nm_bounded "$dir" 1 sleep 300
+    ) >"$dir/deadline-output" 2>&1 || rc=$?
+    [ "$rc" -eq 124 ] || fail "$mode changed ordinary timeout status to $rc"
+    (
+      . "$ROOT/bin/fm-nm-run-lib.sh"
+      trap ': caller-exit' EXIT
+      trap ': caller-term' TERM
+      set +u
+      set +m
+      before="$(trap -p EXIT TERM):$PWD:$-"
+      PATH=$path fm_nm_bounded "$dir" 5 bash -c 'exit 7' || :
+      after="$(trap -p EXIT TERM):$PWD:$-"
+      [ "$before" = "$after" ] || fail "$mode changed caller traps, cwd, or shell options"
+    ) || exit 1
+  done
+  mkdir -p "$TMP_ROOT/nm-no-runner"
+  ln -s "$(command -v dirname)" "$TMP_ROOT/nm-no-runner/dirname"
+  rc=0
+  (
+    . "$ROOT/bin/fm-nm-run-lib.sh"
+    PATH=$TMP_ROOT/nm-no-runner fm_nm_bounded "$TMP_ROOT" 5 /bin/bash -c ': > "$1"' _ "$TMP_ROOT/unbounded-query"
+  ) || rc=$?
+  [ "$rc" -eq 1 ] || fail "missing nm query mechanism changed status from 1 to $rc"
+  [ ! -e "$TMP_ROOT/unbounded-query" ] || fail "nm query ran without an available mechanism"
+  pass "bounded queries preserve cwd, streams, command and timeout statuses, caller state, and no-runner refusal"
+}
+
+test_nm_bounded_query_cancellation
+test_nm_bounded_preserves_query_contract
 test_run_timed_nested_bounds_clean_descendants
 test_run_timed_preserves_caller_traps_and_monitor_mode
 test_passes_the_command_status_and_output_through

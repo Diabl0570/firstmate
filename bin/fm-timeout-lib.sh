@@ -212,6 +212,12 @@ fm_run_external_timeout() (
   fi
   command_rc=$(cat "$status_file" 2>/dev/null || true)
   rm -f "$status_file" 2>/dev/null || true
+  if [ "${_FM_RUN_TIMED_RAW_STATUS:-0}" = 1 ]; then
+    case "$runner_rc" in
+      124|137) kill -KILL -- "-$runner_pid" 2>/dev/null || true ;;
+    esac
+    return "$runner_rc"
+  fi
   case "$command_rc" in
     ''|*[!0-9]*) ;;
     *)
@@ -242,7 +248,7 @@ fm_run_timed() {  # <seconds> <command...>
       ;;
     perl)
       perl -MPOSIX=setpgid -e '
-        my $t = shift;
+        my ($t, $raw_status) = (shift, shift);
         my ($pid, $pending) = (0, 0);
         sub terminate {
           my $rc = shift;
@@ -272,9 +278,9 @@ fm_run_timed() {  # <seconds> <command...>
         terminate($pending) if $pending;
         alarm $t;
         waitpid $pid, 0;
-        exit(($? & 127) ? 128 + ($? & 127) : $? >> 8);
+        exit($raw_status ? $? >> 8 : (($? & 127) ? 128 + ($? & 127) : $? >> 8));
       ' \
-        "$seconds" "$@"
+        "$seconds" "${_FM_RUN_TIMED_RAW_STATUS:-0}" "$@"
       ;;
     bash) fm_run_bash_timeout "$seconds" "$@" ;;
     *) return 124 ;;
