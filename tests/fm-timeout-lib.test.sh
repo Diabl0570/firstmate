@@ -481,23 +481,77 @@ test_run_timed_preserves_caller_traps_and_monitor_mode() {
   pass "fm_run_timed preserves caller traps, monitor mode, output, and ordinary failure status"
 }
 
-test_nm_bounded_query_cancellation() {
-  local mode dir path tool runner rc pid i state
+make_nm_query_paths() {
+  local mode dir path tool runner mechanism
   runner=$(type -P timeout || type -P gtimeout || true)
   for mode in perl timeout gtimeout; do
     dir="$TMP_ROOT/nm-query-$mode"
     path="$dir/bin"
+    if [ "$mode" != perl ] && [ -z "$runner" ]; then
+      printf 'skip: nm query %s: neither timeout nor gtimeout is available\n' "$mode"
+      continue
+    fi
     mkdir -p "$path"
     for tool in bash perl sleep dirname mktemp cat rm; do
       ln -s "$(command -v "$tool")" "$path/$tool"
     done
     if [ "$mode" != perl ]; then
-      [ -n "$runner" ] || fail "nm query $mode requires an external timeout executable"
-      printf '#!/usr/bin/env bash\nexec %q "$@"\n' "$runner" > "$path/$mode"
+      printf '#!/usr/bin/env bash\nprintf "%%s\\n" %q >> %q\nexec %q "$@"\n' \
+        "$mode" "$dir/runner-used" "$runner" > "$path/$mode"
       chmod +x "$path/$mode"
     fi
     printf '#!/usr/bin/env bash\ntrap "" TERM\necho $$ > "$FM_QUERY_PID_FILE"\nexec sleep 300\n' > "$path/no-mistakes"
     chmod +x "$path/no-mistakes"
+    mechanism=$(
+      . "$ROOT/bin/fm-timeout-lib.sh"
+      unset FM_TIMEOUT_MECHANISM_OVERRIDE
+      PATH=$path fm_timeout_mechanism
+    )
+    [ "$mechanism" = "$mode" ] || fail "nm query requested $mode but selected $mechanism"
+    printf 'nm query selected mechanism: %s\n' "$mechanism"
+  done
+}
+
+test_nm_bounded_preserves_stdin() {
+  local mode dir path rc failed=0
+  for mode in perl timeout gtimeout; do
+    dir="$TMP_ROOT/nm-query-$mode"
+    path="$dir/bin"
+    [ -d "$path" ] || continue
+    printf 'first line\n\000\001\177\377\r\n last \tline\n\n' > "$dir/stdin.expected"
+    rc=0
+    (
+      . "$ROOT/bin/fm-nm-run-lib.sh"
+      PATH=$path fm_nm_bounded "$dir" 5 bash -c '
+        cat > "$1"
+        printf "executed\n" > "$2"
+      ' _ "$dir/stdin.actual" "$dir/executed" < "$dir/stdin.expected"
+    ) || rc=$?
+    [ "$rc" -eq 0 ] && [ "$(cat "$dir/executed")" = executed ] \
+      || fail "$mode did not execute the stdin-consuming command (rc=$rc)"
+    if [ "$mode" != perl ]; then
+      [ "$(cat "$dir/runner-used")" = "$mode" ] || fail "$mode external runner was not invoked"
+    fi
+    if cmp -s "$dir/stdin.expected" "$dir/stdin.actual"; then
+      pass "nm query $mode preserves stdin bytes unchanged"
+    else
+      printf 'not ok - nm query %s changed stdin bytes\n' "$mode" >&2
+      printf 'expected bytes:\n'
+      od -An -tx1 "$dir/stdin.expected"
+      printf 'actual bytes:\n'
+      od -An -tx1 "$dir/stdin.actual"
+      failed=1
+    fi
+  done
+  [ "$failed" -eq 0 ] || fail "bounded query stdin was not preserved"
+}
+
+test_nm_bounded_query_cancellation() {
+  local mode dir path rc pid i state
+  for mode in perl timeout gtimeout; do
+    dir="$TMP_ROOT/nm-query-$mode"
+    path="$dir/bin"
+    [ -d "$path" ] || continue
     rc=0
     (
       . "$ROOT/bin/fm-timeout-lib.sh"
@@ -528,7 +582,7 @@ test_nm_bounded_query_cancellation() {
         ;;
     esac
   done
-  pass "native no-mistakes queries leave no running descendant after an outer deadline on perl, timeout, and gtimeout"
+  pass "native no-mistakes queries leave no running descendant on Perl and every available external path"
 }
 
 test_nm_bounded_preserves_query_contract() {
@@ -536,6 +590,7 @@ test_nm_bounded_preserves_query_contract() {
   for mode in perl timeout gtimeout; do
     dir="$TMP_ROOT/nm-query-$mode"
     path="$dir/bin"
+    [ -d "$path" ] || continue
     for status in 0 7 124 137 143; do
       rc=0
       out=$(
@@ -592,6 +647,8 @@ test_nm_bounded_preserves_query_contract() {
   pass "bounded queries preserve cwd, streams, command and timeout statuses, caller state, and no-runner refusal"
 }
 
+make_nm_query_paths
+test_nm_bounded_preserves_stdin
 test_nm_bounded_query_cancellation
 test_nm_bounded_preserves_query_contract
 test_run_timed_nested_bounds_clean_descendants
