@@ -1,0 +1,8 @@
+Show a current-branch or explicitly selected run in detail
+
+Usage:
+  no-mistakes axi status [flags]
+
+Flags:
+  -h, --help         help for status
+      --run string   inspect a specific run ID (default: current branch's active or most recent)

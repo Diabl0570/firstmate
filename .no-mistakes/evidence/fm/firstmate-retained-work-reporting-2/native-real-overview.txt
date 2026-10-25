@@ -1,0 +1,12 @@
+$ no-mistakes axi (disposable seeded native database)
+bin: ~/.no-mistakes/bin/no-mistakes
+description: "Validate your code changes through the no-mistakes pipeline - automated code review, tests, lint, docs, push, PR, and CI - before they reach the configured push target. Use when the user asks to run no-mistakes, gate or ship or validate their changes, push safely, asks you to do a task and then validate it, or invokes /no-mistakes."
+repo: /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/.test-phase-tmp/native-read-project
+current_branch: fm/retained
+daemon: stopped
+count: 1 of 1 total
+runs[1]{id,branch,status,head,pr}:
+  fixture-failed,fm/retained,failed,c50826de,""
+help[4]: "Run `no-mistakes axi run --intent \"<what the user set out to accomplish>\"` to validate your changes","Commit post-pipeline follow-up work on top of the existing branch so every pipeline fix commit remains present. Never abort-and-restart, reset, or replace the branch in a way that drops prior gate-fix commits.",The calling agent drives AXI gates but does not replace the configured pipeline agent; run `no-mistakes doctor` if no native agent or ACP runner is available,"How to drive the pipeline: `no-mistakes axi run --help`, or the `/no-mistakes` skill (loaded when you invoke `/no-mistakes`)"
+
+EXIT_STATUS=0

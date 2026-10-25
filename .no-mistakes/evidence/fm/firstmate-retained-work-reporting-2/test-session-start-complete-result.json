@@ -1,0 +1,24 @@
+{
+  "command": [
+    "bash",
+    "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/tests/fm-session-start.test.sh"
+  ],
+  "test_only_assignments": {
+    "TMPDIR": "/home/kasper/.no-mistakes/evidence/01M5RW6VSY3JV2SWKMXPM1X127/session-start-scratch-q8ufvl7g",
+    "FM_TEST_BASE_PATH": "/run/current-system/sw/bin:/etc/profiles/per-user/kasper/bin:/usr/bin:/bin"
+  },
+  "head": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+  "started_utc": "2026-10-25T08:29:41.244392+00:00",
+  "real_model_primary": "NOTRUN BY INSTRUCTION; no model CLI launched",
+  "owned_descendant_cleanup": [],
+  "test_pid": 3258992,
+  "exit_status": 0,
+  "remaining_owned_children": [],
+  "scratch_remaining_before_supervisor_cleanup": [],
+  "scratch_removed": true,
+  "finished_utc": "2026-10-25T08:35:43.216437+00:00",
+  "git_status_after": "",
+  "head_after": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+  "tracked_diff_empty": true,
+  "staged_diff_empty": true
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "fm-secondmate-home-summary.v1",
+  "hold_classifier_schema": "fm-captain-hold-buckets.v1",
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": true,
+    "proven_clear": true,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 0,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "generated": "2026-10-25T07:42:51Z",
+  "generated_epoch": 1792914171,
+  "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/.l",
+  "valid": false,
+  "reason": "in-flight backlog item has terminal child state: review=done",
+  "invalidity": {
+    "kind": "terminal_in_flight",
+    "ids": [
+      "review"
+    ]
+  },
+  "state": "no_active_work",
+  "active_children": [],
+  "retained_attempts": [],
+  "decisions_open": [],
+  "holds": [],
+  "queued": [],
+  "landed": [],
+  "endpoints": [
+    {
+      "id": "review",
+      "state": "done",
+      "source": "status-log",
+      "endpoint": {
+        "target": "reporting:task",
+        "exists": true,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-25T07:42:51Z",
+        "freshness": "fresh"
+      }
+    }
+  ],
+  "counts": {
+    "active_children": 0,
+    "retained_attempts": 0,
+    "decisions_open": 0,
+    "holds": 0,
+    "queued": 0,
+    "landed": 0,
+    "endpoints": 1
+  },
+  "omitted": []
+}

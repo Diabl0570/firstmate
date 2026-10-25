@@ -1,0 +1,34 @@
+{
+  "head": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+  "scope": "Read-only artifact verification in Test continuation; retained same-run live proofs reused, not re-executed.",
+  "session_start_complete_result": "exit 0; complete log read; scratch absent",
+  "archive": "hash verified; both scratch trees and symlinks present",
+  "processes": [
+    {
+      "pid": 1948291,
+      "recorded_start_ticks": 195160794,
+      "current": null,
+      "signal_sent_this_turn": false
+    },
+    {
+      "pid": 1948297,
+      "recorded_start_ticks": 195160795,
+      "current": null,
+      "signal_sent_this_turn": false
+    }
+  ],
+  "product_outputs_checked": [
+    "live-native-retention.json",
+    "live-native-busy-continuation.json",
+    "live-native-stalled-endpoint.json",
+    "live-parent-retained.json",
+    "live-parent-legacy.json",
+    "live-parent-malformed.json",
+    "baseline-results.json"
+  ],
+  "real_model_primary": "NOT RUN BY INSTRUCTION; no CLI launched in this turn",
+  "git_status": "clean",
+  "tracked_and_staged_diffs": "empty",
+  "source_or_test_edits": false,
+  "result": "pass"
+}

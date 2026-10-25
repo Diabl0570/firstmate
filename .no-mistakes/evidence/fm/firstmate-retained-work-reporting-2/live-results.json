@@ -1,0 +1,147 @@
+[
+  {
+    "name": "Real snapshot retains a completed scout without completing logical work",
+    "result": "pass",
+    "details": {
+      "retained": [
+        {
+          "id": "review",
+          "kind": "scout",
+          "state": "done",
+          "source": "status-log",
+          "logical_state": "in_flight",
+          "runtime_activity": {
+            "state": "idle",
+            "source": "claude-hook",
+            "provenance": "semantic-record",
+            "observed_at": "2026-10-25T07:42:49Z",
+            "freshness": "fresh"
+          },
+          "hold_kind": "captain",
+          "reason": "approve follow-up"
+        }
+      ],
+      "state": "captain_decision",
+      "landed": 0
+    }
+  },
+  {
+    "name": "Real parent accepts legacy missing coverage and refuses malformed coverage",
+    "result": "pass",
+    "details": {
+      "legacy_retained_attempts": null,
+      "malformed_state": "unknown"
+    }
+  },
+  {
+    "name": "Missing activity or a missing hold never fabricates retained completion",
+    "result": "pass",
+    "details": {
+      "state": "unknown",
+      "invalidity": {
+        "kind": "child_current_unavailable",
+        "ids": [
+          "review"
+        ]
+      },
+      "decisions_open": [
+        {
+          "id": "review",
+          "key": "review",
+          "verb": "captain-hold",
+          "summary": "Completed review awaiting approval",
+          "reason": "approve follow-up",
+          "hold_until": null,
+          "hold_bucket": "live",
+          "hold_age_days": null,
+          "source": "backlog"
+        },
+        {
+          "id": "review",
+          "key": "follow-up",
+          "verb": "needs-decision",
+          "summary": "choose next action",
+          "reason": null,
+          "source": "status"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Real endpoint disappearance overrides stale busy evidence without answering an open call",
+    "result": "pass",
+    "details": {
+      "runtime_activity": {
+        "state": "dead",
+        "source": "endpoint-gone",
+        "provenance": "recovery-grade-endpoint",
+        "observed_at": "2026-10-25T07:42:52Z",
+        "freshness": "fresh"
+      },
+      "open_decisions": [
+        {
+          "key": "follow-up",
+          "verb": "needs-decision",
+          "summary": "choose next action"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Real bounded command preserves stdin, stdout, stderr and status (perl)",
+    "result": "pass",
+    "details": {
+      "status": 7,
+      "input_hex": "6669727374206c696e650a00017fff0d0a206c61737420096c696e650a0a",
+      "output_hex": "6669727374206c696e650a00017fff0d0a206c61737420096c696e650a0a",
+      "stderr": "actual-command-stderr\n"
+    }
+  },
+  {
+    "name": "Actual nested bounded read leaves no executing descendant (perl)",
+    "result": "pass",
+    "details": {
+      "outer_status": 124,
+      "actual_command_pid": 1127687,
+      "process_state": "gone"
+    }
+  },
+  {
+    "name": "Real bounded command preserves stdin, stdout, stderr and status (timeout)",
+    "result": "pass",
+    "details": {
+      "status": 7,
+      "input_hex": "6669727374206c696e650a00017fff0d0a206c61737420096c696e650a0a",
+      "output_hex": "6669727374206c696e650a00017fff0d0a206c61737420096c696e650a0a",
+      "stderr": "actual-command-stderr\n"
+    }
+  },
+  {
+    "name": "Actual nested bounded read leaves no executing descendant (timeout)",
+    "result": "pass",
+    "details": {
+      "outer_status": 124,
+      "actual_command_pid": 1131050,
+      "process_state": "gone"
+    }
+  },
+  {
+    "name": "Real bounded command preserves stdin, stdout, stderr and status (gtimeout)",
+    "result": "pass",
+    "details": {
+      "status": 7,
+      "input_hex": "6669727374206c696e650a00017fff0d0a206c61737420096c696e650a0a",
+      "output_hex": "6669727374206c696e650a00017fff0d0a206c61737420096c696e650a0a",
+      "stderr": "actual-command-stderr\n"
+    }
+  },
+  {
+    "name": "Actual nested bounded read leaves no executing descendant (gtimeout)",
+    "result": "pass",
+    "details": {
+      "outer_status": 124,
+      "actual_command_pid": 1133964,
+      "process_state": "gone"
+    }
+  }
+]

@@ -1,0 +1,166 @@
+{
+  "schema": "fm-secondmate-home-summary.v1",
+  "hold_classifier_schema": "fm-captain-hold-buckets.v1",
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": true,
+    "proven_clear": true,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 0,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "generated": "2026-10-25T07:50:06Z",
+  "generated_epoch": 1792914606,
+  "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/.l",
+  "valid": true,
+  "reason": null,
+  "invalidity": {
+    "kind": null,
+    "ids": []
+  },
+  "state": "captain_decision",
+  "active_children": [
+    {
+      "id": "predecessor",
+      "kind": "ship",
+      "state": "working",
+      "repo": "sample",
+      "name": "Retained failed attempt",
+      "source": "run-step",
+      "doing": "validating (running) \u00b7 status-log superseded by active run \u00b7 run: fixture-predecessor"
+    },
+    {
+      "id": "continuation",
+      "kind": "ship",
+      "state": "working",
+      "repo": "sample",
+      "name": "Current continuation",
+      "source": "run-step",
+      "doing": "validating (running) \u00b7 run: fixture-continuation"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "id": "delivered",
+      "kind": "ship",
+      "state": "done",
+      "source": "run-step",
+      "logical_state": "in_flight",
+      "runtime_activity": {
+        "state": "idle",
+        "source": "claude-hook",
+        "provenance": "semantic-record",
+        "observed_at": "2026-10-25T07:50:06Z",
+        "freshness": "fresh"
+      },
+      "hold_kind": "captain",
+      "reason": "review delivery"
+    }
+  ],
+  "decisions_open": [
+    {
+      "id": "delivered",
+      "key": "delivered",
+      "verb": "captain-hold",
+      "summary": "Delivered attempt awaiting approval",
+      "reason": "review delivery",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    }
+  ],
+  "holds": [
+    {
+      "id": "delivered",
+      "title": "Delivered attempt awaiting approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "review delivery",
+      "source": "backlog"
+    }
+  ],
+  "queued": [
+    {
+      "id": "delivered",
+      "title": "Delivered attempt awaiting approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "review delivery",
+      "hold_kind": "captain",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "captain_actionable": true,
+      "repo": "sample",
+      "kind": "ship",
+      "since": null
+    }
+  ],
+  "landed": [],
+  "endpoints": [
+    {
+      "id": "continuation",
+      "state": "working",
+      "source": "run-step",
+      "endpoint": {
+        "target": null,
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-25T07:50:06Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "delivered",
+      "state": "done",
+      "source": "run-step",
+      "endpoint": {
+        "target": null,
+        "exists": null,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-25T07:50:06Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "predecessor",
+      "state": "working",
+      "source": "run-step",
+      "endpoint": {
+        "target": "primary:primary",
+        "exists": true,
+        "agent_alive": "not_checked",
+        "status": "unknown",
+        "observed_at": "2026-10-25T07:50:06Z",
+        "freshness": "fresh"
+      }
+    }
+  ],
+  "counts": {
+    "active_children": 2,
+    "retained_attempts": 1,
+    "decisions_open": 1,
+    "holds": 1,
+    "queued": 1,
+    "landed": 0,
+    "endpoints": 3
+  },
+  "omitted": []
+}

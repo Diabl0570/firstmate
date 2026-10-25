@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-25T08:29:08.021503+00:00",
+  "capacity_command": [
+    "devbox",
+    "capacity",
+    "sample",
+    "--dry-run",
+    "--json"
+  ],
+  "drain_path": "/var/lib/devbox/drain",
+  "drained": false,
+  "load": [
+    1.29736328125,
+    2.3779296875,
+    2.61328125
+  ],
+  "cores": 12,
+  "available_minus_swap_used_kib": 8618284,
+  "memory_kib": {
+    "MemTotal": 15344132,
+    "MemAvailable": 10316604,
+    "SwapTotal": 8388604,
+    "SwapFree": 6690284
+  },
+  "workerActivity": {
+    "active": 2,
+    "inactive": 4,
+    "unknown": 0,
+    "source": "herdr",
+    "reasons": []
+  },
+  "running": {
+    "workers": 2,
+    "heavyTests": 0
+  },
+  "recommended": {
+    "workers": 6,
+    "heavyTests": 1,
+    "reason": "pressure low for 5 min; workers hold 6, 2 of 6 in use; heavy tests hold 1, 0 of 1 in use"
+  },
+  "pressure": {
+    "level": "low",
+    "source": "psi",
+    "reasons": [],
+    "lowForSeconds": 305
+  }
+}

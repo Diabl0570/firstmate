@@ -1,0 +1,95 @@
+{
+  "summary": "Cleanup prerequisite resolved; complete focused session-start file passes without source edits.",
+  "head": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+  "cleanup": {
+    "inventory": "/home/kasper/fm-homes/secondmate/data/firstmate-retained-work-reporting-2/main1335/test-leftovers-inventory.json",
+    "processes": [
+      {
+        "pid": 1948297,
+        "recorded_start_ticks": 195160795,
+        "recorded_comm": ".claude-wrapped",
+        "before": {
+          "comm": ".claude-wrapped",
+          "start_ticks": 195160795,
+          "state": "S"
+        },
+        "action": "SIGTERM via verified pidfd",
+        "after": null
+      },
+      {
+        "pid": 1948291,
+        "recorded_start_ticks": 195160794,
+        "recorded_comm": "tmux: server",
+        "before": null,
+        "action": "gone; no signal"
+      }
+    ],
+    "head_before": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+    "status_before": "?? .l/\n?? .test-phase-tmp/\n",
+    "archive": {
+      "path": "/home/kasper/.no-mistakes/evidence/01M5RW6VSY3JV2SWKMXPM1X127/test-leftovers-native-scratch.tar.gz",
+      "sha256": "e18cfa2c80499303f8b894b991b1e3c3f142023cbd181957ee4dcf7e47c823b1",
+      "verified_readable": true,
+      "dereference": false,
+      "socket_note": "tar excludes non-serializable Unix sockets"
+    },
+    "head_after": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+    "status_after": "",
+    "tracked_diffs_unchanged": true,
+    "result": "cleanup complete; head and tracked diffs unchanged; status clean"
+  },
+  "session_start": {
+    "command": [
+      "bash",
+      "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/tests/fm-session-start.test.sh"
+    ],
+    "test_only_assignments": {
+      "TMPDIR": "/home/kasper/.no-mistakes/evidence/01M5RW6VSY3JV2SWKMXPM1X127/session-start-scratch-q8ufvl7g",
+      "FM_TEST_BASE_PATH": "/run/current-system/sw/bin:/etc/profiles/per-user/kasper/bin:/usr/bin:/bin"
+    },
+    "head": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+    "started_utc": "2026-10-25T08:29:41.244392+00:00",
+    "real_model_primary": "NOTRUN BY INSTRUCTION; no model CLI launched",
+    "owned_descendant_cleanup": [],
+    "test_pid": 3258992,
+    "exit_status": 0,
+    "remaining_owned_children": [],
+    "scratch_remaining_before_supervisor_cleanup": [],
+    "scratch_removed": true,
+    "finished_utc": "2026-10-25T08:35:43.216437+00:00",
+    "git_status_after": "",
+    "head_after": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c",
+    "tracked_diff_empty": true,
+    "staged_diff_empty": true
+  },
+  "archive_symlinks_preserved": true,
+  "reused_evidence": [
+    "baseline-results.json",
+    "live-results.json",
+    "fm-timeout-lib.log",
+    "fm-supervision-host-complete.log"
+  ],
+  "new_runs": [
+    "bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/tests/fm-session-start.test.sh"
+  ],
+  "new_failures": [],
+  "not_run": [
+    {
+      "scenario": "Real model primary end-to-end reporting and supervision",
+      "reason": "NOTRUN BY INSTRUCTION; launching a real model CLI is prohibited."
+    }
+  ],
+  "phases_not_executed": [
+    "pipeline control",
+    "broad repository test suite",
+    "lint",
+    "format",
+    "static analysis",
+    "push",
+    "PR",
+    "CI"
+  ],
+  "source_or_test_edits": false,
+  "final_git_status": "clean",
+  "evidence_directory": "/home/kasper/.no-mistakes/evidence/01M5RW6VSY3JV2SWKMXPM1X127"
+}

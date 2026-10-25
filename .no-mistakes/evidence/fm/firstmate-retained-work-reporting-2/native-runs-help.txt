@@ -1,0 +1,8 @@
+List pipeline runs for the current repository
+
+Usage:
+  no-mistakes runs [flags]
+
+Flags:
+  -h, --help        help for runs
+      --limit int   maximum number of runs to display (default 10)

@@ -1,0 +1,94 @@
+{
+  "phase": "Test continuation preflight; stopped before starting missing coverage",
+  "head": {
+    "command": [
+      "git",
+      "-C",
+      "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127",
+      "rev-parse",
+      "HEAD"
+    ],
+    "status": 0,
+    "stdout": "a1d2ccb640e8e5cbbd6dca958242c3cb122c566c\n",
+    "stderr": ""
+  },
+  "status": {
+    "command": [
+      "git",
+      "-C",
+      "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127",
+      "status",
+      "--short"
+    ],
+    "status": 0,
+    "stdout": "?? .l/\n?? .test-phase-tmp/\n",
+    "stderr": ""
+  },
+  "tracked_diff": {
+    "command": [
+      "git",
+      "-C",
+      "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127",
+      "diff",
+      "--exit-code",
+      "HEAD",
+      "--"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "staged_diff": {
+    "command": [
+      "git",
+      "-C",
+      "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127",
+      "diff",
+      "--cached",
+      "--exit-code"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "scratch_paths": {
+    ".l": {
+      "exists": true,
+      "symlink": false
+    },
+    ".test-phase-tmp": {
+      "exists": true,
+      "symlink": false
+    }
+  },
+  "expected_inventory_candidates": {
+    "/home/kasper/.no-mistakes/evidence/01M5RW6VSY3JV2SWKMXPM1X127/test-leftovers-inventory.json": false,
+    "/home/kasper/.no-mistakes/evidence/01M5RW6VSY3JV2SWKMXPM1X127/main1335/test-leftovers-inventory.json": false
+  },
+  "archive_files_in_supplied_evidence_directory": [],
+  "process_checks": [
+    {
+      "pid": 1948291,
+      "recorded_start_ticks": 195160794,
+      "signal_sent": false,
+      "current_start_ticks": 195160794,
+      "comm": "tmux: server",
+      "state": "S",
+      "start_ticks_match": true,
+      "observation": "No signal: exact recorded identity cannot be re-proved without inventory."
+    },
+    {
+      "pid": 1948297,
+      "recorded_start_ticks": 195160795,
+      "signal_sent": false,
+      "current_start_ticks": 195160795,
+      "comm": ".claude-wrapped",
+      "state": "S",
+      "start_ticks_match": true,
+      "observation": "No signal: exact recorded identity cannot be re-proved without inventory."
+    }
+  ],
+  "action": "STOP and route to Main: required pre-Test cleanup/provenance unavailable; no pipeline control, source changes, cleanup, or real model CLI launch performed.",
+  "first_pending_command": "bash /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5RW6VSY3JV2SWKMXPM1X127/tests/fm-session-start.test.sh (NOT RUN)",
+  "new_processes_or_labs_started": false
+}

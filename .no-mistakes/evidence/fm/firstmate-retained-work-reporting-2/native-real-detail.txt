@@ -1,0 +1,13 @@
+$ no-mistakes axi status --run fixture-failed (disposable seeded native database)
+run:
+  id: fixture-failed
+  branch: fm/retained
+  status: failed
+  head: c50826de
+  head_sha: c50826deccd8234b86137589c8a259eb0fd22531
+  verification_plan: none
+  findings: none
+  steps[0]:
+outcome: failed
+
+EXIT_STATUS=0

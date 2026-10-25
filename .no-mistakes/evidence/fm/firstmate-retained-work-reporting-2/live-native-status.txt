@@ -1,0 +1,10 @@
+run:
+  id: fixture-predecessor
+  branch: fm/predecessor
+  status: failed
+  head: 496cd3c5
+  head_sha: 496cd3c52e1cf6f715722fe50bbd163d836e142b
+  verification_plan: none
+  findings: none
+  steps[0]:
+outcome: failed
