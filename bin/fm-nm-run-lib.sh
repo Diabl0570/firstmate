@@ -17,9 +17,13 @@
 # false positive lets teardown act on a run it does not own.
 #
 # Bounded call to an arbitrary command in dir $1, timeout $2 seconds, and its
-# `no-mistakes "$@"` specialization. The bounded
-# form preserves stdout, stderr, and exit status; the checked form discards
-# stderr, while fm_nm_run keeps the fail-open query contract for read-only callers.
+# `no-mistakes "$@"` specialization. The bounded form preserves stdout, stderr,
+# and legacy mechanism-specific status: ordinary exits pass through, but Perl's
+# shifted wait status is 0 for signal death. The checked form discards stderr,
+# while fm_nm_run keeps the fail-open query contract for read-only callers.
+# fm-timeout-lib.sh owns execution and cancellation cleanup; this API requires
+# timeout, gtimeout, or Perl and refuses with 1 rather than use the bash fallback.
+# tests/fm-timeout-lib.test.sh covers query compatibility and nested cancellation.
 # The no-mistakes forms route host reads through the opt-in home resolver below.
 fm_nm_bounded() (  # <dir> <timeout_secs> <command> <args...>
   local dir=$1 timeout_secs=$2 _FM_RUN_TIMED_RAW_STATUS=1 FM_TIMEOUT_MECHANISM_OVERRIDE=''
