@@ -23,7 +23,8 @@
 # while fm_nm_run keeps the fail-open query contract for read-only callers.
 # fm-timeout-lib.sh owns execution and cancellation cleanup; this API requires
 # timeout, gtimeout, or Perl and refuses with 1 rather than use the bash fallback.
-# tests/fm-timeout-lib.test.sh covers query compatibility and nested cancellation.
+# tests/fm-timeout-lib.test.sh covers query compatibility; fm-timeout-lib.sh's
+# header owns cancellation coverage and limits.
 # The no-mistakes forms route host reads through the opt-in home resolver below.
 fm_nm_bounded() (  # <dir> <timeout_secs> <command> <args...>
   local dir=$1 timeout_secs=$2 _FM_RUN_TIMED_RAW_STATUS=1 FM_TIMEOUT_MECHANISM_OVERRIDE=''

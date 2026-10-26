@@ -82,6 +82,12 @@
 # Nested bounds create separate groups, and an outer runner may KILL this one
 # as soon as its wrapper exits:
 # cancellation cannot spend a grace period leaving that separate group alive.
+# This is owned-group cleanup, not a recursive guarantee across nested groups.
+# With three nested Perl runners, outer expiry can kill an inner watchdog before
+# it cleans up its separate command group, leaving a native query running beyond
+# the returned outer bound. The home-summary refresh -> fleet snapshot ->
+# crew-state -> fm_nm_bounded path has this limitation.
+# tests/fm-timeout-lib.test.sh covers two nested bounds, not that three-runner path.
 set -u
 
 # Print the PATH path of timeout, else gtimeout, when that path is executable.
