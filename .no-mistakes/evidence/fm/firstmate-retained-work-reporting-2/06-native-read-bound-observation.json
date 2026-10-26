@@ -1,0 +1,11 @@
+{
+  "runs": 1,
+  "elapsed_seconds": 3.549909397959709,
+  "spread": "single run, not a benchmark",
+  "configured_snapshot_read_bound_seconds": 3,
+  "native_query_default_bound_seconds": 10,
+  "query_pid": 518602,
+  "query_state_after_snapshot": "gone",
+  "limiter": "outer snapshot per-child timeout; external query starts and ignores TERM; full snapshot returns unknown",
+  "scope": "two runner levels, not the accepted unsupported three-level Perl cancellation chain"
+}

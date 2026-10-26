@@ -1,3 +1,14 @@
+nm query selected mechanism: perl
+nm query selected mechanism: timeout
+nm query selected mechanism: gtimeout
+ok - nm query perl preserves stdin bytes unchanged
+ok - nm query timeout preserves stdin bytes unchanged
+ok - nm query gtimeout preserves stdin bytes unchanged
+nm query perl: outer_status=124 pid=3109489 state=gone
+nm query timeout: outer_status=124 pid=3112787 state=gone
+nm query gtimeout: outer_status=124 pid=3114704 state=gone
+ok - native no-mistakes queries leave no running descendant on Perl and every available external path
+ok - bounded queries preserve cwd, streams, command and timeout statuses, caller state, and no-runner refusal
 ok - fm_run_timed native, perl, and bash runners clean descendants when an outer bound interrupts them
 ok - fm_run_timed preserves caller traps, monitor mode, output, and ordinary failure status
 ok - fm_exec_timed passes a command's status and output through unchanged
@@ -17,6 +28,6 @@ ok - fm_exec_timed preserves a top-level shell's parent across exec startup
 ok - fm_exec_timed prefers its perl watchdog over timeout
 ok - fm_exec_timed refuses instead of running unbounded when no mechanism exists
 ok - fm_exec_timed rejects a zero, padded, non-numeric, or missing bound and a missing command
-tests/fm-timeout-lib.test.sh: line 29: 3400252 Killed                     ( . "$ROOT/bin/fm-timeout-lib.sh"; PATH=$path fm_exec_timed "$@" )
+tests/fm-timeout-lib.test.sh: line 31: 3123710 Killed                     ( . "$ROOT/bin/fm-timeout-lib.sh"; PATH=$path fm_exec_timed "$@" )
 ok - fm_exec_timed's GNU timeout fallback kills a TERM-ignoring command once the grace has passed
 ok - fm_timed_out accepts 124 and 137 and nothing else

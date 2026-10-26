@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/kasper/.no-mistakes/evidence/01M5TJBFSWYT4F8Y8RTZR679NX/drive-fleet.py", line 166, in <module>
+    assert d['valid'] and all(x['id']!='predecessor' for x in d['active_children'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

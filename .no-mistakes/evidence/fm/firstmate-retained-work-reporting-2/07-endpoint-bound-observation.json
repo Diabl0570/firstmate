@@ -1,0 +1,8 @@
+{
+  "runs": 1,
+  "elapsed_seconds": 6.55060483282432,
+  "spread": "single run, not a benchmark",
+  "per_read_bound_seconds": 3,
+  "limiter": "real private tmux server SIGSTOP blocks endpoint-presence and recovery-grade probes; independent reads expire sequentially",
+  "server_resumed": true
+}

@@ -1,0 +1,12 @@
+{
+  "runs": 1,
+  "elapsed_seconds": 3.717555447947234,
+  "spread": "single run, not a benchmark",
+  "mechanism": "perl",
+  "configured_snapshot_read_bound_seconds": 3,
+  "native_query_default_bound_seconds": 10,
+  "query_pid": 525303,
+  "query_state_after_snapshot": "gone",
+  "limiter": "snapshot per-child Perl alarm; real external query starts and ignores TERM",
+  "scope": "two runners only; no claim about accepted three-level Perl cancellation limitation"
+}

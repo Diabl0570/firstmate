@@ -1,0 +1,40 @@
+private_socket=/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5TJBFSWYT4F8Y8RTZR679NX/.l/tmux/tmux-1000/fm-lab
+window=primary:claude
+recovery_grade_agent_alive=alive
+pty_grid=120x36
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Accessing workspace:
+
+ /home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5TJBFSWYT4F8Y8RTZR679NX
+
+ Quick safety check: Is this a project you created or one you trust? (Like your own code, a well-known open source
+ project, or work from your team). If not, take a moment to review what's in this folder first.
+
+ Claude Code'll be able to read, edit, and execute files here.
+
+ Security guide
+
+ ❯ No, exit
+   Yes, I trust this folder
+
+ Enter to confirm · Esc to cancel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

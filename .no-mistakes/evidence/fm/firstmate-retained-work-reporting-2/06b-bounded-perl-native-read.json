@@ -1,0 +1,233 @@
+{
+  "schema": "fm-secondmate-home-summary.v1",
+  "hold_classifier_schema": "fm-captain-hold-buckets.v1",
+  "contributions": {
+    "known": 0,
+    "checked": 0,
+    "counts": {
+      "captain": 0,
+      "fleet": 0,
+      "maintainer": 0,
+      "nobody": 0
+    },
+    "unmeasured": 0,
+    "complete": true,
+    "proven_clear": true,
+    "stale_verdicts": 0,
+    "missing_verdicts": 0,
+    "unreadable_records": 0,
+    "valid_until": 900,
+    "captain": [],
+    "captain_omitted": 0
+  },
+  "generated": "2026-10-25T23:10:34Z",
+  "generated_epoch": 1792969834,
+  "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5TJBFSWYT4F8Y8RTZR679NX/.l",
+  "valid": false,
+  "reason": "child current state unavailable: predecessor, review",
+  "invalidity": {
+    "kind": "child_current_unavailable",
+    "ids": [
+      "predecessor",
+      "review"
+    ]
+  },
+  "state": "unknown",
+  "active_children": [
+    {
+      "id": "continuation",
+      "kind": "ship",
+      "state": "working",
+      "repo": "sample",
+      "name": "Current work",
+      "source": "run-step",
+      "doing": "validating (running) \u00b7 run: native-continuation"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "id": "delivered",
+      "kind": "ship",
+      "state": "done",
+      "source": "run-step",
+      "logical_state": "in_flight",
+      "runtime_activity": {
+        "state": "idle",
+        "source": "claude-hook",
+        "provenance": "semantic-record",
+        "observed_at": "2026-10-25T23:10:34Z",
+        "freshness": "fresh"
+      },
+      "hold_kind": "captain",
+      "reason": "approve delivery"
+    }
+  ],
+  "decisions_open": [
+    {
+      "id": "delivered",
+      "key": "delivered",
+      "verb": "captain-hold",
+      "summary": "Review approval",
+      "reason": "approve delivery",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "source": "backlog"
+    },
+    {
+      "id": "predecessor",
+      "key": "next-action",
+      "verb": "needs-decision",
+      "summary": "choose the next action",
+      "reason": null,
+      "source": "status"
+    }
+  ],
+  "holds": [
+    {
+      "id": "predecessor",
+      "title": "Retained failure",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "source retention",
+      "source": "backlog"
+    },
+    {
+      "id": "delivered",
+      "title": "Review approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "approve delivery",
+      "source": "backlog"
+    },
+    {
+      "id": "review",
+      "title": "Completed scout",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "reason": "retain report",
+      "source": "backlog"
+    }
+  ],
+  "queued": [
+    {
+      "id": "predecessor",
+      "title": "Retained failure",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "source retention",
+      "hold_kind": "external",
+      "hold_until": null,
+      "hold_bucket": null,
+      "hold_age_days": null,
+      "captain_actionable": false,
+      "repo": "sample",
+      "kind": "ship",
+      "since": null
+    },
+    {
+      "id": "review",
+      "title": "Completed scout",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "retain report",
+      "hold_kind": "external",
+      "hold_until": null,
+      "hold_bucket": null,
+      "hold_age_days": null,
+      "captain_actionable": false,
+      "repo": "sample",
+      "kind": "scout",
+      "since": null
+    },
+    {
+      "id": "delivered",
+      "title": "Review approval",
+      "blocked_by": null,
+      "blocked_by_ids": [],
+      "unresolved_blocker_ids": [],
+      "blocked_reason": null,
+      "hold_reason": "approve delivery",
+      "hold_kind": "captain",
+      "hold_until": null,
+      "hold_bucket": "live",
+      "hold_age_days": null,
+      "captain_actionable": true,
+      "repo": "sample",
+      "kind": "ship",
+      "since": null
+    }
+  ],
+  "landed": [],
+  "endpoints": [
+    {
+      "id": "continuation",
+      "state": "working",
+      "source": "run-step",
+      "endpoint": {
+        "target": "primary:claude",
+        "exists": false,
+        "agent_alive": "not_checked",
+        "status": "absent",
+        "observed_at": "2026-10-25T23:10:34Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "delivered",
+      "state": "done",
+      "source": "run-step",
+      "endpoint": {
+        "target": "primary:claude",
+        "exists": false,
+        "agent_alive": "not_checked",
+        "status": "absent",
+        "observed_at": "2026-10-25T23:10:34Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "predecessor",
+      "state": "unknown",
+      "source": "none",
+      "endpoint": {
+        "target": "primary:claude",
+        "exists": false,
+        "agent_alive": "not_checked",
+        "status": "absent",
+        "observed_at": "2026-10-25T23:10:34Z",
+        "freshness": "fresh"
+      }
+    },
+    {
+      "id": "review",
+      "state": "unknown",
+      "source": "none",
+      "endpoint": {
+        "target": "primary:claude",
+        "exists": false,
+        "agent_alive": "not_checked",
+        "status": "absent",
+        "observed_at": "2026-10-25T23:10:34Z",
+        "freshness": "fresh"
+      }
+    }
+  ],
+  "counts": {
+    "active_children": 1,
+    "retained_attempts": 1,
+    "decisions_open": 2,
+    "holds": 3,
+    "queued": 3,
+    "landed": 0,
+    "endpoints": 4
+  },
+  "omitted": []
+}

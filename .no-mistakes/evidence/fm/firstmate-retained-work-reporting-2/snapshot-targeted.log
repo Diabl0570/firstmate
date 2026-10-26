@@ -1,161 +1,19 @@
-not ok - parent dropped canonical retained-attempt evidence: {
-  "schema": "fm-fleet-snapshot.v1",
-  "generated": "2026-10-24T06:24:21Z",
-  "fm_home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent",
-  "roots": {
-    "fm_root": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3",
-    "state": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent/state",
-    "data": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent/data",
-    "config": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent/config",
-    "projects": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent/projects"
-  },
-  "backlog": {
-    "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent/data/backlog.md",
-    "present": false,
-    "records": []
-  },
-  "tasks": [],
-  "main_inventory": {
-    "valid": true,
-    "reason": null,
-    "orphan_in_flight": [],
-    "unstructured_current_count": 0
-  },
-  "contributions": {
-    "known": 0,
-    "checked": 0,
-    "counts": {
-      "captain": 0,
-      "fleet": 0,
-      "maintainer": 0,
-      "nobody": 0
-    },
-    "unmeasured": 0,
-    "complete": false,
-    "proven_clear": false,
-    "stale_verdicts": 0,
-    "missing_verdicts": 0,
-    "unreadable_records": 1,
-    "valid_until": 900,
-    "captain": [],
-    "captain_omitted": 0
-  },
-  "scout_reports": [],
-  "secondmate_current": {
-    "registry": {
-      "present": true,
-      "available": true,
-      "reason": null,
-      "provenance": "registered-table",
-      "path": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-parent/data/secondmates.md",
-      "freshness": {
-        "status": "fresh",
-        "observed_at": "2026-10-24T06:24:21Z"
-      },
-      "records": [
-        {
-          "id": "mate",
-          "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-attempts",
-          "host": null,
-          "root": null,
-          "remote": false,
-          "registered": true,
-          "registry_error": null
-        }
-      ],
-      "input_truncated": false,
-      "records_truncated": false,
-      "complete": true,
-      "reasons": [],
-      "lines_in_window": 1,
-      "records_in_window": 1
-    },
-    "records": [
-      {
-        "id": "mate",
-        "home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-attempts",
-        "host": null,
-        "remote": false,
-        "registered": true,
-        "spawn_gen": null,
-        "current": {
-          "state": "unknown",
-          "reason": "invalid home: secondmate home cannot be inside the firstmate repo"
-        },
-        "invalidity": null,
-        "reconcile_inventory": null,
-        "provenance": {
-          "selected": "unknown",
-          "structured_home": "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-attempts",
-          "parent_event_role": "fallback-only-not-current"
-        },
-        "freshness": {
-          "status": "unknown",
-          "observed_at": "2026-10-24T06:24:21Z",
-          "age_seconds": null
-        },
-        "active_children": [],
-        "retained_attempts": null,
-        "decisions_open": [],
-        "holds": [],
-        "queued": [],
-        "landed": [],
-        "endpoints": [],
-        "counts": {
-          "active_children": 0,
-          "retained_attempts": null,
-          "decisions_open": 0,
-          "holds": 0,
-          "queued": 0,
-          "landed": 0,
-          "endpoints": 0
-        },
-        "omitted": [],
-        "parent_event": {
-          "raw": "",
-          "note": "",
-          "age_seconds": null,
-          "open_activities": [],
-          "open_decisions": [],
-          "activity_scan": {
-            "records": [],
-            "available": true,
-            "input_truncated": false,
-            "retained_truncated": false,
-            "reasons": [],
-            "lines_in_window": 0,
-            "records_in_window": 0
-          }
-        },
-        "terminal_evidence": {
-          "provenance": "parent-direct-report-terminal",
-          "trust": "untrusted-supplement",
-          "captured": false,
-          "observed_at": "2026-10-24T06:24:21Z",
-          "freshness": "not-collected",
-          "reason": "no parent event to compare",
-          "lines": 0,
-          "bytes": 0,
-          "event_note_seen": false,
-          "contradiction": false
-        },
-        "contradiction": false
-      }
-    ],
-    "total_registered": 1,
-    "total": 1,
-    "shown": 1,
-    "truncated": 0
-  },
-  "secondmate_landed": {
-    "records": [],
-    "truncated": [],
-    "unreadable": [
-      "/home/kasper/.no-mistakes/worktrees/54ec8cc673b9/01M5P91F5H9J68964T99S351S3/.validation-tmp/fm-fleet-snapshot.xAQ9qq/retained-attempts"
-    ],
-    "partial": []
-  },
-  "secondmate_guidance": {
-    "note": "For kind=secondmate, bearings selects validated structured state from that registered home; parent events and bounded terminal evidence are fallback-only supplements and never current-state authority."
-  }
-}
+ok - canonical retention distinguishes terminal attempts, live continuations, open approvals, unknown coverage and unlanded cleanup refusal
+ok - empty fleet snapshot and view use explicit absence markers
+ok - fixture snapshot covers task rows, backlog rows, pointers, stable ordering, and emission-time event age
+ok - home-summary excludes kind=secondmate from unowned_current and terminal_in_flight
+ok - undated captain holds age after a configurable threshold, decided only from structured fields
+ok - captain-hold buckets are total, mutually exclusive, and never decided by prose
+ok - main_inventory discloses orphan/unstructured and clears when inventory is consistent
+ok - backlog normalization preserves strict roles and resolves every blocker compatibly
+ok - snapshot event hints follow reconciled current state
+ok - durable fold keeps an open decision past a later unrelated event
+ok - a live secondmate endpoint preserves unrelated open decisions
+ok - durable captain-held transfer closes the duplicate live status decision
+ok - durable fold clears a decision only on a keyed resolution
+ok - a completed scout's stale decision surfaces as a report pointer, not pending
+ok - a scout still parked at a decision stays pending (terminal clear does not over-fire)
+ok - snapshot includes durable scout reports after teardown
+ok - snapshot parses tasks-axi rows and respects operational overrides
+ok - fleet view renders the snapshot without secondmate peek guidance
+ok - fleet view renders secondmate agent liveness

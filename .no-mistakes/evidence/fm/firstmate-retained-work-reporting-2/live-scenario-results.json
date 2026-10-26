@@ -1,0 +1,56 @@
+{
+  "results": [
+    {
+      "scenario": "Retained terminal attempts do not replace current work or close approval",
+      "result": "pass",
+      "artifact": "01-retained-versus-current.json"
+    },
+    {
+      "scenario": "Projection limits disclose omitted retained attempts without changing logical completion",
+      "result": "pass",
+      "artifact": "01b-retained-projection-limit.json"
+    },
+    {
+      "scenario": "A terminal event without a hold or a scout report without lifecycle proof is not retained coverage",
+      "result": "pass",
+      "artifact": "01c-terminal-without-hold.json; 01d-report-without-lifecycle-evidence.json"
+    },
+    {
+      "scenario": "A worker can continue after terminal validation without losing its open decision",
+      "result": "pass",
+      "artifact": "02-terminal-worker-continuing.json"
+    },
+    {
+      "scenario": "Unavailable activity is unknown, not idle, and preserves held evidence",
+      "result": "pass",
+      "artifact": "03-unknown-activity.json"
+    },
+    {
+      "scenario": "Current native work wins, but competing ownership remains unknown",
+      "result": "pass",
+      "artifact": "04-live-native-continuation.json; 05-competing-native-ownership.json"
+    },
+    {
+      "scenario": "A stalled native query returns unknown within the snapshot read bound and is stopped",
+      "result": "pass",
+      "artifact": "06-bounded-stalled-native-read.json; 06-native-read-bound-observation.json; 06b-bounded-perl-native-read.json; 06b-perl-read-bound-observation.json"
+    },
+    {
+      "scenario": "An unresponsive real endpoint is bounded and remains unknown, not dead or idle",
+      "result": "pass",
+      "artifact": "07-bounded-stalled-endpoint.json; 07-endpoint-bound-observation.json"
+    },
+    {
+      "scenario": "A stale busy record cannot survive positive endpoint death as active work",
+      "result": "pass",
+      "artifact": "08-busy-record-with-dead-endpoint.json"
+    },
+    {
+      "scenario": "Explicit keyed resolution closes the decision without erasing the retained attempt",
+      "result": "pass",
+      "artifact": "09-explicit-keyed-resolution.json"
+    }
+  ],
+  "lab_removed": true,
+  "isolation": "real Firstmate scripts, real private tmux and Claude process; synthetic no-mistakes read-only response service; no production fleet or pipeline controls"
+}
